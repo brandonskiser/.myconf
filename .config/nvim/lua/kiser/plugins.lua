@@ -94,6 +94,7 @@ return packer.startup(function(use)
   }
   use "p00f/nvim-ts-rainbow"                        -- Parentheses coloring.
   use "JoosepAlviste/nvim-ts-context-commentstring" -- Comment stuff out based on cursor position. https://github.com/JoosepAlviste/nvim-ts-context-commentstring
+  use "nvim-treesitter/nvim-treesitter-context"     -- https://github.com/nvim-treesitter/nvim-treesitter-context
 
   -- File explorer
   use {
