@@ -60,8 +60,9 @@ return packer.startup(function(use)
 
   -- Color schemes
   -- https://github.com/rockerBOO/awesome-neovim#tree-sitter-supported-colorscheme
-  use "folke/tokyonight.nvim"  -- https://github.com/folke/tokyonight.nvim#-usage
-  use "sainnhe/sonokai"        -- https://github.com/sainnhe/sonokai
+  use "folke/tokyonight.nvim"        -- https://github.com/folke/tokyonight.nvim#-usage
+  use "sainnhe/sonokai"              -- https://github.com/sainnhe/sonokai
+  use "ellisonleao/gruvbox.nvim"     -- https://github.com/ellisonleao/gruvbox.nvim
 
   -- Completion
   use "hrsh7th/nvim-cmp"               -- The completion plugin. https://github.com/hrsh7th/nvim-cmp

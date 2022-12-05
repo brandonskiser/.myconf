@@ -21,11 +21,9 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
--- Buffer navigation
--- keymap("n", "<C-D>", "", opts)
-
--- Space+e to open file explorer
--- keymap("n", "<leader>e", ":Lex<CR>", opts)
+-- Center screen after going up/down a half page
+keymap("n", "<C-d>", "<C-d>zz", opts)
+keymap("n", "<C-u>", "<C-u>zz", opts)
 
 -- Resize with arrows
 keymap("n", "<C-Up>",    ":resize +2<CR>", opts)
@@ -54,3 +52,6 @@ keymap("n", "<leader>we", ":wincmd R<CR>", opts)      -- rotate window to the le
 -- :wincmd q | :quit  | <C-w>q          -- quit current window, exiting vim if it's the last open window
 -- :wincmd c | :close | <C-w>c          -- close current window, giving an error if it's the last open window
 -- :wincmd o | :only  | <C-w>o          -- make focused window the only open window
+
+keymap("v", "<leader>y", '"+y', opts)
+keymap("n", "<leader>p", '"+p', opts)
