@@ -7,7 +7,7 @@ end
 configs.setup {
     -- Supported languages: https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
     -- A list of parser names, or "all"
-    ensure_installed = { "c", "rust", "json" },
+    ensure_installed = { "c", "rust", "toml", "json" },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,

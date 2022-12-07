@@ -38,7 +38,7 @@ packer.init {
 
 return packer.startup(function(use)
   use 'wbthomason/packer.nvim' -- Have packer manage itself
-  
+
   -- My plugins here
   use "nvim-lua/popup.nvim"                  -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim"                -- Useful lua functions used by lots of plugins, e.g. telescope
@@ -51,7 +51,7 @@ return packer.startup(function(use)
   }
   use {
     'nvim-lualine/lualine.nvim',             -- https://github.com/nvim-lualine/lualine.nvim
-    requires = { 
+    requires = {
       'kyazdani42/nvim-web-devicons', opt = true
     }
   }
@@ -71,10 +71,11 @@ return packer.startup(function(use)
   use "hrsh7th/cmp-cmdline"
   use "saadparwaiz1/cmp_luasnip"       -- Snippet completions
   use "hrsh7th/cmp-nvim-lsp"
+  use "hrsh7th/cmp-nvim-lsp-signature-help"
 
   use "L3MON4D3/LuaSnip"               -- Snippet engine. https://github.com/L3MON4D3/LuaSnip
   use "rafamadriz/friendly-snippets"   -- Collection of snippets for a bunch of languages. https://github.com/rafamadriz/friendly-snippets
-  
+
   -- mason.nvim is a Neovim plugin that allows you to easily manage external editor tooling such as LSP servers, DAP servers, linters, and formatters through a single interface. It runs everywhere Neovim runs (across Linux, macOS, Windows, etc.), with only a small set of external requirements needed.
   use "williamboman/mason.nvim"            -- https://github.com/williamboman/mason.nvim
   use "williamboman/mason-lspconfig.nvim"  -- 

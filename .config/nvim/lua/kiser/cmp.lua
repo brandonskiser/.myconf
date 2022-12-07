@@ -16,9 +16,10 @@ cmp.setup {
             luasnip.lsp_expand(args.body)
         end
     },
-    -- window = {
-
-    -- },
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
     mapping = {
         ["<C-k>"] = cmp.mapping.select_prev_item(),
         ["<C-j>"] = cmp.mapping.select_next_item(),
@@ -40,7 +41,7 @@ cmp.setup {
             else
                 fallback()
             end
-        end, { 
+        end, {
             "i",
             "s",
         }),
@@ -87,6 +88,7 @@ cmp.setup {
     -- List of sources: https://github.com/hrsh7th/nvim-cmp/wiki/List-of-sources
     sources = cmp.config.sources({
         { name = "nvim_lsp" },
+        { name = 'nvim_lsp_signature_help' },
         { name = "luasnip" },
         { name = "buffer" },
         { name = "path" },

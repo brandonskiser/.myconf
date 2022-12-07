@@ -1,5 +1,5 @@
 -- tokyonight - available colorschemes
-local colorscheme = "tokyonight"
+-- local colorscheme = "tokyonight"
 -- local colorscheme = "tokyonight-night"
 -- local colorscheme = tokyonight-storm
 -- local colorscheme = tokyonight-day
@@ -11,8 +11,8 @@ local colorscheme = "tokyonight"
 -- vim.cmd("let g:sonokai_style = 'andromeda'")
 -- vim.cmd("let g:sonokai_style = 'shusia'")
 -- vim.cmd("let g:sonokai_style = 'maia'")
--- vim.cmd("let g:sonokai_style = 'espresso'")
--- local colorscheme = "sonokai"
+vim.cmd("let g:sonokai_style = 'espresso'")
+local colorscheme = "sonokai"
 
 -- gruvbox
 -- require("gruvbox").setup({

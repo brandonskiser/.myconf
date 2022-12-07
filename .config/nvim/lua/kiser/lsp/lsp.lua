@@ -38,10 +38,10 @@ end
 local function lsp_keymaps(bufnr)
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-    
+
     -- Mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local bufopts = { noremap=true, silent=true, buffer=bufnr }
+    local bufopts = { noremap = true, silent = true, buffer = bufnr }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
@@ -70,33 +70,57 @@ local lsp_flags = {
     debounce_text_changes = 150,
 }
 
-local opts = {
+local default_opts = {
     capabilities = capabilities,
     on_attach = on_attach,
     flags = lsp_flags
 }
 
+local make_opts = function(opts)
+    local wrapper_on_attach = function(c, b)
+        if opts.on_attach then
+            opts.on_attach(c, b)
+        end
+        default_opts.on_attach(c, b)
+    end
+    return {
+        on_attach = wrapper_on_attach,
+        capabilities = capabilities,
+        flags = lsp_flags,
+    }
+end
+
 -- lspconfig to mason.nvim package name mapping: https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/server-mapping.md
 -- Have to use the lspconfig name for setup.
 local lspconfig = require("lspconfig")
 
-lspconfig.pyright.setup(opts)
+lspconfig.pyright.setup(default_opts)
 
 -- lspconfig.rust_analyzer.setup(opts)
-require("rust-tools").setup {
-    server = opts
-}
+-- local rt = require("rust-tools")
+-- require("rust-tools").setup {
+--     server = default_opts
+-- }
+local rt = require("rust-tools")
+rt.setup({
+    server = make_opts {
+        on_attach = function(_, bufnr)
+            vim.keymap.set('n', '<leader>ha', rt.hover_actions.hover_actions, { buffer = bufnr })
+            vim.keymap.set('n', '<leader>a', rt.code_action_group.code_action_group, { buffer = bufnr })
+        end
+    }
+})
 
 local jsonls_opts = require("kiser/lsp/settings/jsonls")
-lspconfig.jsonls.setup(vim.tbl_deep_extend("force", jsonls_opts, opts))
+lspconfig.jsonls.setup(vim.tbl_deep_extend("force", jsonls_opts, default_opts))
 
 -- lspconfig.clangd.setup(opts)
 local clangd_opts = require("kiser/lsp/settings/clangd_extensions")
 require("clangd_extensions").setup {
-    server = opts,
+    server = default_opts,
     extensions = clangd_opts.extensions
 }
 
 local sumneko_lua_opts = require("kiser/lsp/settings/sumneko_lua")
 -- lspconfig.sumneko_lua.setup(sumneko_lua_opts)
-lspconfig.sumneko_lua.setup(vim.tbl_deep_extend("force", sumneko_lua_opts, opts))
+lspconfig.sumneko_lua.setup(vim.tbl_deep_extend("force", sumneko_lua_opts, default_opts))

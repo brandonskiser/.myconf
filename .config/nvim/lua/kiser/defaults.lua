@@ -10,7 +10,7 @@ local options = {
     ignorecase = true,        -- ignore case in searches
     smartcase = true,         -- ignore case in searches, unless the search includes uppercase characters
     termguicolors = true,
-    
+
     showtabline = 2,          -- yeah
 }
 
