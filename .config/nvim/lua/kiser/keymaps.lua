@@ -55,3 +55,5 @@ keymap("n", "<leader>we", ":wincmd R<CR>", opts)      -- rotate window to the le
 
 keymap("v", "<leader>y", '"+y', opts)
 keymap("n", "<leader>p", '"+p', opts)
+
+keymap("n", "<leader>n", ":noh", opts)

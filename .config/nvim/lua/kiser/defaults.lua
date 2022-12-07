@@ -11,6 +11,13 @@ local options = {
     smartcase = true,         -- ignore case in searches, unless the search includes uppercase characters
     termguicolors = true,
 
+    -- display invisible characters
+    -- eol   - U+23CE RETURN SYMBOL
+    -- trail - U+2420 SYMBOL FOR SPACE
+    -- nbsp  - U+23B5 BOTTOM SQUARE BRACKET
+    list = true,
+    listchars = "eol:⏎,tab:␉·,trail:␠,nbsp:⎵",
+
     showtabline = 2,          -- yeah
 }
 
