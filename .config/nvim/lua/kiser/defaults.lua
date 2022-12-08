@@ -25,4 +25,7 @@ for k, v in pairs(options) do
     vim.opt[k] = v
 end
 
-vim.cmd "set clipboard+=unnamedplus"
+-- Use system clipboard for yank and paste
+-- https://stackoverflow.com/questions/30691466/what-is-difference-between-vims-clipboard-unnamed-and-unnamedplus-settings
+-- vim.cmd "set clipboard+=unnamed,unnamedplus"
+vim.opt.clipboard:append { "unnamed", "unnamedplus" }

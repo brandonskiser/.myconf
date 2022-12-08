@@ -56,4 +56,10 @@ keymap("n", "<leader>we", ":wincmd R<CR>", opts)      -- rotate window to the le
 keymap("v", "<leader>y", '"+y', opts)
 keymap("n", "<leader>p", '"+p', opts)
 
-keymap("n", "<leader>n", ":noh", opts)
+-- Disable search highlight
+keymap("n", "<leader>n", ":noh<CR>", opts)
+
+-- Open a URL in the default web browser. Note that CTRL_R+CTRL_A is a keybind in command line mode
+-- to copy over the WORD under the cursor into the cmdline. See :h c_CTRL-R_CTRL-A for others
+keymap("n", "gx", ":!xdg-open <C-r><C-a><CR>", opts)
+
