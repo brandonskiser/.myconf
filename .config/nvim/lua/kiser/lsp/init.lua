@@ -5,3 +5,6 @@ if not ok then
 end
 
 require("kiser/lsp/lsp")
+require("kiser/lsp/colors")
+require("kiser/lsp/trouble")
+

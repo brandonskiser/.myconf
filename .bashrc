@@ -27,3 +27,8 @@ config config --local status.showUntrackedFiles no # Hide files we are not expli
 
 export PATH=$PATH:/home/brandon/.local/share/nvim/site/pack/packer/start/fzf/bin
 
+# if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]
+# then
+# 	exec fish
+# fi
+
