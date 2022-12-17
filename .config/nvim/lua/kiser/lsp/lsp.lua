@@ -33,6 +33,18 @@ local function lsp_highlight_document(client)
     end
 end
 
+local opts = { noremap = true, silent = true }
+vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+
+-- Display diagnostics on change, instead of only on buffer write.
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        update_in_insert = true,
+    }
+)
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local function lsp_keymaps(bufnr)
@@ -63,7 +75,6 @@ local function on_attach(client, bufnr)
     lsp_keymaps(bufnr)
     lsp_highlight_document(client)
 end
-
 
 local lsp_flags = {
     -- This is the default in Nvim 0.7+
