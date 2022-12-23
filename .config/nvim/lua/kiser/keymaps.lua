@@ -45,8 +45,8 @@ keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)
 
 -- See default windows mappings: https://neovim.io/doc/user/windows.html
 -- Most is prefixed with <C-w> (to exec a wincmd)
-keymap("n", "<leader>wv", ":vsplit<CR>", opts)
-keymap("n", "<leader>wh", ":split<CR>", opts)
+keymap("n", "<leader>w\\", ":vsplit<CR>", opts)
+keymap("n", "<leader>w-", ":split<CR>", opts)
 keymap("n", "<leader>wq", ":q<CR>", opts)
 keymap("n", "<leader>wc", ":clo<CR>", opts)
 keymap("n", "<leader>wr", ":wincmd r<CR>", opts)      -- rotate window to the right/down

@@ -12,3 +12,5 @@ require("kiser/nvim-tree")
 require("kiser/gitsigns")
 require("kiser/bufferline")
 require("kiser/lualine")
+require("kiser/which-key")
+
