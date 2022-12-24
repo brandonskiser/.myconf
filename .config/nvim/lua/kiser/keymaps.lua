@@ -44,17 +44,16 @@ keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", opts)
 keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)
 
 -- See default windows mappings: https://neovim.io/doc/user/windows.html
--- Most is prefixed with <C-w> (to exec a wincmd)
-keymap("n", "<leader>w\\", ":vsplit<CR>", opts)
-keymap("n", "<leader>w-", ":split<CR>", opts)
-keymap("n", "<leader>wq", ":q<CR>", opts)
-keymap("n", "<leader>wc", ":clo<CR>", opts)
+-- By default, window commands (:wincmd) are prefixed with <C-w>. Here, I'm just remapping commonly
+-- used ones to <leader> instead, so <C-w> can be used later.
+keymap("n", "<leader>w\\", ":vsplit<CR>", opts)       -- vertical split
+keymap("n", "<leader>w-", ":split<CR>", opts)         -- horizontal split
+keymap("n", "<leader>wq", ":q<CR>", opts)             -- quit current window, will exit nvim if it's the last window
+keymap("n", "<leader>wc", ":clo<CR>", opts)           -- close current window (won't exit nvim if it's last window)
 keymap("n", "<leader>wr", ":wincmd r<CR>", opts)      -- rotate window to the right/down
 keymap("n", "<leader>we", ":wincmd R<CR>", opts)      -- rotate window to the left/up
--- Common wincmd
--- :wincmd q | :quit  | <C-w>q          -- quit current window, exiting vim if it's the last open window
--- :wincmd c | :close | <C-w>c          -- close current window, giving an error if it's the last open window
--- :wincmd o | :only  | <C-w>o          -- make focused window the only open window
+keymap("n", "<leader>wo", ":wincmd o<CR>", opts)      -- make current window the only window
+keymap("n", "<leader>wT", ":wincmd T<CR>", opts)      -- move current window to a new tab page
 
 keymap("v", "<leader>y", '"+y', opts)
 keymap("n", "<leader>p", '"+p', opts)

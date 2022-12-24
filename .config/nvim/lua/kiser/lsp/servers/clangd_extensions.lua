@@ -1,7 +1,15 @@
-return {
-    server = {
-        -- options to pass to nvim-lspconfig
-        -- i.e. the arguments to require("lspconfig").clangd.setup({})
+local util = require("kiser/lsp/util")
+
+require("clangd_extensions").setup {
+    server =
+    -- options to pass to nvim-lspconfig
+    -- i.e. the arguments to require("lspconfig").clangd.setup({})
+    util.make_opts {
+        on_attach = function(_, bufnr)
+            -- local opts = { noremap = true, silent = true }
+            -- TODO: Figure out keybind here that doesn't clash with anything.
+            -- vim.api.nvim_set_keymap("n", "<leader>h", ":ClangdSwitchSourceHeader<CR>", opts)
+        end
     },
     extensions = {
         -- defaults:
@@ -39,12 +47,12 @@ return {
         ast = {
             -- These are unicode, should be available in any font
             role_icons = {
-                 type = "🄣",
-                 declaration = "🄓",
-                 expression = "🄔",
-                 statement = ";",
-                 specifier = "🄢",
-                 ["template argument"] = "🆃",
+                type = "🄣",
+                declaration = "🄓",
+                expression = "🄔",
+                statement = ";",
+                specifier = "🄢",
+                ["template argument"] = "🆃",
             },
             kind_icons = {
                 Compound = "🄲",

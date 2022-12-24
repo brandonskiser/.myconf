@@ -17,7 +17,7 @@ require("nvim-tree").setup {
 
 local api = require("nvim-tree.api")
 local opts = { noremap = true, silent = true }
-vim.keymap.set('n', '<C-n>', api.tree.toggle, opts)
+vim.keymap.set('n', '<C-b>', api.tree.toggle, opts)
 -- vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeOpen<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeFindFile<CR>", opts) -- open current buffer in NvimTree
 -- vim.api.nvim_create_autocmd()

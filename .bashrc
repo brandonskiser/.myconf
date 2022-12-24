@@ -32,3 +32,5 @@ export PATH=$PATH:/home/brandon/.local/share/nvim/site/pack/packer/start/fzf/bin
 # 	exec fish
 # fi
 
+alias lg='lazygit'
+

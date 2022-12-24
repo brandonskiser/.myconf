@@ -1,3 +1,5 @@
+local util = require("kiser/lsp/util")
+
 local schemas = require("schemastore").json.schemas()
 -- local schemas = {
 --     {
@@ -9,7 +11,7 @@ local schemas = require("schemastore").json.schemas()
 --     },
 -- }
 
-local opts = {
+local jsonls_opts = {
     settings = {
         json = {
             schemas = schemas,
@@ -27,4 +29,5 @@ local opts = {
     -- },
 }
 
-return opts
+require("lspconfig").jsonls.setup(vim.tbl_deep_extend("force", jsonls_opts, util.default_opts))
+
