@@ -5,10 +5,10 @@ require("clangd_extensions").setup {
     -- options to pass to nvim-lspconfig
     -- i.e. the arguments to require("lspconfig").clangd.setup({})
     util.make_opts {
-        on_attach = function(_, bufnr)
-            -- local opts = { noremap = true, silent = true }
+        on_attach = function()
+            local opts = { noremap = true, silent = true }
             -- TODO: Figure out keybind here that doesn't clash with anything.
-            -- vim.api.nvim_set_keymap("n", "<leader>h", ":ClangdSwitchSourceHeader<CR>", opts)
+            vim.api.nvim_set_keymap("n", "<leader>H", ":ClangdSwitchSourceHeader<CR>", opts)
         end
     },
     extensions = {

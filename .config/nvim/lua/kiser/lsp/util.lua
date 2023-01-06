@@ -1,3 +1,5 @@
+local M = {}
+
 local lsp_flags = {
     -- This is the default in Nvim 0.7+
     debounce_text_changes = 150,
@@ -49,29 +51,26 @@ local function on_attach(client, bufnr)
     lsp_highlight_document(client)
 end
 
-local default_opts = {
+M.default_opts = {
     capabilities = require('cmp_nvim_lsp').default_capabilities(),
     on_attach = on_attach,
     flags = lsp_flags
 }
 
 -- Wrap the passed in opts to also enable the default_opts above.
-local function make_opts(opts)
+function M.make_opts(opts)
     local wrapper_on_attach = function(c, b)
         if opts.on_attach then
             opts.on_attach(c, b)
         end
-        default_opts.on_attach(c, b)
+        M.default_opts.on_attach(c, b)
     end
     return {
         on_attach = wrapper_on_attach,
-        capabilities = default_opts.capabilities,
-        flags = default_opts.lsp_flags,
+        capabilities = M.default_opts.capabilities,
+        flags = M.default_opts.lsp_flags,
     }
 end
 
-return {
-    default_opts = default_opts,
-    make_opts = make_opts,
-}
+return M
 

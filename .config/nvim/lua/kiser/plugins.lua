@@ -55,8 +55,6 @@ return packer.startup(function(use)
             'kyazdani42/nvim-web-devicons', opt = true
         }
     }
-    use { 'junegunn/fzf', run = ":call fzf#install()" }
-    use { 'junegunn/fzf.vim' }
     use { "folke/trouble.nvim", requires = "kyazdani42/nvim-web-devicons" } -- https://github.com/folke/trouble.nvim
     use 'folke/lsp-colors.nvim' -- https://github.com/folke/lsp-colors.nvim
     use "folke/which-key.nvim" -- https://github.com/folke/which-key.nvim
@@ -85,11 +83,14 @@ return packer.startup(function(use)
     use "williamboman/mason.nvim" -- https://github.com/williamboman/mason.nvim
     use "williamboman/mason-lspconfig.nvim" --
     use "neovim/nvim-lspconfig" -- Collection of Nvim LSP configs. https://github.com/neovim/nvim-lspconfig
+    use "mfussenegger/nvim-dap" -- https://github.com/mfussenegger/nvim-dap
+    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} } -- https://github.com/rcarriga/nvim-dap-ui
 
     -- LSP extensions and language specific plugins. https://github.com/neovim/nvim-lspconfig/wiki/Language-specific-plugins
     use "b0o/schemastore.nvim" -- For jsonls LSP server. https://github.com/b0o/SchemaStore.nvim
     use "p00f/clangd_extensions.nvim" -- For clangd LSP server. https://github.com/p00f/clangd_extensions.nvim
     use "simrat39/rust-tools.nvim" -- LSP extensions for rust. https://github.com/simrat39/rust-tools.nvim
+    use "mfussenegger/nvim-jdtls" -- For Java. https://github.com/mfussenegger/nvim-jdtls
 
     -- Telescope
     use { "nvim-telescope/telescope.nvim", tag = "0.1.0" }

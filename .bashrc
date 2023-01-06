@@ -24,8 +24,15 @@ alias vim='nvim'
 # alias for working with my dotfiles
 alias config='git --git-dir=$HOME/.myconf/ --work-tree=$HOME'
 config config --local status.showUntrackedFiles no # Hide files we are not explicitly tracking yet
+function config-add-all() {
+    config add "$HOME/.config/nvim/"
+    config add "$HOME/.bashrc"
+    config add "$HOME/.tmux.conf"
+    echo "Added"
+}
 
 export PATH=$PATH:/home/brandon/.local/share/nvim/site/pack/packer/start/fzf/bin
+export PATH=$PATH:/home/brandon/.local/share/nvim/mason/bin
 
 # if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]
 # then
