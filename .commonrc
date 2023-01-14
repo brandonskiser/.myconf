@@ -21,6 +21,9 @@ PS1='[\u@\h \W]\$ '
 alias ls='ls --color=auto'
 alias la='ls -a'
 alias ll='la -l'
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
 
 # Rust setup.
 . "$HOME/.cargo/env"
@@ -51,6 +54,8 @@ function cnf-add-all() {
     cnf add "$HOME/.commonrc"
     cnf add "$HOME/.config/nvim/"
     cnf add "$HOME/.tmux.conf"
+    cnf add "$HOME/.gitconfig"
+    cnf add "$HOME/.gitignore"
     echo "Added"
 }
 

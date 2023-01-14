@@ -1,0 +1,10 @@
+[user]
+	name = Brandon Kiser
+	email = brandonkns66@gmail.com
+[init]
+	defaultBranch = main
+[alias]
+	st = status
+    c = commit
+[includeIf "gitdir:~/work/"]
+    path = ~/.gitconfig-work
