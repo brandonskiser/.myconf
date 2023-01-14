@@ -56,6 +56,8 @@ keymap("n", "<leader>wo", ":wincmd o<CR>", opts)      -- make current window the
 keymap("n", "<leader>wT", ":wincmd T<CR>", opts)      -- move current window to a new tab page
 
 keymap("n", "<leader>y", '"+y', opts)
+keymap("v", "<leader>y", '"+y', opts)
+keymap("x", "<leader>y", '"+y', opts)
 keymap("n", "<leader>p", '"+p', opts)
 
 -- Disable search highlight
