@@ -58,6 +58,9 @@ return packer.startup(function(use)
     use { "folke/trouble.nvim", requires = "kyazdani42/nvim-web-devicons" } -- https://github.com/folke/trouble.nvim
     use 'folke/lsp-colors.nvim' -- https://github.com/folke/lsp-colors.nvim
     use "folke/which-key.nvim" -- https://github.com/folke/which-key.nvim
+    -- https://github.com/iamcco/markdown-preview.nvim
+    use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install",
+        setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
 
     -- Color schemes
     -- https://github.com/rockerBOO/awesome-neovim#tree-sitter-supported-colorscheme
@@ -84,7 +87,7 @@ return packer.startup(function(use)
     use "williamboman/mason-lspconfig.nvim" --
     use "neovim/nvim-lspconfig" -- Collection of Nvim LSP configs. https://github.com/neovim/nvim-lspconfig
     use "mfussenegger/nvim-dap" -- https://github.com/mfussenegger/nvim-dap
-    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} } -- https://github.com/rcarriga/nvim-dap-ui
+    use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } } -- https://github.com/rcarriga/nvim-dap-ui
 
     -- LSP extensions and language specific plugins. https://github.com/neovim/nvim-lspconfig/wiki/Language-specific-plugins
     use "b0o/schemastore.nvim" -- For jsonls LSP server. https://github.com/b0o/SchemaStore.nvim

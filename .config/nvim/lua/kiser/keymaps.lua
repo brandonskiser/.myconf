@@ -55,7 +55,7 @@ keymap("n", "<leader>we", ":wincmd R<CR>", opts)      -- rotate window to the le
 keymap("n", "<leader>wo", ":wincmd o<CR>", opts)      -- make current window the only window
 keymap("n", "<leader>wT", ":wincmd T<CR>", opts)      -- move current window to a new tab page
 
-keymap("v", "<leader>y", '"+y', opts)
+keymap("n", "<leader>y", '"+y', opts)
 keymap("n", "<leader>p", '"+p', opts)
 
 -- Disable search highlight
