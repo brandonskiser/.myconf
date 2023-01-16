@@ -3,16 +3,21 @@ local util = require("kiser/lsp/util")
 -- local config = util.default_opts
 -- require 'lspconfig'.jdtls.setup(config)
 
-local defaults = util.make_opts {}
+local defaults = util.make_opts {
+    on_attach = function()
+        require('jdtls.setup').add_commands()
+    end
+}
 
-local jdtls_install_location = vim.fn.expand('~/.local/share/nvim/mason/packages/jdtls/')
+local root_dir = require('jdtls.setup').find_root({ '.git', 'mvnw', 'gradlew' })
+local HOME = os.getenv("HOME")
+
+local jdtls_install_location = HOME .. '/.local/share/nvim/mason/packages/jdtls/'
 local jdtls_launcher_jar = vim.fn.glob(jdtls_install_location .. 'plugins/org.eclipse.equinox.launcher_*')
 
--- Sets the project name to the name of the directory neovim was launched from.
--- i.e., if you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-local path_to_project = vim.fn.fnamemodify(vim.fn.getcwd(), ':h')
-local workspace_dir = path_to_project .. '/' .. project_name
+-- Set where jdtls stores project specific data. I have two options here, within ~/.local or just in the project's root itself.
+local workspace_dir = root_dir
+-- local workspace_dir = HOME .. '/.local/share/jdtls/' .. vim.fn.fnamemodify(root_dir, ':p:h:t')
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local jdtls_config = {
@@ -45,10 +50,8 @@ local jdtls_config = {
         '-data', workspace_dir
     },
 
-    -- 💀
-    -- This is the default if not provided, you can remove it. Or adjust as needed.
     -- One dedicated LSP server & client will be started per unique root_dir
-    root_dir = require('jdtls.setup').find_root({ '.git', 'mvnw', 'gradlew' }),
+    root_dir = root_dir,
 
     -- Here you can configure eclipse.jdt.ls specific settings
     -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
@@ -82,4 +85,3 @@ vim.api.nvim_create_autocmd("FileType", {
         require('jdtls').start_or_attach(jdtls_config)
     end
 })
-
