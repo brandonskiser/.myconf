@@ -8,3 +8,5 @@
     c = commit
 [includeIf "gitdir:~/work/"]
     path = ~/.gitconfig-work
+[core]
+	excludesfile = /home/brandon/.gitignore

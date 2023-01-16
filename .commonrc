@@ -39,6 +39,7 @@ fi
 
 append_path ~/.bin
 append_path /usr/local/go/bin
+append_path ~/go/bin
 append_path /usr/local/vscode
 append_path ~/.local/share/nvim/mason/bin
 append_path ~/.local/share/nvim/site/pack/packer/start/fzf/bin

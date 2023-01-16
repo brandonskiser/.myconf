@@ -1,5 +1,4 @@
 local opts = { noremap = true, silent = true }
-local term_opts = { silent = true }
 local keymap = vim.api.nvim_set_keymap
 
 -- Modes
@@ -55,10 +54,12 @@ keymap("n", "<leader>we", ":wincmd R<CR>", opts)      -- rotate window to the le
 keymap("n", "<leader>wo", ":wincmd o<CR>", opts)      -- make current window the only window
 keymap("n", "<leader>wT", ":wincmd T<CR>", opts)      -- move current window to a new tab page
 
+-- Copying to the system clipboard.
 keymap("n", "<leader>y", '"+y', opts)
 keymap("v", "<leader>y", '"+y', opts)
 keymap("x", "<leader>y", '"+y', opts)
 keymap("n", "<leader>p", '"+p', opts)
+keymap("n", "<leader>yB", ":let @+ = expand('%:p')", opts) -- yank the absolute path of the current buffer to the clipboard
 
 -- Disable search highlight
 keymap("n", "<leader>n", ":noh<CR>", opts)
