@@ -1,4 +1,10 @@
-require("bufferline").setup {
+local ok, bufferline = pcall(require, 'bufferline')
+if not ok then
+    print("Bufferline not available")
+    return
+end
+
+bufferline.setup {
     options = {
         diagnostics = "nvim_lsp",
         --- count is an integer representing total count of errors
@@ -113,4 +119,3 @@ vim.api.nvim_set_keymap("i", "<C-PageDown>", "<C-o>:BufferLineCycleNext<CR>", op
 --             return buffer_a.modified > buffer_b.modified
 --         end
 --     }
-

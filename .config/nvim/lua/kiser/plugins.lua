@@ -49,6 +49,7 @@ return packer.startup(function(use)
         tag = "v3.*",
         requires = 'nvim-tree/nvim-web-devicons'
     }
+    use 'famiu/bufdelete.nvim'
     use {
         'nvim-lualine/lualine.nvim', -- https://github.com/nvim-lualine/lualine.nvim
         requires = {
