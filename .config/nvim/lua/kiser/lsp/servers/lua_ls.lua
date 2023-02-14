@@ -1,6 +1,6 @@
 local util = require("kiser/lsp/util")
 
-local sumneko_lua_opts = {
+local lua_ls_opts = {
     settings = {
         Lua = {
             runtime = {
@@ -23,5 +23,5 @@ local sumneko_lua_opts = {
     }
 }
 
-require("lspconfig").sumneko_lua.setup(vim.tbl_deep_extend("force", sumneko_lua_opts, util.default_opts))
+require("lspconfig").lua_ls.setup(vim.tbl_deep_extend("force", lua_ls_opts, util.default_opts))
 

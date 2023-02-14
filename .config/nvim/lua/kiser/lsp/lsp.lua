@@ -38,7 +38,7 @@ require("kiser/lsp/servers/jsonls")
 
 require("kiser/lsp/servers/clangd_extensions")
 
-require("kiser/lsp/servers/sumneko_lua")
+require("kiser/lsp/servers/lua_ls")
 
 require("kiser/lsp/servers/jdtls")
 
