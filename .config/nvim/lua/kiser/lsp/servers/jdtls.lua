@@ -1,53 +1,45 @@
 local util = require("kiser/lsp/util")
 
--- local config = util.default_opts
--- require 'lspconfig'.jdtls.setup(config)
-
 local defaults = util.make_opts {
     on_attach = function()
         require('jdtls.setup').add_commands()
     end
 }
 
-local root_dir = require('jdtls.setup').find_root({ '.git', 'mvnw', 'gradlew' })
+local IS_WORK_LAPTOP = os.getenv('LOGNAME') == 'bskiser'
 local HOME = os.getenv("HOME")
 
+local root_dir = IS_WORK_LAPTOP and require('jdtls.setup').find_root({ 'packageInfo' }, 'Config')
+    or require('jdtls.setup').find_root({ '.git', 'mvnw', 'gradlew', 'packageInfo' }, 'Config')
+
 local jdtls_install_location = HOME .. '/.local/share/nvim/mason/packages/jdtls/'
-local jdtls_launcher_jar = vim.fn.glob(jdtls_install_location .. 'plugins/org.eclipse.equinox.launcher_*')
+local jdtls_bin_path = jdtls_install_location .. 'bin/jdtls'
+local lombok_jar_path = jdtls_install_location .. 'lombok.jar'
 
 -- Set where jdtls stores project specific data. I have two options here, within ~/.local or just in the project's root itself.
-local workspace_dir = root_dir
--- local workspace_dir = HOME .. '/.local/share/jdtls/' .. vim.fn.fnamemodify(root_dir, ':p:h:t')
+local jdtls_data_dir = root_dir -- OR: HOME .. '/.local/share/jdtls/' .. vim.fn.fnamemodify(root_dir, ':p:h:t')
+
+local ws_folders_jdtls = {}
+if root_dir then
+    local file = io.open(root_dir .. "/.bemol/ws_root_folders")
+    if file then
+        for line in file:lines() do
+            table.insert(ws_folders_jdtls, "file://" .. line)
+        end
+        file:close()
+    end
+end
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local jdtls_config = {
     -- The command that starts the language server
     -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
     cmd = {
+        jdtls_bin_path,
+        "--jvm-arg=-javaagent:" .. lombok_jar_path, -- Needed for Lombok magic.
 
-        -- 💀
-        'java', -- or '/path/to/java17_or_newer/bin/java'
-        -- depends on if `java` is in your $PATH env variable and if it points to the right version.
-
-        '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-        '-Dosgi.bundles.defaultStartLevel=4',
-        '-Declipse.product=org.eclipse.jdt.ls.core.product',
-        '-Dlog.protocol=true',
-        '-Dlog.level=ALL',
-        '-Xms1g',
-        '--add-modules=ALL-SYSTEM',
-        '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-        '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-
-        -- 💀
-        '-jar', jdtls_launcher_jar,
-
-        -- 💀
-        '-configuration', jdtls_install_location .. 'config_linux',
-
-        -- 💀
         -- See `data directory configuration` section in the README
-        '-data', workspace_dir
+        '-data', jdtls_data_dir
     },
 
     -- One dedicated LSP server & client will be started per unique root_dir
@@ -69,9 +61,9 @@ local jdtls_config = {
     --
     -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
     init_options = {
+        workspaceFolders = ws_folders_jdtls,
         bundles = {}
     },
-
     on_attach = defaults.on_attach,
     capabilities = defaults.capabilities,
     flags = defaults.flags,
@@ -85,3 +77,4 @@ vim.api.nvim_create_autocmd("FileType", {
         require('jdtls').start_or_attach(jdtls_config)
     end
 })
+
