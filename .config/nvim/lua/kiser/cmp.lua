@@ -29,7 +29,7 @@ cmp.setup {
         ["<C-Space>"] = cmp.mapping.abort(),
 
         -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<CR>"] = cmp.mapping.confirm({ select = false }),
 
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then

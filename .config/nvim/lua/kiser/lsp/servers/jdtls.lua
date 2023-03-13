@@ -10,7 +10,7 @@ local IS_WORK_LAPTOP = os.getenv('LOGNAME') == 'bskiser'
 local HOME = os.getenv("HOME")
 
 local root_dir = IS_WORK_LAPTOP and require('jdtls.setup').find_root({ 'packageInfo' }, 'Config')
-    or require('jdtls.setup').find_root({ '.git', 'mvnw', 'gradlew', 'packageInfo' }, 'Config')
+    or require('jdtls.setup').find_root({ '.git', 'mvnw', 'gradlew', 'pom.xml' })
 
 local jdtls_install_location = HOME .. '/.local/share/nvim/mason/packages/jdtls/'
 local jdtls_bin_path = jdtls_install_location .. 'bin/jdtls'
@@ -20,7 +20,7 @@ local lombok_jar_path = jdtls_install_location .. 'lombok.jar'
 local jdtls_data_dir = root_dir -- OR: HOME .. '/.local/share/jdtls/' .. vim.fn.fnamemodify(root_dir, ':p:h:t')
 
 local ws_folders_jdtls = {}
-if root_dir then
+if IS_WORK_LAPTOP and root_dir then
     local file = io.open(root_dir .. "/.bemol/ws_root_folders")
     if file then
         for line in file:lines() do
@@ -61,7 +61,7 @@ local jdtls_config = {
     --
     -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
     init_options = {
-        workspaceFolders = ws_folders_jdtls,
+        -- workspaceFolders = ws_folders_jdtls,
         bundles = {}
     },
     on_attach = defaults.on_attach,

@@ -25,6 +25,10 @@ for i = 1, 9 do
 end
 vim.api.nvim_set_keymap("n", "<leader>bg", ":BufferLinePick<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>bc", ":BufferLinePickClose<CR>", opts)
+vim.api.nvim_set_keymap("n", "<S-Left>", ":BufferLineMovePrev<CR>", opts)
+vim.api.nvim_set_keymap("n", "<S-Right>", ":BufferLineMoveNext<CR>", opts)
+
+-- VScode type navigation
 vim.api.nvim_set_keymap("n", "<C-PageUp>", ":BufferLineCyclePrev<CR>", opts)
 vim.api.nvim_set_keymap("n", "<C-PageDown>", ":BufferLineCycleNext<CR>", opts)
 vim.api.nvim_set_keymap("i", "<C-PageUp>", "<C-o>:BufferLineCyclePrev<CR>", opts)
