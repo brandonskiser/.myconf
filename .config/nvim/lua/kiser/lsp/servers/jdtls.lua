@@ -3,6 +3,16 @@ local util = require("kiser/lsp/util")
 local defaults = util.make_opts {
     on_attach = function()
         require('jdtls.setup').add_commands()
+        -- nnoremap <A-o> <Cmd>lua require'jdtls'.organize_imports()<CR>
+        -- nnoremap crv <Cmd>lua require('jdtls').extract_variable()<CR>
+        -- vnoremap crv <Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>
+        -- nnoremap crc <Cmd>lua require('jdtls').extract_constant()<CR>
+        -- vnoremap crc <Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>
+        -- vnoremap crm <Esc><Cmd>lua require('jdtls').extract_method(true)<CR>
+        -- vim.api.nvim_create_user_command
+        -- vim.fn.nvim_create_user_command
+
+        -- vim.api.nvim_create_user_command
     end
 }
 
@@ -41,10 +51,8 @@ local jdtls_config = {
         -- See `data directory configuration` section in the README
         '-data', jdtls_data_dir
     },
-
     -- One dedicated LSP server & client will be started per unique root_dir
     root_dir = root_dir,
-
     -- Here you can configure eclipse.jdt.ls specific settings
     -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
     -- for a list of options
@@ -52,7 +60,6 @@ local jdtls_config = {
         java = {
         }
     },
-
     -- Language server `initializationOptions`
     -- You need to extend the `bundles` with paths to jar files
     -- if you want to use additional eclipse.jdt.ls plugins.
@@ -77,4 +84,3 @@ vim.api.nvim_create_autocmd("FileType", {
         require('jdtls').start_or_attach(jdtls_config)
     end
 })
-

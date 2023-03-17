@@ -42,3 +42,5 @@ require("kiser/lsp/servers/lua_ls")
 
 require("kiser/lsp/servers/jdtls")
 
+require('kiser/lsp/servers/tsserver')
+
