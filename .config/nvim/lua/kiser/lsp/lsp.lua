@@ -22,9 +22,13 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 
 -- Display diagnostics on change, instead of only on buffer write.
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        update_in_insert = true,
-    }
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    { update_in_insert = true }
+)
+
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+    vim.lsp.handlers.hover,
+    { border = 'rounded' }
 )
 
 -- lspconfig to mason.nvim package name mapping: https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/server-mapping.md
@@ -43,4 +47,3 @@ require("kiser/lsp/servers/lua_ls")
 require("kiser/lsp/servers/jdtls")
 
 require('kiser/lsp/servers/tsserver')
-

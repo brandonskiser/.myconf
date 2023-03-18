@@ -80,15 +80,37 @@ local function on_attach(bufnr)
     -- Telescope keybinds.
     local ok, builtin = pcall(require, 'telescope.builtin')
     if not ok then return end
-    vim.keymap.set('n', '<leader>ff', function()
+    local function get_dir()
         local node = api.tree.get_node_under_cursor()
         if node == nil then return end
-        local dir = vim.fn.fnamemodify(node.absolute_path, ':p:h')
+        return vim.fn.fnamemodify(node.absolute_path, ':p:h')
+    end
+    vim.keymap.set('n', '<leader>ff', function()
+        local dir = get_dir()
+        if not dir then return end
         vim.notify('Got dir: ' .. dir)
         builtin.find_files({
             cwd = dir
         })
     end, opts { buffer = bufnr, desc = 'find file under directory' })
+    vim.keymap.set('n', '<leader>fg', function()
+        local dir = get_dir()
+        if not dir then return end
+        builtin.live_grep({
+            search = '',
+            search_dirs = { dir }
+        })
+    end, opts { buffer = bufnr, desc = 'live grep under directory' })
+    vim.keymap.set('n', '<leader>fG', function()
+        local dir = get_dir()
+        if not dir then return end
+        local input_str = vim.fn.input('Search for regex >')
+        if input_str == '' then return end
+        builtin.grep_string({
+            search = '',
+            search_dirs = { dir }
+        })
+    end, opts { buffer = bufnr, desc = 'grep string under directory' })
 end
 
 -- For complete list of available configuration options see :help nvim-tree-setup

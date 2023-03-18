@@ -1,2 +1,6 @@
 -- Default configuration: https://github.com/nvim-lualine/lualine.nvim#default-configuration
-require("lualine").setup()
+require("lualine").setup {
+    options = {
+        theme = 'vscode'
+    }
+}
