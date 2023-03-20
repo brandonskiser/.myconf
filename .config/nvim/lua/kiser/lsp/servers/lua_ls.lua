@@ -1,5 +1,8 @@
 local util = require("kiser/lsp/util")
 
+-- Must setup neodev before lspconfig.
+require("neodev").setup {}
+
 local lua_ls_opts = {
     settings = {
         Lua = {

@@ -1,3 +1,8 @@
+local ok, _ = pcall(require, 'vscode')
+if not ok then
+    print('vscode not installed')
+end
+
 -- Lua:
 -- For dark theme (neovim's default)
 vim.o.background = 'dark'
