@@ -26,6 +26,18 @@ local function get_dir(state)
     return vim.fn.fnamemodify(path, ':p:h')
 end
 
+-- neo-tree is weird with how it resets showing line numbers, so we
+-- have to maintain state here and call update_relativenumber on
+-- bufenter.
+local show_relativenumber = true
+local function update_relativenumber()
+    if show_relativenumber then
+        vim.cmd(':setlocal relativenumber')
+    else
+        vim.cmd(':setlocal norelativenumber')
+    end
+end
+
 require("neo-tree").setup({
     close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
     popup_border_style = "rounded",
@@ -147,6 +159,11 @@ require("neo-tree").setup({
             ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
             ["q"] = "close_window",
             ["R"] = "refresh",
+            -- Toggle relative line numbers.
+            ["<C-n>"] = function()
+                show_relativenumber = not show_relativenumber
+                update_relativenumber()
+            end,
             ["?"] = "show_help",
             ["<"] = "prev_source",
             [">"] = "next_source",
@@ -239,6 +256,15 @@ require("neo-tree").setup({
             }
         },
     },
+    event_handlers = {
+        {
+            event = 'neo_tree_buffer_enter',
+            handler = function()
+                update_relativenumber()
+            end
+
+        }
+    },
     git_status = {
         window = {
             position = "float",
@@ -255,5 +281,5 @@ require("neo-tree").setup({
     }
 })
 
-vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
-vim.api.nvim_set_keymap('n', '<C-b>', ':Neotree toggle<CR>', opts 'Open neotree')
+vim.api.nvim_set_keymap('n', '\\', ':Neotree reveal<CR>', opts 'Open buffer in neotree')
+vim.api.nvim_set_keymap('n', '<C-b>', ':Neotree toggle<CR>', opts 'Toggle neotree')
