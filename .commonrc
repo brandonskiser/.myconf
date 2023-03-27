@@ -7,6 +7,7 @@ function append_path() {
 }
 
 function checked_alias() {
+    // https://stackoverflow.com/questions/592620/how-can-i-check-if-a-program-exists-from-a-bash-script
     if command -v "$2" 2>&1 > /dev/null; then
         alias "$1"="$2"
     else
@@ -56,8 +57,9 @@ function cnf-add-all() {
     cnf add "$HOME/.bin"
     cnf add "$HOME/.commonrc"
     cnf add "$HOME/.config/nvim/"
-    cnf add "$HOME/.tmux.conf"
+    cnf add "$HOME/.config/kitty/"
     cnf add "$HOME/.config/alacritty/"
+    cnf add "$HOME/.tmux.conf"
     cnf add "$HOME/.gitconfig"
     cnf add "$HOME/.gitignore"
     cnf add "$HOME/README.md"
