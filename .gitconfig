@@ -6,6 +6,8 @@
 [alias]
 	st = status
     c = commit
+    cane = commit --amend --no-edit
+    dc = diff --cached
 [includeIf "gitdir:~/work/"]
     path = ~/.gitconfig-work
 [core]

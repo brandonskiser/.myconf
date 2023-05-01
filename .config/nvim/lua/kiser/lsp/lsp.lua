@@ -31,7 +31,7 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
     { border = 'rounded' }
 )
 
--- lspconfig to mason.nvim package name mapping: https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/server-mapping.md
+-- lspconfig to mason.nvim package name mapping: https://github.com/williamboman/mason-lspconfig.nvim
 -- Have to use the lspconfig name for setup.
 
 require("kiser/lsp/servers/pyright")
@@ -47,3 +47,5 @@ require("kiser/lsp/servers/lua_ls")
 require("kiser/lsp/servers/jdtls")
 
 require('kiser/lsp/servers/tsserver')
+
+require('kiser/lsp/servers/html')
