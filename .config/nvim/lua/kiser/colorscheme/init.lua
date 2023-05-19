@@ -6,7 +6,9 @@ local prefix = "kiser/colorscheme/"
 -- require(prefix .. "catppuccin") -- All of this just hurts my eyes,
 --                                    but might be good if I get transparent backgrounds working
 -- require(prefix .. "onedark")    -- Good dark blue type scheme
-require(prefix .. "vscode")
+-- require(prefix .. "vscode")
+require(prefix .. "monokai-pro")
+
 
 if Colorscheme == nil then
     return

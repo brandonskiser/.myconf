@@ -42,3 +42,4 @@ require('vscode').load()
 -- Makes linefeeds not so stupid bright. See :h 'listchars' for the highlight
 -- groups used (NonText and Whitespace).
 vim.api.nvim_set_hl(0, 'NonText', { fg = '#888888' })
+vim.api.nvim_set_hl(0, 'Whitespace', { fg = '#555555' })
