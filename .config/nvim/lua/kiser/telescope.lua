@@ -3,9 +3,18 @@ local opts = require('kiser.utils').keymap_opts_with_defaults
 -- show line numbers in file preview
 vim.cmd "autocmd User TelescopePreviewerLoaded setlocal number"
 
--- You dont need to set any of these options. These are the default ones. Only
--- the loading is important
+local layout_actions = require('telescope.actions.layout')
 require('telescope').setup {
+    defaults = {
+        mappings = {
+            i = {
+                ["<C-h>"] = layout_actions.toggle_preview
+            },
+            n = {
+                ["<C-h>"] = layout_actions.toggle_preview
+            }
+        }
+    },
     extensions = {
         fzf = {
             fuzzy = true, -- false will only do exact matching
@@ -22,6 +31,9 @@ require('telescope').load_extension('fzf')
 
 -- Telescope keybindings
 local builtin = require("telescope.builtin")
+-- local get_dropdown = require('telescope.themes').get_dropdown()
+-- local function builtin_wrapper(func, theme) return function() func(theme) end end
+-- vim.keymap.set('n', '<leader>ff', builtin_wrapper(builtin.find_files, get_dropdown), opts 'find files')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, opts 'find files')
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, opts 'find grep')
 vim.keymap.set('n', '<leader>fb', builtin.buffers, opts 'find buffer')
