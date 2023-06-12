@@ -145,6 +145,7 @@ require("neo-tree").setup({
             ["Y"] = function(state)
                 local path = state.tree:get_node().path
                 vim.cmd(':let @+ = "' .. path .. '"')
+                vim.print('Copied "' .. path .. '" to clipboard.')
             end,
             ["y"] = "copy_to_clipboard",
             ["x"] = "cut_to_clipboard",
@@ -261,6 +262,7 @@ require("neo-tree").setup({
             event = 'neo_tree_buffer_enter',
             handler = function()
                 update_relativenumber()
+                vim.cmd("set winhighlight+=LineNr:NeoTreeNormal")
             end
 
         }
@@ -283,3 +285,7 @@ require("neo-tree").setup({
 
 vim.api.nvim_set_keymap('n', '\\', ':Neotree reveal<CR>', opts 'Open buffer in neotree')
 vim.api.nvim_set_keymap('n', '<C-b>', ':Neotree toggle<CR>', opts 'Toggle neotree')
+
+-- Maybe have these keymaps...
+-- vim.api.nvim_set_keymap('n', '<C-f>', ':Neotree filesystem<CR>', opts 'Toggle neotree filesystem')
+-- vim.api.nvim_set_keymap('n', '<C-b>', ':Neotree buffers<CR>', opts 'Toggle neotree buffers')

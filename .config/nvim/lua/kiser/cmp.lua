@@ -33,9 +33,10 @@ cmp.setup {
         ["<CR>"] = cmp.mapping.confirm({ select = false }),
 
         ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif luasnip.expandable() then
+            -- if cmp.visible() then
+            --     cmp.select_next_item()
+            -- elseif luasnip.expandable() then
+            if luasnip.expandable() then
                 luasnip.expand()
             elseif luasnip.expand_or_jumpable() then
                 luasnip.expand_or_jump()
@@ -47,9 +48,12 @@ cmp.setup {
             "s",
         }),
         ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
+            -- Causes issues in insert mode when pressing tab
+            -- on an incomplete snippet. Need to find a solution.
+            -- if cmp.visible() then
+            --     cmp.select_prev_item()
+            -- elseif luasnip.jumpable(-1) then
+            if luasnip.jumpable(-1) then
                 luasnip.jump(-1)
             else
                 fallback()

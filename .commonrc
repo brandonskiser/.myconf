@@ -59,6 +59,8 @@ function cnf-add-all() {
     cnf add "$HOME/.config/nvim/"
     cnf add "$HOME/.config/kitty/"
     cnf add "$HOME/.config/alacritty/"
+    # cnf add "$HOME/.config/Code/User/settings.json"
+    # cnf add "$HOME/.config/Code/User/keybindings.json"
     cnf add "$HOME/.tmux.conf"
     cnf add "$HOME/.gitconfig"
     cnf add "$HOME/.gitignore"

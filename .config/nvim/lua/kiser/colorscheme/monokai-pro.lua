@@ -32,7 +32,7 @@ require("monokai-pro").setup({
     "telescope",
     "which-key",
     "renamer",
-    "neo-tree"
+    -- "neo-tree"
   },-- "float_win", "toggleterm", "telescope", "which-key", "renamer", "neo-tree"
   plugins = {
     bufferline = {
