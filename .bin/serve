@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# To kill a process listening on a certain TCP port:
+# ss -tpln | grep 44749 | awk '{print $6}' | cut -d ',' -f 2 | cut -d '=' -f 2
+
 if ! [ -x `command -v "python3"` ]; then
     echo &>2 "Error: python3 required for HTTP serve"
     exit 1
