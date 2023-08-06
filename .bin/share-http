@@ -1,0 +1,151 @@
+#!/usr/bin/env /bin/bash
+
+set -eu
+set -o pipefail
+
+# 'share-http' is a smart wrapper around 'python -m SimpleHTTPServer' or 'python -m http.server' if using Python 3 or higher.
+# It enables painless sharing of files.
+# Original author: markpun@
+
+# Default directory to share (current directory)
+default_to_share=$(pwd)
+# Default port to use
+# 0 means SimpleHTTPServer will pick a random, unused port
+default_port=0
+
+# Default binding address
+bind_address="localhost"
+
+# Sharing Root Directory
+share_root="${TMPDIR:-/tmp}"
+
+me=$(basename "$0")
+print_usage=0
+
+log() {
+    echo "$me: $*"
+}
+
+parse_args() {
+    ARGS=()
+    while [[ $# -gt 0 ]]; do
+      case $1 in
+        --help)
+          return 1
+          ;;
+        --bind)
+          bind_address="$2"
+          shift # past argument
+          shift # past value
+          ;;
+        *)
+          ARGS+=("$1") # save positional arg
+          shift # past argument
+          ;;
+      esac
+    done
+
+    to_share="${ARGS[0]-}"
+    port="${ARGS[1]-}"
+
+    if [[ -z "$to_share" ]]; then
+        to_share=$default_to_share
+        log "You did not specify a file or directory to share; the current directory '$default_to_share' will be shared."
+    fi
+    if [[ ! -e "$to_share" ]]; then
+        log "ERROR: '$to_share' is not an existing file or directory (to share)."
+        return 1
+    fi
+
+    if [[ -z "$port" ]]; then
+        port=$default_port
+        log "You did not specify a port number for the HTTP server to use; a random, unused port will be used."
+    else
+        if [[ ! "$port" =~ ^[0-9]+$ ]]; then
+            log "ERROR: '$port' is not a valid (port) number."
+            return 1
+        fi
+        if (( $port == 0 )); then
+            log "Port 0 was given; a random, unused port will be used."
+        elif (( $port < 1024 || $port > 65535)); then
+            log "ERROR: '$port' outside valid port range: 1024..65535"
+            return 1
+        fi
+    fi
+
+    return 0
+}
+
+if ! parse_args "$@"; then
+    cat <<HELP; exit 1
+
+USAGE: $me [<path_to_file_or_directory>] [<port_number>] [--bind "<bind_address>"]
+
+The specified file or directory will be shared on an HTTP server at http://<bind_address>:<port_number>
+
+If <path_to_file_or_directory> is not specified, the current directory will be shared.
+If <port_number> is not specified or is 0, a random, unused will be used.
+If <bind_address> is not specified, localhost will be used for security reasons. It can be accessed via ssh tunnel; e.g., ssh -L <port_number>:localhost:<port_number>
+
+'$me' uses the Python3 http.server module to start up an HTTP server so you can share files and directories painlessly, without having to scp or set up a Samba share. Use it to share code coverage reports, sample application outputs for review, etc.
+
+It copies the file or directory (recursively) to a temporary folder (in TMPDIR: "$share_root") and follows symlinks so you don't have to worry about accidentally overwriting the files you are sharing.
+HELP
+fi
+
+if (( $port )); then
+    share_path="$share_root/$me-share-$port"
+
+    # Check if it exists and confirm deletion
+    if [[ -e $share_path ]]; then
+        log "Trying to copy files to temp location '$share_path', but this file or directory already exists (possibly from a previous run of $me)"
+        read -p "$me: Do you want to go ahead and delete it? (enter 'Y' to delete and continue, anything else to exit) " yn
+        case $yn in
+            [Yy]* )
+                log "Deleting existing contents of temp location '$share_path'..."
+                rm -rf -- "$share_path"
+            ;;
+            * )
+                log "You did not want to delete the contents of '$share_path'; exiting."
+                exit 1
+            ;;
+        esac
+    fi
+
+    mkdir "$share_path"
+else
+    # Create a random temp directory
+    share_path=$(TMPDIR="$share_root" mktemp -d -t $me-share-XXXXXXXXXX)
+fi
+
+function remove_tmp() {
+    log "Deleting contents of temp location '$share_path'..."
+    rm -rf -- "$share_path"
+    log "All done!"
+}
+
+# Execute remove_tmp on normal or abnormal exit.
+trap remove_tmp EXIT
+
+if [[ -d $to_share ]]; then
+    log "Sharing directory '$to_share'"
+    log "Recursively copying contents of directory '$to_share' to temp location '$share_path'..."
+    # Append /. to the path, so that cp copies the contents and not the directory itself
+    # It's fine for the path to end with /./. or //.
+    to_share=$to_share/.
+    cp -rHf -- "$to_share" "$share_path"
+else
+    log "Sharing file '$to_share'"
+    log "Copying file '$to_share' to temp location '$share_path'..."
+    cp -Hf -- "$to_share" "$share_path"
+fi
+
+if (( $port )); then
+    log "Starting HTTP server at http://$bind_address:$port"
+else
+    log "Starting HTTP server on http://$bind_address:<port> (port number will be given later)"
+fi
+log "Press Ctrl+C to stop"
+
+cd "$share_path" && $ENVROOT/bin/python -m http.server "$port" --bind "$bind_address"
+
