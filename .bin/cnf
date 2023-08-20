@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+git --git-dir=$HOME/.myconf/ --work-tree=$HOME "$@"
+

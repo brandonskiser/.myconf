@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+alias cnf='git --git-dir=$HOME/.myconf/ --work-tree=$HOME'
+
+alias ls='ls --color=auto'
+alias la='ls -a'
+alias ll='la -l'
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
+
+command -v > /dev/null 2>&1 nvim && alias vim='nvim'
+command -v > /dev/null 2>&1 lazygit && alias lg='lazygit'
+
+alias fcd='cd $(bash -c fuzzy-dirs)'
+

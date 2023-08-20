@@ -8,12 +8,18 @@ require('telescope').setup {
     defaults = {
         mappings = {
             i = {
-                ["<C-h>"] = layout_actions.toggle_preview
+                ["<C-p>"] = layout_actions.toggle_preview
             },
             n = {
-                ["<C-h>"] = layout_actions.toggle_preview
+                ["<C-p>"] = layout_actions.toggle_preview
             }
         }
+    },
+    pickers = {
+        -- Configure defaults for builtins here.
+        find_files = {
+            -- previewer = true,
+        },
     },
     extensions = {
         fzf = {
@@ -31,9 +37,11 @@ require('telescope').load_extension('fzf')
 
 -- Telescope keybindings
 local builtin = require("telescope.builtin")
--- local get_dropdown = require('telescope.themes').get_dropdown()
+
+-- local themes = require('telescope.themes')
 -- local function builtin_wrapper(func, theme) return function() func(theme) end end
--- vim.keymap.set('n', '<leader>ff', builtin_wrapper(builtin.find_files, get_dropdown), opts 'find files')
+-- vim.keymap.set('n', '<leader>ff', builtin_wrapper(builtin.find_files, themes.get_dropdown()), opts 'find files')
+
 vim.keymap.set('n', '<leader>ff', builtin.find_files, opts 'find files')
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, opts 'find grep')
 vim.keymap.set('n', '<leader>fb', builtin.buffers, opts 'find buffer')

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
-# Trims all extra whitespace for the given input.
+# Trims all extra whitespace for the given input. Kinda broken honestly.
 awk '{$1=$1};1'
 

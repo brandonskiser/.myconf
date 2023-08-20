@@ -17,8 +17,12 @@ req("kiser/treesitter")
 req("kiser/comment")
 req("kiser/autopairs")
 req("kiser/telescope")
+
 -- req("kiser/nvim-tree")
-req('kiser/neo-tree')
+-- req('kiser/neo-tree')
+req('kiser/oil')
+
+
 req("kiser/gitsigns")
 req("kiser/bufferline")
 req("kiser/lualine")

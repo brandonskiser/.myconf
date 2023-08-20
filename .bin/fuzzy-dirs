@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+# Fuzzy list directories
+
+if ! command -v "fzf" > /dev/null 2>&1; then
+    echo "fzf not found, unable to fuzzy search cd"
+    exit 1
+fi
+
+MAX_DEPTH=3
+
+parse_args() {
+    while [ "$#" -gt 0 ]; do
+        case "$1" in
+            -m|--max-depth)
+                MAX_DEPTH="$2"
+                shift
+                shift
+                ;;
+            *)
+                echo "warning: unknown argument" "$1"
+                shift
+                ;;
+        esac
+    done
+}
+
+parse_args "$@"
+
+find . -maxdepth "$MAX_DEPTH" -type d | fzf
+

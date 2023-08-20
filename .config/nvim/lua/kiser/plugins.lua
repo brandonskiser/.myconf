@@ -49,7 +49,7 @@ return packer.startup(function(use)
         tag = "v3.*",
         requires = 'nvim-tree/nvim-web-devicons'
     }
-    use 'famiu/bufdelete.nvim'
+    use 'famiu/bufdelete.nvim' -- https://github.com/famiu/bufdelete.nvim
     use {
         'nvim-lualine/lualine.nvim', -- https://github.com/nvim-lualine/lualine.nvim
         requires = {
@@ -128,6 +128,8 @@ return packer.startup(function(use)
             "MunifTanjim/nui.nvim",
         }
     }
+
+    use "stevearc/oil.nvim"
 
     -- Git
     use "lewis6991/gitsigns.nvim"

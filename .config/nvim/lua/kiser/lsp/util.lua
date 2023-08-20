@@ -65,11 +65,11 @@ function M.make_opts(opts)
         end
         M.default_opts.on_attach(c, b)
     end
-    return {
+    return vim.tbl_deep_extend("keep", {
         on_attach = wrapper_on_attach,
         capabilities = M.default_opts.capabilities,
         flags = M.default_opts.lsp_flags,
-    }
+    }, opts)
 end
 
 return M

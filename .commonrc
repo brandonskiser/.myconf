@@ -18,26 +18,9 @@ function checked_alias() {
 # Prompt string.
 PS1='[\u@\h \W]\$ '
 
-# Common aliases.
-alias ls='ls --color=auto'
-alias la='ls -a'
-alias ll='la -l'
-alias rm='rm -i'
-alias mv='mv -i'
-alias cp='cp -i'
-
 # Rust setup.
 if [ -f "$HOME/.cargo/env" ]; then
     . "$HOME/.cargo/env"
-fi
-
-# nvm setup.
-if [ -d "$HOME/.nvm" ]; then
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-else
-    echo "nvm not found."
 fi
 
 append_path ~/.bin
@@ -50,21 +33,6 @@ append_path ~/.local/share/nvim/site/pack/packer/start/fzf/bin
 checked_alias vim nvim
 checked_alias lg lazygit
 
-# Setup for working with my dotfiles.
-alias cnf='git --git-dir=$HOME/.myconf/ --work-tree=$HOME'
+# Dotfiles. Uses the "cnf" script under ~/.bin/
 cnf config --local status.showUntrackedFiles no # Hide files we are not explicitly tracking yet
-function cnf-add-all() {
-    cnf add "$HOME/.bin"
-    cnf add "$HOME/.commonrc"
-    cnf add "$HOME/.config/nvim/"
-    cnf add "$HOME/.config/kitty/"
-    cnf add "$HOME/.config/alacritty/"
-    # cnf add "$HOME/.config/Code/User/settings.json"
-    # cnf add "$HOME/.config/Code/User/keybindings.json"
-    cnf add "$HOME/.tmux.conf"
-    cnf add "$HOME/.gitconfig"
-    cnf add "$HOME/.gitignore"
-    cnf add "$HOME/README.md"
-    echo "Added"
-}
 

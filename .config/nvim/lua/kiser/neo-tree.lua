@@ -283,8 +283,8 @@ require("neo-tree").setup({
     }
 })
 
-vim.api.nvim_set_keymap('n', '\\', ':Neotree reveal<CR>', opts 'Open buffer in neotree')
-vim.api.nvim_set_keymap('n', '<C-b>', ':Neotree toggle<CR>', opts 'Toggle neotree')
+-- vim.api.nvim_set_keymap('n', '\\', ':Neotree reveal<CR>', opts 'Open buffer in neotree')
+-- vim.api.nvim_set_keymap('n', '<C-b>', ':Neotree toggle<CR>', opts 'Toggle neotree')
 
 -- Maybe have these keymaps...
 -- vim.api.nvim_set_keymap('n', '<C-f>', ':Neotree filesystem<CR>', opts 'Toggle neotree filesystem')
