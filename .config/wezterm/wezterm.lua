@@ -1,4 +1,5 @@
 local wezterm = require('wezterm')
+local act = wezterm.action
 
 -- This table will hold the configuration.
 local config = {}
@@ -10,6 +11,8 @@ if wezterm.config_builder then
 end
 
 -- Start config.
+
+local keybinds = require('keybinds')
 
 config.warn_about_missing_glyphs = false
 
@@ -27,6 +30,12 @@ config.window_padding = {
     bottom = 0,
 }
 
-config.font = wezterm.font 'JetBrains Mono'
+config.font = wezterm.font 'Hack'
+
+
+-- Entering copy mode
+config.disable_default_key_bindings = true
+config.keys = keybinds.keys
+config.key_tables = keybinds.key_tables
 
 return config

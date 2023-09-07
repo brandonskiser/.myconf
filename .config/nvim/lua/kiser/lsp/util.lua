@@ -44,6 +44,8 @@ local function default_lsp_keymaps(bufnr)
     vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', '<leader>F', function() vim.lsp.buf.format { async = true } end, bufopts)
+
+    vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, bufopts)
 end
 
 local function on_attach(client, bufnr)

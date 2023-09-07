@@ -8,6 +8,8 @@ end
 req("kiser/defaults")
 req("kiser/keymaps")
 req("kiser/commands")
+req("kiser/ztl")
+
 req("kiser/plugins")
 req("kiser/colorscheme")
 req("kiser/cmp")

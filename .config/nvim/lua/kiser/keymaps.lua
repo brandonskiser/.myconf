@@ -15,7 +15,6 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 keymap("n", "<C-s>", ":w<CR>", opts)
-keymap("i", "<C-s>", "<C-o>:w<CR>", opts)
 
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)

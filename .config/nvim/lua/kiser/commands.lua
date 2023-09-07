@@ -5,3 +5,4 @@ vim.api.nvim_create_user_command('Dump', function(input)
 end, { nargs = 1 })
 
 vim.api.nvim_create_user_command('QuickFixListClear', 'cexpr []', {})
+
