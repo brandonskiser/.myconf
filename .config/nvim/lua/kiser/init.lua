@@ -8,7 +8,6 @@ end
 req("kiser/defaults")
 req("kiser/keymaps")
 req("kiser/commands")
-req("kiser/ztl")
 
 req("kiser/plugins")
 req("kiser/colorscheme")
@@ -19,6 +18,8 @@ req("kiser/treesitter")
 req("kiser/comment")
 req("kiser/autopairs")
 req("kiser/telescope")
+
+req("kiser/ztl")
 
 -- req("kiser/nvim-tree")
 -- req('kiser/neo-tree')

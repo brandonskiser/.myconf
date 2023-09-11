@@ -1,3 +1,4 @@
+local pickers = require 'kiser.telescope.pickers'
 local opts = require('kiser.utils').keymap_opts_with_defaults
 
 -- show line numbers in file preview
@@ -31,6 +32,7 @@ require('telescope').setup {
         }
     }
 }
+
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 require('telescope').load_extension('fzf')
@@ -38,13 +40,11 @@ require('telescope').load_extension('fzf')
 -- Telescope keybindings
 local builtin = require("telescope.builtin")
 
--- local themes = require('telescope.themes')
--- local function builtin_wrapper(func, theme) return function() func(theme) end end
--- vim.keymap.set('n', '<leader>ff', builtin_wrapper(builtin.find_files, themes.get_dropdown()), opts 'find files')
-
+-- Default mappings: https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua#L135
 vim.keymap.set('n', '<leader>ff', builtin.find_files, opts 'find files')
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, opts 'find grep')
-vim.keymap.set('n', '<leader>fb', builtin.buffers, opts 'find buffer')
+vim.keymap.set('n', '<leader>fb', pickers.current_buffer_fuzzy_find, opts 'find in current buffer')
+-- vim.keymap.set('n', '<leader>fb', builtin.buffers, opts 'find buffer')
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, opts 'find help')
 
 vim.keymap.set('n', '<leader>fG', function()
@@ -55,4 +55,4 @@ vim.keymap.set('n', '<leader>fG', function()
         use_regex = true
     })
 end, opts 'find grep with search word')
--- Default mappings: https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua#L135
+

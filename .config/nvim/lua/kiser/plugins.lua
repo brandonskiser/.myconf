@@ -97,7 +97,7 @@ return packer.startup(function(use)
     use "p00f/clangd_extensions.nvim" -- For clangd LSP server. https://github.com/p00f/clangd_extensions.nvim
     use "simrat39/rust-tools.nvim" -- LSP extensions for rust. https://github.com/simrat39/rust-tools.nvim
     use "mfussenegger/nvim-jdtls" -- For Java. https://github.com/mfussenegger/nvim-jdtls
-    use "folke/neodev.nvim" -- https://github.com/folke/neodev.nvim
+    use "folke/neodev.nvim"
 
     -- Telescope
     use { "nvim-telescope/telescope.nvim", tag = "0.1.0" }
@@ -119,15 +119,15 @@ return packer.startup(function(use)
     --         'nvim-tree/nvim-web-devicons', -- optional, for file icons
     --     },
     -- }
-    use {
-        "nvim-neo-tree/neo-tree.nvim",
-        branch = "v2.x",
-        requires = {
-            "nvim-lua/plenary.nvim",
-            "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-            "MunifTanjim/nui.nvim",
-        }
-    }
+    -- use {
+    --     "nvim-neo-tree/neo-tree.nvim",
+    --     branch = "v2.x",
+    --     requires = {
+    --         "nvim-lua/plenary.nvim",
+    --         "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+    --         "MunifTanjim/nui.nvim",
+    --     }
+    -- }
 
     use "stevearc/oil.nvim"
 
