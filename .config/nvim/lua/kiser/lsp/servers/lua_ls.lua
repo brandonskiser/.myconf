@@ -29,7 +29,9 @@ require('neodev').setup
 local lua_ls_opts = {
     settings = {
         Lua = {
-            -- Do not send telemetry data containing a randomized but unique identifier
+            workspace = {
+                checkThirdParty = false
+            },
             telemetry = {
                 enable = false,
             },

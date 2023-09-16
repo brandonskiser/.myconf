@@ -20,7 +20,7 @@ config.use_fancy_tab_bar = false
 config.tab_bar_at_bottom = true
 config.hide_tab_bar_if_only_one_tab = true
 
-config.color_scheme = 'Atelierlakeside (dark) (terminal.sexy)'
+-- config.color_scheme = 'Atelierlakeside (dark) (terminal.sexy)'
 
 config.window_background_opacity = 0.94
 config.window_padding = {
@@ -30,8 +30,14 @@ config.window_padding = {
     bottom = 0,
 }
 
-config.font = wezterm.font 'Hack'
+config.font = wezterm.font_with_fallback {
+    'Hack',
+    'Hack Nerd Font',
+    'FiraCode Nerd Font',
+}
 
+-- Disables ligatures
+config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
 -- Entering copy mode
 config.disable_default_key_bindings = true
