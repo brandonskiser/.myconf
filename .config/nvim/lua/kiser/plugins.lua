@@ -100,7 +100,7 @@ return packer.startup(function(use)
     use "folke/neodev.nvim"
 
     -- Telescope
-    use { "nvim-telescope/telescope.nvim", tag = "0.1.0" }
+    use { "nvim-telescope/telescope.nvim", tag = "0.1.x" }
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' } -- Use fzf for search. https://github.com/nvim-telescope/telescope-fzf-native.nvim
 
     -- Treesitter

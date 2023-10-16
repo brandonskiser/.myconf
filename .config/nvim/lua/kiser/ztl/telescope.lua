@@ -61,8 +61,9 @@ local find_in_tags_index = function(opts)
                 actions.close(prompt_bufnr)
                 local selection = action_state.get_selected_entry()
                 if not selection then return end
-                local j = selection[1]:find(' ')
-                local id = selection[1]:sub(1, j - 1)
+                selection = selection[1]
+                local j = selection:find(' ')
+                local id = selection:sub(1, j - 1)
                 local fname = util.ztl_dirname .. id
                 vim.cmd(':e ' .. fname)
             end)

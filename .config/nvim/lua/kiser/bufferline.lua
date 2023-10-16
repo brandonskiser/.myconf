@@ -6,6 +6,7 @@ end
 
 bufferline.setup {
     options = {
+        -- separator_style = "slant",
         diagnostics = "nvim_lsp",
         --- count is an integer representing total count of errors
         --- level is a string "error" | "warning"

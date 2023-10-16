@@ -19,10 +19,18 @@ vim.api.nvim_create_autocmd('FileType', {
     end
 })
 
-vim.api.nvim_create_user_command('Ztl', function()
-    local fname = util.ztl_dirname .. vim.fn.strftime('%Y-%m-%d-%H%M%S.md')
+-- Creates a new zettel.
+--
+-- Accepts one optional argument to act as the prefix, e.g. ':Ztl work'
+-- will create a new zettel 'work/{ZETTEL_ID}.md'
+vim.api.nvim_create_user_command('Ztl', function(cb)
+    local fname = util.ztl_dirname
+    if #cb.fargs > 0 then
+        fname = fname .. cb.fargs[1] .. '/'
+    end
+    fname = fname .. vim.fn.strftime('%Y-%m-%d-%H%M%S.md')
     vim.cmd(':e ' .. fname)
-end, {})
+end, { nargs = '*' })
 
 vim.api.nvim_create_user_command('ZtlBuildIndex', function()
     vim.fn.system(util.build_tagslist_index_fname .. ' > ' .. util.tagslist_index_fname)
@@ -44,8 +52,10 @@ end, {})
 vim.api.nvim_create_autocmd('BufRead', {
     pattern = '*/wiki/*.md',
     callback = function(ev)
-        -- Required to support '/' and '-' in zettel id's
+        -- Required to support '/' and '-' in zettel id's.
         vim.opt_local.iskeyword:append { '/', '-' }
+
+        -- Used by the 'K' command.
         vim.opt_local.keywordprg = ':ZtlViewName'
 
         vim.api.nvim_buf_create_user_command(ev.buf, 'ZtlViewName', function(args)
@@ -74,6 +84,27 @@ vim.api.nvim_create_autocmd('BufRead', {
             -- '#' is a keyword in Ex commands, so need to escape with fnameescape
             local grep_args = "'" .. vim.fn.fnameescape(word) .. "' " .. vim.fn.fnameescape(util.tags_index_fname)
             vim.cmd(cmd .. grep_args)
+        end, { buffer = ev.buf })
+
+        -- TODO: Get preview window working.
+        vim.keymap.set('n', '<C-p>', function()
+            local word = vim.fn.expand('<cWORD>')
+            vim.notify(word)
+            -- Match any text wrapped around double brackets - ie, [[MATCH_ME]]
+            if word:match('^[[][[].*]]$') then
+                vim.notify('matched')
+                local fname = word:sub(3, word:len() - 2)
+                vim.notify(fname)
+
+                vim.notify(tostring(vim.api.nvim_win_get_number(0)))
+                vim.cmd(':vsplit')
+                vim.notify(tostring(vim.api.nvim_win_get_number(0)))
+                -- local wins = vim.api.nvim_list_wins()
+                -- local size = #wins
+                -- vim.notify(vim.inspect(wins))
+                -- vim.api.nvim_set_current_win(wins[size])
+                -- vim.cmd(':e ' .. 'newthingy')
+            end
         end, { buffer = ev.buf })
     end
 })

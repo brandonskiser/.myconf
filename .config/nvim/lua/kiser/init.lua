@@ -31,3 +31,4 @@ req("kiser/bufferline")
 req("kiser/lualine")
 req("kiser/which-key")
 
+req("kiser/buflist")
