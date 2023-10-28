@@ -11,14 +11,15 @@ vim.api.nvim_create_user_command('BuflistOpenWin', function()
     vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
 
     ---Returns a sorted array of strings of the form: "{buffer name} | {buffer id}",
-    --only including buffers with names (ie, buffers associated with a file name).
+    --only including buffers with names (ie, buffers associated with a file name)
+    --and buflisted == true.
     ---@return string[]
     local function get_buf_names()
         local bufs = vim.api.nvim_list_bufs()
         local buf_names = {}
         for _, v in pairs(bufs) do
             local fname = vim.api.nvim_buf_get_name(v)
-            if fname ~= '' then
+            if fname ~= '' and vim.bo[v].buflisted then
                 buf_names[#buf_names + 1] = fname .. ' | ' .. tostring(v)
             end
         end
@@ -55,37 +56,36 @@ vim.api.nvim_create_user_command('BuflistOpenWin', function()
         row = row,
         col = col
     }
-
     local prev_win = vim.api.nvim_get_current_win()
-    local win = vim.api.nvim_open_win(buf, true, opts)
+    local floating_win = vim.api.nvim_open_win(buf, true, opts)
     floating_win_open = true
 
     vim.api.nvim_create_autocmd({ 'BufLeave' }, {
         buffer = buf,
         callback = function()
-            vim.api.nvim_win_close(win, true)
+            vim.api.nvim_win_close(floating_win, true)
             floating_win_open = false
             return true
         end
     })
 
     vim.keymap.set('n', '<CR>', function()
-        local buf_under_cursor = get_buf_under_cursor(win)
+        local buf_under_cursor = get_buf_under_cursor(floating_win)
         if buf_under_cursor == nil then return end
         vim.api.nvim_win_set_buf(prev_win, buf_under_cursor)
-        vim.api.nvim_win_close(win, true)
+        vim.api.nvim_win_close(floating_win, true)
     end, { buffer = buf })
 
     vim.keymap.set('n', 'x', function()
         vim.api.nvim_buf_set_option(buf, 'modifiable', true)
 
         -- Get the line from the current cursor position.
-        local pos = vim.api.nvim_win_get_cursor(win)
+        local pos = vim.api.nvim_win_get_cursor(floating_win)
         local line = vim.api.nvim_buf_get_lines(buf, pos[1] - 1, pos[1], false)[1]
         -- Parse the buffer id from the line.
         local idx = line:find('|')
         if idx == nil then return end
-        local buf_under_cursor = get_buf_under_cursor(win)
+        local buf_under_cursor = get_buf_under_cursor(floating_win)
 
         -- Using bufdelete to delete the buffer since the normal api doesn't
         -- really work for some reason. Need to use wipeout instead of delete
@@ -98,7 +98,7 @@ vim.api.nvim_create_user_command('BuflistOpenWin', function()
     end, { buffer = buf })
 
     vim.keymap.set('n', 'q', function()
-        vim.api.nvim_win_close(win, true)
+        vim.api.nvim_win_close(floating_win, true)
     end, { buffer = buf })
 end, {})
 
