@@ -52,10 +52,4 @@ configs.setup {
         -- colors = {},              -- table of hex strings
         -- termcolors = {}           -- table of colour name strings
     },
-
-    -- For setting up with Comment.nvim - https://github.com/JoosepAlviste/nvim-ts-context-commentstring#commentnvim
-    context_commentstring = {
-        enable = true,
-        enable_autocmd = false,
-    },
 }

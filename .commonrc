@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
 
+function prepend_path() {
+    if [ -d "$1" ]; then
+        export PATH="$1:$PATH"
+    fi
+}
+
 function append_path() {
     if [ -d "$1" ]; then
         export PATH="$PATH:$1"
@@ -29,6 +35,7 @@ append_path ~/go/bin
 append_path /usr/local/vscode
 append_path ~/.local/share/nvim/mason/bin
 append_path ~/.local/share/nvim/site/pack/packer/start/fzf/bin
+prepend_path ~/.pyenv/shims
 
 checked_alias vim nvim
 checked_alias lg lazygit

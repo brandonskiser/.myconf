@@ -16,7 +16,7 @@ rt.setup({
                 -- rust-tools mapping:     https://github.com/simrat39/rust-tools.nvim/blob/master/ci/schema/output.md
                 checkOnSave = {
                     command = 'clippy',
-                    allTargets = false    -- Fixes issue with no_std crates panic_handler conflicting definitions.
+                    allTargets = true    -- Setting to false fixes issue with no_std crates panic_handler conflicting definitions.
                 },
             }
         }

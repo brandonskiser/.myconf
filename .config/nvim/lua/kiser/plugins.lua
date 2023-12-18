@@ -112,6 +112,8 @@ return packer.startup(function(use)
     use "JoosepAlviste/nvim-ts-context-commentstring" -- Comment stuff out based on cursor position. https://github.com/JoosepAlviste/nvim-ts-context-commentstring
     use "nvim-treesitter/nvim-treesitter-context" -- https://github.com/nvim-treesitter/nvim-treesitter-context
 
+    use "DingDean/wgsl.vim"
+
     -- File explorer
     -- use {
     --     'nvim-tree/nvim-tree.lua', -- https://github.com/nvim-tree/nvim-tree.lua
