@@ -2,6 +2,7 @@
 -- of buffers that I can move to or wipeout.
 
 local floating_win_open = false
+local use_full_absolute_path = true
 
 vim.api.nvim_create_user_command('BuflistOpenWin', function()
     if floating_win_open then return end
@@ -69,6 +70,9 @@ vim.api.nvim_create_user_command('BuflistOpenWin', function()
         end
     })
 
+    -- Floating window local keymaps.
+
+    -- Open buffer under cursor on enter.
     vim.keymap.set('n', '<CR>', function()
         local buf_under_cursor = get_buf_under_cursor(floating_win)
         if buf_under_cursor == nil then return end
@@ -76,6 +80,7 @@ vim.api.nvim_create_user_command('BuflistOpenWin', function()
         vim.api.nvim_win_close(floating_win, true)
     end, { buffer = buf })
 
+    -- Delete buffer on 'x'.
     vim.keymap.set('n', 'x', function()
         vim.api.nvim_buf_set_option(buf, 'modifiable', true)
 
@@ -97,10 +102,11 @@ vim.api.nvim_create_user_command('BuflistOpenWin', function()
         vim.api.nvim_buf_set_option(buf, 'modifiable', false)
     end, { buffer = buf })
 
+    -- Close floating window on 'q'.
     vim.keymap.set('n', 'q', function()
         vim.api.nvim_win_close(floating_win, true)
     end, { buffer = buf })
 end, {})
 
-local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap('n', '<leader>lb', ':BuflistOpenWin<CR>', opts)
+vim.keymap.set('n', '<leader>lb', ':BuflistOpenWin<CR>', { desc = 'open buffer list' })
+-- vim.api.nvim_set_keymap('n', '<leader>lb', ':BuflistOpenWin<CR>', opts)

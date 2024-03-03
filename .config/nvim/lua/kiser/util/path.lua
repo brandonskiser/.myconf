@@ -4,11 +4,20 @@ local IS_WINDOWS = vim.loop.os_uname().version:match('Windows')
 
 local PATH_SEPARATOR = IS_WINDOWS and '\\' or '/'
 
+---Joins the provided arguments with the path separator for
+--the current OS.
+---@param ... string | string[]
+---@return string
 function M.join(...)
-  local result = table.concat(vim.tbl_flatten {...}, PATH_SEPARATOR):gsub(PATH_SEPARATOR .. '+', PATH_SEPARATOR)
-  return result
+    local result = table.concat(vim.tbl_flatten { ... }, PATH_SEPARATOR):gsub(PATH_SEPARATOR .. '+', PATH_SEPARATOR)
+    return result
 end
 
+---Finds the first directory containing one of the file names provided in `markers`
+--starting from `bufname`.
+---@param markers string[] List of file names to search for.
+---@param bufname string? Path to starting file, defaults to the current buffer.
+---@return string?
 function M.find_root(markers, bufname)
     bufname = bufname or vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
     local dirname = vim.fn.fnamemodify(bufname, ':p:h')

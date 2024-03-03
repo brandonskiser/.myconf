@@ -6,6 +6,7 @@
 [alias]
 	st = status
     c = commit
+    co = checkout
     cane = commit --amend --no-edit
     dc = diff --cached
 [includeIf "gitdir:~/work/"]

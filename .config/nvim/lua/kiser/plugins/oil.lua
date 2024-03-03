@@ -1,7 +1,7 @@
 return {
     'stevearc/oil.nvim',
     init = function()
-        local opts = require('kiser/utils').keymap_opts_with_defaults
+        local opts = require('kiser.utils').keymap_opts_with_defaults
 
         vim.keymap.set('n', '\\', function()
             vim.cmd(':Oil')
@@ -11,15 +11,49 @@ return {
             -- end)
         end, opts 'open in file explorer')
     end,
+    config = function(_, opts)
+        require('oil').setup(opts)
+
+        require('kiser.util.lazy').on_load('telescope.nvim', function()
+            local function telescope_keybinds()
+                local builtin = require('telescope.builtin')
+                local km_opts = require('kiser.utils').keymap_opts_with_defaults
+                vim.keymap.set('n', '<leader>ff',
+                    function()
+                        builtin.find_files({
+                            cwd = require('oil').get_current_dir()
+                        })
+                    end,
+                    km_opts { desc = 'find files in current oil dir', buffer = true })
+                vim.keymap.set('n', '<leader>fg',
+                    function()
+                        builtin.live_grep({
+                            cwd = require('oil').get_current_dir(),
+                            search = ''
+                        })
+                    end,
+                    km_opts { desc = 'live grep in current oil dir', buffer = true })
+            end
+            -- Note: the keymaps must be set in a FileType autocmd because they need
+            -- to be set every single time oil is opened.
+            -- TODO: Figure out how to have this work without needing Telescope loaded first.
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "oil",
+                callback = function()
+                    telescope_keybinds()
+                end
+            })
+        end)
+    end,
     opts = {
         -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
         -- Set to false if you still want to use netrw.
         default_file_explorer = true,
         -- Id is automatically added at the beginning, and name at the end
         -- See :help oil-columns
-        columns = {"icon" -- "permissions",
-        -- "size",
-        -- "mtime",
+        columns = { "icon" -- "permissions",
+            -- "size",
+            -- "mtime",
         },
         -- Buffer-local options to use for oil buffers
         buf_options = {
@@ -105,7 +139,7 @@ return {
             -- max_width = {100, 0.8} means "the lesser of 100 columns or 80% of total"
             max_width = 0.9,
             -- min_width = {40, 0.4} means "the greater of 40 columns or 40% of total"
-            min_width = {40, 0.4},
+            min_width = { 40, 0.4 },
             -- optionally define an integer/float for the exact width of the preview window
             width = nil,
             -- Height dimensions can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
@@ -113,7 +147,7 @@ return {
             -- max_height = {80, 0.9} means "the lesser of 80 columns or 90% of total"
             max_height = 0.9,
             -- min_height = {5, 0.1} means "the greater of 5 columns or 10% of total"
-            min_height = {5, 0.1},
+            min_height = { 5, 0.1 },
             -- optionally define an integer/float for the exact height of the preview window
             height = nil,
             border = "rounded",
@@ -124,10 +158,10 @@ return {
         -- Configuration for the floating progress window
         progress = {
             max_width = 0.9,
-            min_width = {40, 0.4},
+            min_width = { 40, 0.4 },
             width = nil,
-            max_height = {10, 0.9},
-            min_height = {5, 0.1},
+            max_height = { 10, 0.9 },
+            min_height = { 5, 0.1 },
             height = nil,
             border = "rounded",
             minimized_border = "none",

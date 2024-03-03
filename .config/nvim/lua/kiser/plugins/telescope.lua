@@ -70,7 +70,7 @@ return {
                 lazy = true,
                 build = "make",
                 enabled = vim.fn.executable("make") == 1,
-                dependencies = {{'nvim-telescope/telescope.nvim'}},
+                dependencies = { { 'nvim-telescope/telescope.nvim' } },
                 config = function()
                     require("telescope").load_extension("fzf")
                 end
@@ -82,7 +82,7 @@ return {
         end,
         opts = function()
             local layout_actions = require('telescope.actions.layout')
-            opts = {
+            local opts = {
                 defaults = {
                     mappings = {
                         i = {
@@ -101,10 +101,10 @@ return {
                 },
                 extensions = {
                     fzf = {
-                        fuzzy = true, -- false will only do exact matching
+                        fuzzy = true,                   -- false will only do exact matching
                         override_generic_sorter = true, -- override the generic sorter
-                        override_file_sorter = true, -- override the file sorter
-                        case_mode = "smart_case" -- or "ignore_case" or "respect_case"
+                        override_file_sorter = true,    -- override the file sorter
+                        case_mode = "smart_case"        -- or "ignore_case" or "respect_case"
                         -- the default case_mode is "smart_case"
                     }
                 }
@@ -114,12 +114,12 @@ return {
         keys = function()
             local builtin = require("telescope.builtin")
             return {
-                { '<leader>ff', builtin.find_files, desc = 'find files' },
-                { '<leader>fg', builtin.live_grep, desc = 'live grep' },
-                { '<leader>fh', builtin.help_tags, desc = 'find help' },
-                { '<leader>gf', builtin.git_files, desc = 'git files' },
+                { '<leader>ff', builtin.find_files,                  desc = 'find files' },
+                { '<leader>fg', builtin.live_grep,                   desc = 'live grep' },
+                { '<leader>fh', builtin.help_tags,                   desc = 'find help' },
+                { '<leader>gf', builtin.git_files,                   desc = 'git files' },
                 { '<leader>fb', Pickers().current_buffer_fuzzy_find, desc = 'find in buffer' },
-                { 
+                {
                     '<leader>fG',
                     function()
                         local input_str = vim.fn.input('Search for regex >')

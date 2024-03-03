@@ -4,7 +4,8 @@ return {
         settings = {
             Lua = {
                 workspace = {
-                    checkThirdParty = false
+                    checkThirdParty = false,
+                    -- library = { '/home/brandon/.config/nvim/' }
                 },
                 telemetry = {
                     enable = false,

@@ -1,4 +1,4 @@
-local path_utils = require('kiser/util/path')
+local path_utils = require('kiser.util.path')
 
 local IN_GIT_DIRECTORY = path_utils.find_root({ '.git' }) ~= nil
 

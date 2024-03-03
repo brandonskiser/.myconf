@@ -39,9 +39,10 @@ local function lazy_setup()
     req("kiser/defaults")
     req("kiser/keymaps")
     req("kiser/commands")
+    req('kiser/filetypes')
     req('kiser/buflist')
 
-    -- req('kiser/lazy')
+    -- All plugin stuff
     require('kiser/lazy')
 end
 

@@ -1,5 +1,3 @@
-local util = require('kiser/lsp/util')
-
 return {
     {
         'neovim/nvim-lspconfig',
@@ -7,7 +5,8 @@ return {
             'williamboman/mason.nvim',
             { "folke/neodev.nvim", opts = {} },
         },
-        config = function(_, opts)
+        config = function(_, _)
+            local util = require('kiser.plugins.lsp.util')
             require('mason').setup()
 
             -- Global mappings for diagnostics,
@@ -77,27 +76,31 @@ return {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
         },
-        opts = {
-            server = util.make_opts {
-                on_attach = function(_, bufnr)
-                    vim.keymap.set('n', '<leader>ha', rt.hover_actions.hover_actions, { buffer = bufnr })
-                    vim.keymap.set('n', '<leader>a', rt.code_action_group.code_action_group, { buffer = bufnr })
-                end,
-        
-                -- These override the defaults set by rust-tools.nvim
-                -- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
-                settings = {
-                    ['rust-analyzer'] = {
-                        -- rust-analyzer settings: https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
-                        -- rust-tools mapping:     https://github.com/simrat39/rust-tools.nvim/blob/master/ci/schema/output.md
-                        checkOnSave = {
-                            command = 'clippy',
-                            allTargets = true    -- Setting to false fixes issue with no_std crates panic_handler conflicting definitions.
-                        },
+        opts = function()
+            local util = require('kiser.plugins.lsp.util')
+            local rt = require('rust-tools')
+            local opts = {
+                server = util.make_opts {
+                    on_attach = function(_, bufnr)
+                        vim.keymap.set('n', '<leader>ha', rt.hover_actions.hover_actions, { buffer = bufnr })
+                        vim.keymap.set('n', '<leader>a', rt.code_action_group.code_action_group, { buffer = bufnr })
+                    end,
+                    -- These override the defaults set by rust-tools.nvim
+                    -- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
+                    settings = {
+                        ['rust-analyzer'] = {
+                            -- rust-analyzer settings: https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
+                            -- rust-tools mapping:     https://github.com/simrat39/rust-tools.nvim/blob/master/ci/schema/output.md
+                            checkOnSave = {
+                                command = 'clippy',
+                                allTargets = true -- Setting to false fixes issue with no_std crates panic_handler conflicting definitions.
+                            },
+                        }
                     }
                 }
             }
-        }
+            return opts
+        end
     },
 
     -- Setup jsonls server
@@ -109,6 +112,7 @@ return {
         },
         config = function()
             local schemas = require("schemastore").json.schemas()
+            local util = require('kiser.plugins.lsp.util')
             local jsonls_opts = {
                 settings = {
                     json = {
@@ -121,3 +125,4 @@ return {
         end
     }
 }
+
