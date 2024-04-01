@@ -17,4 +17,5 @@ return {
     html = {},
     tsserver = {},
     pyright = {},
+    kotlin_language_server = {},
 }
