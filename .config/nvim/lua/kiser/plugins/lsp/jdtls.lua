@@ -1,26 +1,16 @@
-local util = require("kiser/lsp/util")
+local M = {}
 
-local defaults = util.make_opts {
+local defaults = require('kiser.plugins.lsp.util').make_opts {
     on_attach = function()
         require('jdtls.setup').add_commands()
-        -- nnoremap <A-o> <Cmd>lua require'jdtls'.organize_imports()<CR>
-        -- nnoremap crv <Cmd>lua require('jdtls').extract_variable()<CR>
-        -- vnoremap crv <Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>
-        -- nnoremap crc <Cmd>lua require('jdtls').extract_constant()<CR>
-        -- vnoremap crc <Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>
-        -- vnoremap crm <Esc><Cmd>lua require('jdtls').extract_method(true)<CR>
-        -- vim.api.nvim_create_user_command
-        -- vim.fn.nvim_create_user_command
-
-        -- vim.api.nvim_create_user_command
     end
 }
 
-local IS_WORK_LAPTOP = os.getenv('LOGNAME') == 'bskiser'
+local IS_WORK_LAPTOP = require('kiser.util.env').is_work_laptop()
 local HOME = os.getenv("HOME")
 
-local root_dir = IS_WORK_LAPTOP and require('jdtls.setup').find_root({ 'packageInfo' }, 'Config')
-    or require('jdtls.setup').find_root({ '.git', 'mvnw', 'gradlew', 'pom.xml' })
+local root_dir = IS_WORK_LAPTOP and require('kiser.util.path').find_root({ 'packageInfo' }, 'Config')
+    or require('kiser.util.path').find_root({ '.git', 'mvnw', 'gradlew', 'pom.xml' })
 
 local jdtls_install_location = HOME .. '/.local/share/nvim/mason/packages/jdtls/'
 local jdtls_bin_path = jdtls_install_location .. 'bin/jdtls'
@@ -41,7 +31,7 @@ if IS_WORK_LAPTOP and root_dir then
 end
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
-local jdtls_config = {
+M.jdtls_config = {
     -- The command that starts the language server
     -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
     cmd = {
@@ -76,11 +66,4 @@ local jdtls_config = {
     flags = defaults.flags,
 }
 
--- This starts a new client & server,
--- or attaches to an existing client & server depending on the `root_dir`.
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "java",
-    callback = function()
-        require('jdtls').start_or_attach(jdtls_config)
-    end
-})
+return M

@@ -16,8 +16,8 @@ local options = {
     -- trail - U+2420 SYMBOL FOR SPACE
     -- nbsp  - U+23B5 BOTTOM SQUARE BRACKET
     list = true,
-    listchars = "eol:⏎,tab:␉·,trail:␠,nbsp:⎵",
-
+    listchars = require('kiser.util.env').is_work_laptop() and "eol:␤,tab:␉·,trail:␠,nbsp:⎵"
+        or "eol:⏎,tab:␉·,trail:␠,nbsp:⎵",
     showtabline = 2,          -- yeah
 }
 

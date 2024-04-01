@@ -9,7 +9,7 @@
     co = checkout
     cane = commit --amend --no-edit
     dc = diff --cached
-[includeIf "gitdir:~/work/"]
+[includeIf "gitdir:/Volumes/workplace/"]
     path = ~/.gitconfig-work
 [core]
 	excludesfile = /home/brandon/.gitignore

@@ -1,8 +1,6 @@
 local M = {}
 
-local IS_WINDOWS = vim.loop.os_uname().version:match('Windows')
-
-local PATH_SEPARATOR = IS_WINDOWS and '\\' or '/'
+local PATH_SEPARATOR = require('kiser.util.os').is_windows() and '\\' or '/'
 
 ---Joins the provided arguments with the path separator for
 --the current OS.

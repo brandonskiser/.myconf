@@ -123,6 +123,18 @@ return {
             }
             require("lspconfig").jsonls.setup(util.make_opts(jsonls_opts))
         end
+    },
+
+    {
+        'mfussenegger/nvim-jdtls',
+        ft = { 'java' },
+        dependencies = {
+            'neovim/nvim-lspconfig',
+        },
+        config = function()
+            local jdtls_config = require('kiser.plugins.lsp.jdtls').jdtls_config
+            require('jdtls').start_or_attach(jdtls_config)
+        end
     }
 }
 
