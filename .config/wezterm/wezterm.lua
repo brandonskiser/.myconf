@@ -30,11 +30,9 @@ config.window_padding = {
     bottom = 0,
 }
 
-config.font = wezterm.font_with_fallback {
-    'Hack',
-    'Hack Nerd Font',
-    'FiraCode Nerd Font',
-}
+local IS_WORK_LAPTOP = os.getenv('LOGNAME') == 'bskiser'
+config.font = IS_WORK_LAPTOP and wezterm.font_with_fallback({ 'Hack Nerd Font' })
+    or wezterm.font_with_fallback({ 'Hack', 'Hack Nerd Font', 'FiraCode Nerd Font' })
 
 -- Disables ligatures
 config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
