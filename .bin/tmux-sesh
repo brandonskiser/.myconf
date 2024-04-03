@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+# Expands tilde to $HOME.
+# Reference: https://stackoverflow.com/questions/3963716/how-to-manually-expand-a-special-variable-ex-tilde-in-bash
+expand_tilde() {
+    echo ${1/#\~/$HOME}
+}
+
+# Get the directory containing the session json config to search for.
+if [ "$LOGNAME" = 'bskiser' ]; then
+    SESSIONS_DIR="$HOME/.tmux/sessions/work/"
+else
+    SESSIONS_DIR="$HOME/.tmux/sessions/personal/"
+fi
+
+# Fuzzy select the session.
+file=$(find "$SESSIONS_DIR" -maxdepth 1 -type f | fzf)
+
+if [ -z "$file" ]; then
+    echo "No file was selected"
+    exit 0
+fi
+
+session_directory=$(cat "$file" | jq '.directory' | tr -d \")
+session_directory=$(expand_tilde "$session_directory")
+
+if [ -z "$session_directory" ]; then
+    echo "Missing directory"
+    exit 0
+fi
+
+session_name=$(basename "$file")
+# Strip all characters after the first dot.
+# Reference: https://stackoverflow.com/questions/125281/how-do-i-remove-the-file-suffix-and-path-portion-from-a-path-string-in-bash
+session_name=${session_name%%.*}
+
+# Read lines from stdin, and assign to the variable $windows
+# For <() syntax, see: https://superuser.com/questions/1059781/what-exactly-is-in-bash-and-in-zsh
+mapfile windows < <(cat "$file" | jq -c '.windows[]')
+
+if tmux has-session -t "$session_name" > /dev/null 2>&1; then
+    echo "Session already exists, attaching to:" "$session_name"
+    tmux attach-session -t "$session_name"
+else
+    echo "Creating session:" "$session_name"
+    window_name=$(echo "${windows[0]}" | jq '.name' | tr -d \")
+    tmux new-session -d -s "$session_name" -c "$session_directory" -n "$window_name"
+
+    for window in "${windows[@]:1}"; do
+        window_name=$(echo "$window" | jq '.name' | tr -d \")
+        # jq '//' is the alternative operator. 'empty' ensures that nothing is output to bash
+        # if a window has no directory.
+        window_directory=$(echo "$window" | jq '.directory // empty' | tr -d \")
+        if [ -z "$window_directory" ]; then
+            window_directory="$session_directory"
+        else
+            window_directory="$session_directory/$window_directory"
+        fi
+        tmux new-window -d -n "$window_name" -t "$session_name" -c "$window_directory"
+    done
+
+    tmux attach-session -d -t "$session_name"
+fi

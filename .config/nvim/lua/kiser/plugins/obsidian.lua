@@ -3,6 +3,7 @@ local path = require('kiser.util.path')
 
 local VAULT_PATH = vim.fn.expand('~/vaults')
 local ZK_PATH = path.join(VAULT_PATH, 'personal', 'zk')
+local PROJECTS_PATH = path.join(VAULT_PATH, 'personal', 'projects')
 
 local function is_path_in_vault(path)
     return path ~= nil and path:match(VAULT_PATH)
@@ -76,7 +77,27 @@ return {
             })
             client:open_note(note)
         end, { desc = 'new zettel' })
+
+        -- Create a new projects note.
+        vim.keymap.set('n', '<leader>onp', function()
+            local client = require('obsidian').get_client()
+            local title = vim.fn.input('Enter name: ')
+            if title == '' then
+                print('No name provided, not creating note.')
+                return
+            end
+            local id = client:new_note_id(title)
+            local note = client:create_note({
+                id = id,
+                title = title,
+                aliases = { title },
+                dir = PROJECTS_PATH,
+                tags = { 'projects' }
+            })
+            client:open_note(note)
+        end, { desc = 'new projects note' })
     end,
+
     opts = {
         workspaces = {
             {
@@ -88,9 +109,6 @@ return {
                 path = '~/vaults/work',
             },
         },
-
-        -- Default should open a zettelkasten note.
-        notes_subdir = 'zk',
 
         daily_notes = {
             folder = 'dailies'
