@@ -21,7 +21,7 @@ if [ -z "$file" ]; then
     exit 0
 fi
 
-session_directory=$(cat "$file" | jq '.directory' | tr -d \")
+session_directory=$(cat "$file" | jq '.root' | tr -d \")
 session_directory=$(expand_tilde "$session_directory")
 
 if [ -z "$session_directory" ]; then
@@ -50,12 +50,19 @@ else
         window_name=$(echo "$window" | jq '.name' | tr -d \")
         # jq '//' is the alternative operator. 'empty' ensures that nothing is output to bash
         # if a window has no directory.
-        window_directory=$(echo "$window" | jq '.directory // empty' | tr -d \")
+        window_directory=$(echo "$window" | jq '.root // empty' | tr -d \")
         if [ -z "$window_directory" ]; then
             window_directory="$session_directory"
         else
             window_directory="$session_directory/$window_directory"
         fi
+
+        # TODO: Support cmd somehow.
+        # window_cmd=$(echo "$window" | jq '.cmd // empty' | tr -d \")
+        # if [ ! -z "$window_cmd" ]; then
+        #     window_cmd="$window_cmd ENTER"
+        # fi
+
         tmux new-window -d -n "$window_name" -t "$session_name" -c "$window_directory"
     done
 
