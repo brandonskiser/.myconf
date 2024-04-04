@@ -1,0 +1,30 @@
+{
+    "root": "~",
+    "windows": [
+        {
+            "name": "home",
+            "cmd": "vim .commonrc .common_aliases"
+        },
+        {
+            "name": "nvim",
+            "root": ".config/nvim"
+        },
+        {
+            "name": "bin",
+            "root": ".bin"
+        },
+        {
+            "name": "tmux",
+            "root": ".tmux"
+        },
+        {
+            "name": "wezterm",
+            "root": ".config/wezterm"
+        },
+        {
+            "name": "ninja-dev-sync",
+            "root": ".config"
+        }
+    ]
+}
+

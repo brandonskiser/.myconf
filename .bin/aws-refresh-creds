@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+set -e
+
+function log {
+    echo "[INFO]" $1
+}
+
+AWS_ACCOUNT=362433518004
+ROLE="bskiser-deploy-pipeline"
+
+log "Refreshing credentials for account ${AWS_ACCOUNT} with role ${ROLE}"
+ada credentials update --account="${AWS_ACCOUNT}" --provider=conduit --role="${ROLE}" --once
+
