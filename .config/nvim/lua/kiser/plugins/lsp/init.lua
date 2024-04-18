@@ -95,6 +95,9 @@ return {
                                 command = 'clippy',
                                 allTargets = true -- Setting to false fixes issue with no_std crates panic_handler conflicting definitions.
                             },
+                            rustfmt = {
+                                extraArgs = { '+nightly' }
+                            },
                         }
                     }
                 }
