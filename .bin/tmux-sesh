@@ -3,7 +3,7 @@
 # Expands tilde to $HOME.
 # Reference: https://stackoverflow.com/questions/3963716/how-to-manually-expand-a-special-variable-ex-tilde-in-bash
 expand_tilde() {
-    echo ${1/#\~/$HOME}
+    echo "${1/#\~/$HOME}"
 }
 
 # Get the directory containing the session json config to search for.
@@ -14,14 +14,22 @@ else
 fi
 
 # Fuzzy select the session.
-file=$(find "$SESSIONS_DIR" -maxdepth 1 -type f | fzf)
+# Output in the format: "name" | "absolute path to config"
+# shellcheck disable=SC2046
+file=$(find "$SESSIONS_DIR" -maxdepth 1 -type f \
+    | while read -r line; do echo $(basename "$line" '.json') '|' "$line"; done \
+    | fzf \
+)
 
 if [ -z "$file" ]; then
     echo "No file was selected"
     exit 0
 fi
 
-session_directory=$(cat "$file" | jq '.root' | tr -d \")
+# Select only the absolute path to the file.
+file=$(echo "$file" | cut -d '|' -f 2 | trim)
+
+session_directory=$(jq '.root' "$file" | tr -d \")
 session_directory=$(expand_tilde "$session_directory")
 
 if [ -z "$session_directory" ]; then
@@ -29,14 +37,15 @@ if [ -z "$session_directory" ]; then
     exit 0
 fi
 
-session_name=$(basename "$file")
-# Strip all characters after the first dot.
+session_name=$(basename "$file" '.json')
+# Strip all characters after the first dot. The above '.json' arg in basename does this already,
+# idk keeping this here as reference though.
 # Reference: https://stackoverflow.com/questions/125281/how-do-i-remove-the-file-suffix-and-path-portion-from-a-path-string-in-bash
-session_name=${session_name%%.*}
+# session_name=${session_name%%.*}
 
 # Read lines from stdin, and assign to the variable $windows
 # For <() syntax, see: https://superuser.com/questions/1059781/what-exactly-is-in-bash-and-in-zsh
-mapfile windows < <(cat "$file" | jq -c '.windows[]')
+mapfile windows < <(jq -c '.windows[]' "$file")
 
 if tmux has-session -t "$session_name" > /dev/null 2>&1; then
     echo "Session already exists, attaching to:" "$session_name"

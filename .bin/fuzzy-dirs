@@ -27,5 +27,5 @@ parse_args() {
 
 parse_args "$@"
 
-find . -maxdepth "$MAX_DEPTH" -type d | fzf
+find . -maxdepth "$MAX_DEPTH" -type d | fzf || pwd
 
