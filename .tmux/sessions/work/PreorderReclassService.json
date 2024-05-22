@@ -1,0 +1,12 @@
+{
+    "root": "~/workplace/IAPPreorderReclassService/",
+    "windows": [
+        {
+            "name": "home"
+        },
+        {
+            "name": "CDK",
+            "root": "src/IAPPreorderReclassServiceCDK"
+        }
+    ]
+}

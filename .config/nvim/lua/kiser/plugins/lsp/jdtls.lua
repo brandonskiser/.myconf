@@ -66,4 +66,13 @@ M.jdtls_config = {
     flags = defaults.flags,
 }
 
+-- This starts a new client & server,
+-- or attaches to an existing client & server depending on the `root_dir`.
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "java",
+    callback = function()
+        require('jdtls').start_or_attach(M.jdtls_config)
+    end
+})
+
 return M

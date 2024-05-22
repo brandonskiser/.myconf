@@ -1,0 +1,16 @@
+{
+    "root": "~/workplace/FigIoDesktopDeployCDK",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "CDK code",
+            "root": "src/FigIoDesktopDeployCDK"
+        },
+        {
+            "name": "Tests code",
+            "root": "src/FigIoDesktopDeployTests"
+        }
+    ]
+}

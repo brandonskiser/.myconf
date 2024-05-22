@@ -1,0 +1,18 @@
+{
+    "root": "~/GitHubRepos/Fig",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "nextjs",
+            "root": "public-site-nextjs"
+        },
+        {
+            "name": "dashboard",
+            "root": "dashboard"
+        }
+    ]
+}
+
+

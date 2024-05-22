@@ -1,0 +1,17 @@
+{
+    "root": "~/workplace/FigloDesktop/src/FigIoDesktop",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "fig_desktop",
+            "root": "fig_desktop"
+        },
+        {
+            "name": "console",
+            "root": "fig_desktop"
+        }
+    ]
+}
+
