@@ -1,4 +1,4 @@
-local opts = { noremap = true, silent = true }
+local opts = { noremap = true }
 local keymap = vim.api.nvim_set_keymap
 
 -- Modes
@@ -53,6 +53,13 @@ keymap("n", "<leader>we", ":wincmd R<CR>", opts)      -- rotate window to the le
 keymap("n", "<leader>wo", ":wincmd o<CR>", opts)      -- make current window the only window
 keymap("n", "<leader>wT", ":wincmd T<CR>", opts)      -- move current window to a new tab page
 keymap("n", "<C-w>", ":Bdelete<CR>", opts)            -- use bufdelete to delete the current buffer without messing up the window
+vim.api.nvim_create_autocmd("BufRead", {
+    pattern = "*",
+    callback = function()
+        -- nowait isn't available in the global keymap setting for some reason...
+        vim.api.nvim_buf_set_keymap(0, "n", "<C-w>", ":Bdelete<CR>", { noremap = true, nowait = true })
+    end
+})
 
 -- Copying to and pasting from the system clipboard.
 keymap("n", "<leader>y", '"+y', opts)
@@ -69,3 +76,5 @@ keymap("n", "<leader>n", ":noh<CR>", opts)
 -- to copy over the WORD under the cursor into the cmdline. See :h c_CTRL-R_CTRL-A for others
 keymap("n", "gx", ":!xdg-open <C-r><C-a><CR>", opts)
 
+-- Quickfix list
+keymap("n", "<leader>qc", ":cclose<CR>", opts) -- close
