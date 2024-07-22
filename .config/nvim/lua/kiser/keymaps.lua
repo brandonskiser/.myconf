@@ -53,6 +53,7 @@ keymap("n", "<leader>we", ":wincmd R<CR>", opts)      -- rotate window to the le
 keymap("n", "<leader>wo", ":wincmd o<CR>", opts)      -- make current window the only window
 keymap("n", "<leader>wT", ":wincmd T<CR>", opts)      -- move current window to a new tab page
 keymap("n", "<C-w>", ":Bdelete<CR>", opts)            -- use bufdelete to delete the current buffer without messing up the window
+vim.api.nvim_set_keymap("n", "<C-w>", ":Bdelete<CR>", { noremap = true, nowait = true })
 vim.api.nvim_create_autocmd("BufRead", {
     pattern = "*",
     callback = function()
