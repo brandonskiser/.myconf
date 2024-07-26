@@ -1,0 +1,16 @@
+{
+    "root": "~/vaults",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "personal",
+            "root": "personal"
+        },
+        {
+            "name": "work",
+            "root": "work"
+        }
+    ]
+}

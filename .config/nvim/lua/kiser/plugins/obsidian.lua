@@ -4,6 +4,7 @@ local path = require('kiser.util.path')
 local VAULT_PATH = vim.fn.expand('~/vaults')
 local ZK_PATH = path.join(VAULT_PATH, 'personal', 'zk')
 local PROJECTS_PATH = path.join(VAULT_PATH, 'personal', 'projects')
+local WORK_PATH = path.join(VAULT_PATH, 'work')
 
 local function is_path_in_vault(path)
     return path ~= nil and path:match(VAULT_PATH)
@@ -96,6 +97,25 @@ return {
             })
             client:open_note(note)
         end, { desc = 'new projects note' })
+
+        -- Create a new work note.
+        vim.keymap.set('n', '<leader>onw', function()
+            local client = require('obsidian').get_client()
+            local title = vim.fn.input('Enter name: ')
+            if title == '' then
+                print('No name provided, not creating note.')
+                return
+            end
+            local id = client:new_note_id(title)
+            local note = client:create_note({
+                id = id,
+                title = title,
+                aliases = { title },
+                dir = WORK_PATH,
+                tags = { 'work' }
+            })
+            client:open_note(note)
+        end, { desc = 'new work note' })
     end,
 
     opts = {
@@ -127,8 +147,12 @@ return {
             end
             -- Get a timestamp ISO-8601 UTC style, except remove colons
             -- to make it file name friendly.
-            -- TODO: test on Mac, prob change cmd on Mac to use gnu utils instead.
-            local ts = vim.fn.system('date -u --iso-8601=seconds'):gsub(':', '')
+            local date_cmd = 'date'
+            if util.os.is_mac() then
+                date_cmd = 'gdate' -- Use Gnu Utils on Mac.
+            end
+
+            local ts = vim.fn.system(date_cmd .. ' -u --iso-8601=seconds'):gsub(':', '')
             ts = ts:sub(0, ts:find('+') - 1) .. 'Z'
             return ts .. "_" .. suffix
         end,

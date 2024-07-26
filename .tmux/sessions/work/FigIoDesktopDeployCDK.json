@@ -11,6 +11,10 @@
         {
             "name": "Tests code",
             "root": "src/FigIoDesktopDeployTests"
+        },
+        {
+            "name": "Lambdas",
+            "root": "src/FigIoDesktopDeployLambdas"
         }
     ]
 }

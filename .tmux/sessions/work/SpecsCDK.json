@@ -1,0 +1,12 @@
+{
+    "root": "~/workplace/FigIoAutocompleteSpecs",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "CDK code",
+            "root": "src/FigIoAutocompleteSpecsCDK"
+        }
+    ]
+}
