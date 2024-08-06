@@ -7,7 +7,7 @@ local prefix = "kiser/colorscheme/"
 --                                    but might be good if I get transparent backgrounds working
 -- require(prefix .. "onedark")    -- Good dark blue type scheme
 -- require(prefix .. "vscode")
-require(prefix .. "monokai-pro")
+-- require(prefix .. "monokai-pro")
 
 Colorscheme = "cyberdream"
 

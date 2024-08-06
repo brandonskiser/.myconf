@@ -1,6 +1,11 @@
 local wezterm = require('wezterm')
 local act = wezterm.action
 
+---@return boolean
+local function is_work_laptop()
+    return os.getenv('LOGNAME') == 'bskiser'
+end
+
 -- This table will hold the configuration.
 local config = {}
 
@@ -32,16 +37,17 @@ config.window_padding = {
 config.background = {
     {
         source = {
-            File = "/home/brandon/Pictures/8bitcat.jpg"
+            -- File = "/home/brandon/Pictures/8bitcat.jpg"
+            File = "/home/brandon/Pictures/sakura.jpg"
         },
         hsb = {
-            brightness = 0.09
+            -- brightness = 0.09
+            brightness = 0.02,
         }
     }
 }
 
-local IS_WORK_LAPTOP = os.getenv('LOGNAME') == 'bskiser'
-config.font = IS_WORK_LAPTOP and wezterm.font_with_fallback({ 'Hack Nerd Font' })
+config.font = is_work_laptop() and wezterm.font_with_fallback({ 'Hack Nerd Font' })
     or wezterm.font_with_fallback({ 'Hack', 'Hack Nerd Font', 'FiraCode Nerd Font' })
 
 -- Disables ligatures
