@@ -18,6 +18,10 @@
             "root": ".tmux"
         },
         {
+            "name": "fish",
+            "root": ".config/fish"
+        },
+        {
             "name": "wezterm",
             "root": ".config/wezterm"
         },
