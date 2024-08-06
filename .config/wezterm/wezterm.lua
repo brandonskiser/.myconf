@@ -22,12 +22,22 @@ config.hide_tab_bar_if_only_one_tab = true
 
 -- config.color_scheme = 'Atelierlakeside (dark) (terminal.sexy)'
 
-config.window_background_opacity = 0.94
+config.window_background_opacity = 0.90
 config.window_padding = {
     left = 0,
     right = 0,
     top = 0,
     bottom = 0,
+}
+config.background = {
+    {
+        source = {
+            File = "/home/brandon/Pictures/8bitcat.jpg"
+        },
+        hsb = {
+            brightness = 0.09
+        }
+    }
 }
 
 local IS_WORK_LAPTOP = os.getenv('LOGNAME') == 'bskiser'

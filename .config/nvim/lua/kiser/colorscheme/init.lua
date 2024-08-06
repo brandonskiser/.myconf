@@ -9,6 +9,7 @@ local prefix = "kiser/colorscheme/"
 -- require(prefix .. "vscode")
 require(prefix .. "monokai-pro")
 
+Colorscheme = "cyberdream"
 
 if Colorscheme == nil then
     return
