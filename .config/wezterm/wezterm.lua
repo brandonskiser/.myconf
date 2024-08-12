@@ -1,10 +1,6 @@
 local wezterm = require('wezterm')
+local util = require('util')
 local act = wezterm.action
-
----@return boolean
-local function is_work_laptop()
-    return os.getenv('LOGNAME') == 'bskiser'
-end
 
 -- This table will hold the configuration.
 local config = {}
@@ -18,6 +14,8 @@ end
 -- Start config.
 
 local keybinds = require('keybinds')
+
+config.colors = require("cyberdream")
 
 config.warn_about_missing_glyphs = false
 
@@ -42,12 +40,12 @@ config.background = {
         },
         hsb = {
             -- brightness = 0.09
-            brightness = 0.02,
+            brightness = 0.03,
         }
     }
 }
 
-config.font = is_work_laptop() and wezterm.font_with_fallback({ 'Hack Nerd Font' })
+config.font = util.is_work_laptop() and wezterm.font_with_fallback({ 'Hack Nerd Font' })
     or wezterm.font_with_fallback({ 'Hack', 'Hack Nerd Font', 'FiraCode Nerd Font' })
 
 -- Disables ligatures
