@@ -26,6 +26,8 @@ get() {
 set() {
    local option=$1
    local value=$2
+   # -g => set the option globally for the session
+   # -q => suppress error about unknown or ambiguous option.
    tmux set-option -gq "$option" "$value"
 }
 
@@ -72,6 +74,8 @@ set "pane-active-border-bg" "$onedark_black"
 set "display-panes-active-colour" "$onedark_yellow"
 set "display-panes-colour" "$onedark_blue"
 
+# tmux set-option -g "status-style" "bg=default"
+set "status-style" "bg=default"
 set "status-bg" "default" # Keep transparent
 set "status-fg" "$onedark_white"
 
