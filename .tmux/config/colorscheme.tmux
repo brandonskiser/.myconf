@@ -74,9 +74,8 @@ set "pane-active-border-bg" "$onedark_black"
 set "display-panes-active-colour" "$onedark_yellow"
 set "display-panes-colour" "$onedark_blue"
 
-# tmux set-option -g "status-style" "bg=default"
+# Keep status transparent by setting bg to default
 set "status-style" "bg=default"
-set "status-bg" "default" # Keep transparent
 set "status-fg" "$onedark_white"
 
 set "@prefix_highlight_fg" "$onedark_black"
