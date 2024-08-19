@@ -11,6 +11,14 @@
         {
             "name": "console",
             "root": "fig_desktop"
+        },
+        {
+            "name": "cli",
+            "root": "q_cli"
+        },
+        {
+            "name": "figterm",
+            "root": "figterm"
         }
     ]
 }
