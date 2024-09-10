@@ -79,3 +79,7 @@ keymap("n", "gx", ":!xdg-open <C-r><C-a><CR>", opts)
 
 -- Quickfix list
 keymap("n", "<leader>qc", ":cclose<CR>", opts) -- close
+
+-- Terminal
+keymap("n", "<leader>t", ":terminal<CR>", opts)
+keymap("t", "<Esc>", "<C-\\><C-n>", opts)

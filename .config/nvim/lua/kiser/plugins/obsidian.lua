@@ -119,6 +119,10 @@ return {
     end,
 
     opts = {
+        ui = {
+            enable = false,
+        },
+
         workspaces = {
             {
                 name = 'personal',

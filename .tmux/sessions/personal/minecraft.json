@@ -1,0 +1,12 @@
+{
+    "root": "~/Projects/rust/minecraft/",
+    "windows": [
+        {
+            "name": "code"
+        },
+        {
+            "name": "tty"
+        }
+    ]
+}
+
