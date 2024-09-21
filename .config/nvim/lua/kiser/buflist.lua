@@ -16,11 +16,13 @@ vim.api.nvim_create_user_command('BuflistOpenWin', function()
     --and buflisted == true.
     ---@return string[]
     local function get_buf_names()
+        -- Get list of buffer handles.
         local bufs = vim.api.nvim_list_bufs()
         local buf_names = {}
         for _, v in pairs(bufs) do
             local fname = vim.api.nvim_buf_get_name(v)
             if fname ~= '' and vim.bo[v].buflisted then
+                -- Append the buffer name along with its id.
                 buf_names[#buf_names + 1] = fname .. ' | ' .. tostring(v)
             end
         end
@@ -55,7 +57,8 @@ vim.api.nvim_create_user_command('BuflistOpenWin', function()
         width = win_width,
         height = win_height,
         row = row,
-        col = col
+        col = col,
+        border = 'rounded'
     }
     local prev_win = vim.api.nvim_get_current_win()
     local floating_win = vim.api.nvim_open_win(buf, true, opts)

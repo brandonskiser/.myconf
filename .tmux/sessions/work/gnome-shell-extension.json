@@ -1,0 +1,11 @@
+{
+    "root": "~/workplace/FigloDesktop/src/FigIoDesktop/extensions/gnome-legacy-extension",
+    "windows": [
+        {
+            "name": "code"
+        },
+        {
+            "name": "console"
+        }
+    ]
+}

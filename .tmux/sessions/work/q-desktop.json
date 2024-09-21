@@ -5,6 +5,10 @@
             "name": "root"
         },
         {
+            "name": "run",
+            "splits": []
+        },
+        {
             "name": "fig_desktop",
             "root": "fig_desktop"
         },

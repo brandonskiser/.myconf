@@ -11,5 +11,8 @@
     dc = diff --cached
 [includeIf "gitdir:/Volumes/workplace/"]
     path = ~/.gitconfig-work
+[includeIf "gitdir:~/workplace/"]
+    path = ~/.gitconfig-work
 [core]
 	excludesfile = /home/brandon/.gitignore
+	editor = nvim
