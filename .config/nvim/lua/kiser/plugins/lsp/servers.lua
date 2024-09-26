@@ -15,7 +15,7 @@ return {
     },
     clangd = {},
     html = {},
-    tsserver = {},
+    ts_ls = {},
     pyright = {},
     kotlin_language_server = {},
 }
