@@ -12,14 +12,28 @@ function append_path() {
     fi
 }
 
+function command_exists() {
+    command -v "$1" 2>&1 > /dev/null
+}
+
 function checked_alias() {
     # https://stackoverflow.com/questions/592620/how-can-i-check-if-a-program-exists-from-a-bash-script
-    if command -v "$2" 2>&1 > /dev/null; then
+    if command_exists "$2"; then
         alias "$1"="$2"
     else
         echo "Command '$2' not found."
     fi
 }
+
+# Configure the editor to be, in order:
+# nvim -> vim -> vi
+if command_exists nvim; then
+    export EDITOR=nvim
+elif command_exists vim; then
+    export EDITOR=nvim
+elif command_exists vi; then
+    export EDITOR=vi
+fi
 
 # Prompt string.
 PS1='[\u@\h \W]\$ '

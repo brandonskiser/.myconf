@@ -1,0 +1,12 @@
+{
+    "root": "~/Projects/rust/cool_2d_game/",
+    "windows": [
+        {
+            "name": "code"
+        },
+        {
+            "name": "tty"
+        }
+    ]
+}
+
