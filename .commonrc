@@ -30,13 +30,16 @@ function checked_alias() {
 if command_exists nvim; then
     export EDITOR=nvim
 elif command_exists vim; then
-    export EDITOR=nvim
+    export EDITOR=vim
 elif command_exists vi; then
     export EDITOR=vi
 fi
 
-# Prompt string.
+# Bash prompt string.
 PS1='[\u@\h \W]\$ '
+
+# Zsh prompt string.
+PROMPT='%n %d %# '
 
 # Rust setup.
 if [ -f "$HOME/.cargo/env" ]; then
