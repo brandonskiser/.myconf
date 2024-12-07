@@ -17,7 +17,6 @@ function command_exists() {
 }
 
 function checked_alias() {
-    # https://stackoverflow.com/questions/592620/how-can-i-check-if-a-program-exists-from-a-bash-script
     if command_exists "$2"; then
         alias "$1"="$2"
     else
@@ -29,17 +28,16 @@ function checked_alias() {
 # nvim -> vim -> vi
 if command_exists nvim; then
     export EDITOR=nvim
+    export MANPAGER='nvim +Man!' # viewing man pages in nvim is pretty dope
 elif command_exists vim; then
     export EDITOR=vim
 elif command_exists vi; then
     export EDITOR=vi
 fi
 
-# Bash prompt string.
-PS1='[\u@\h \W]\$ '
-
-# Zsh prompt string.
-PROMPT='%n %d %# '
+# Prompt strings.
+PS1='[\u@\h \W]\$ ' # bash
+PROMPT='%n %d %# '  # zsh
 
 # Rust setup.
 if [ -f "$HOME/.cargo/env" ]; then
@@ -51,11 +49,9 @@ append_path /usr/local/go/bin
 append_path ~/go/bin
 append_path /usr/local/vscode
 append_path ~/.local/share/nvim/mason/bin
-append_path ~/.local/share/nvim/site/pack/packer/start/fzf/bin
 prepend_path ~/.pyenv/shims
 
 checked_alias vim nvim
-checked_alias lg lazygit
 
 # Dotfiles. Uses the "cnf" script under ~/.bin/
 cnf config --local status.showUntrackedFiles no # Hide files we are not explicitly tracking yet
