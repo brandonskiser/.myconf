@@ -1,24 +1,29 @@
 return {
     {
         "ellisonleao/gruvbox.nvim",
+        enabled = false,
         priority = 1000,
         opts = {
             bold = false,
             contrast = "hard",
         },
     },
+
     {
         "scottmckendry/cyberdream.nvim",
+        -- enabled = false,
         lazy = false,
         priority = 1000,
         opts = {
             transparent = true,
         },
     },
+
     {
         'loctvl842/monokai-pro.nvim',
+        enabled = false,
+        -- enabled = true,
         priority = 500, -- default is 50, so prioritize loading this first
-        enabled = true,
         opts = {
             transparent_background = false,
             terminal_colors = true,
@@ -68,6 +73,7 @@ return {
     -- TODO: implement my own base16 variant
     {
         "wincent/base16-nvim",
+        enabled = false,
         lazy = false,    -- load at start
         priority = 1000, -- load first
         config = function()
@@ -88,4 +94,34 @@ return {
             -- call Base16hi("CocHintSign", g:base16_gui03, "", g:base16_cterm03, "", "", "")
         end
     },
+
+    {
+        "echasnovski/mini.base16",
+        enabled = false,
+        version = false,
+        priority = 1000,
+        opts = {
+            palette = {
+                -- Gruvbox dark hard
+                -- Taken from https://github.com/dawikur/base16-gruvbox-scheme
+                base00 = "#1d2021", -- ----
+                base01 = "#3c3836", -- ---
+                base02 = "#504945", -- --
+                base03 = "#665c54", -- -
+                base04 = "#bdae93", -- +
+                base05 = "#d5c4a1", -- ++
+                base06 = "#ebdbb2", -- +++
+                base07 = "#fbf1c7", -- ++++
+                base08 = "#fb4934", -- red
+                base09 = "#fe8019", -- orange
+                base0A = "#fabd2f", -- yellow
+                base0B = "#b8bb26", -- green
+                base0C = "#8ec07c", -- aqua/cyan
+                base0D = "#83a598", -- blue
+                base0E = "#d3869b", -- purple
+                base0F = "#d65d0e"  -- brown
+            }
+        }
+
+    }
 }
