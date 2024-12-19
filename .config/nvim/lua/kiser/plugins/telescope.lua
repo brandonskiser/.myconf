@@ -54,6 +54,58 @@ local Pickers = function()
             :find()
     end
 
+    -- why is this broken :(
+    -- https://www.youtube.com/watch?v=xdXE1tOT-qg
+    function M.live_multigrep(opts)
+        opts = opts or {}
+        opts.cwd = opts.cwd or vim.uv.cwd()
+
+        pickers
+            .new(opts, {
+                prompt_title = "Live Multigrep",
+                debounce = 100,
+                finder = finders.new_async_job({
+                    command_generator = function(prompt)
+                        if not prompt or prompt == "" then
+                            return nil
+                        end
+
+                        local pieces = vim.split(prompt, "  ")
+                        local args = { "rg" }
+                        if pieces[1] then
+                            table.insert(args, "-e")
+                            table.insert(args, pieces[1])
+                        end
+
+                        if pieces[2] then
+                            table.insert(args, "-g")
+                            table.insert(args, pieces[2])
+                        end
+                        ---@diagnostic disable-next-line: deprecated
+                        return vim.tbl_flatten(
+                            args,
+                            { "--color=never", "--no-heading", "--with-filename", "--line-number", "--column",
+                                "--smart-case" }
+                        )
+                    end,
+                    entry_maker = make_entry.gen_from_vimgrep(opts),
+                    -- this entry maker is broken for some reason
+                    -- entry_maker = function(entry)
+                    --     local s = vim.inspect(entry)
+                    --     print('Got entry: ' .. s)
+                    --     print('Opts' .. vim.inspect(opts))
+                    --     local r = make_entry.gen_from_vimgrep(opts)(entry)
+                    --     print('Returning entry: ' .. vim.inspect(r))
+                    --     return r
+                    -- end,
+                    cwd = opts.cwd,
+                }),
+                previewer = conf.grep_previewer(opts),
+                sorter = require("telescope.sorters").empty(),
+            })
+            :find()
+    end
+
     _Pickers_cached = M
     return M
 end
@@ -116,6 +168,7 @@ return {
             return {
                 { '<leader>ff', builtin.find_files,                  desc = 'find files' },
                 { '<leader>fg', builtin.live_grep,                   desc = 'live grep' },
+                -- { '<leader>fg', Pickers().live_multigrep,            desc = 'live grep' },
                 { '<leader>fh', builtin.help_tags,                   desc = 'find help' },
                 { '<leader>gf', builtin.git_files,                   desc = 'git files' },
                 { '<leader>fb', Pickers().current_buffer_fuzzy_find, desc = 'find in buffer' },
