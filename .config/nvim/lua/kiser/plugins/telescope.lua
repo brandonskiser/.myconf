@@ -130,6 +130,13 @@ return {
                         })
                     end,
                     desc = 'find grep with search word'
+                },
+                {
+                    '<leader>fp',
+                    function()
+                        builtin.find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath('data'), 'lazy') })
+                    end,
+                    desc = 'find file in a plugin'
                 }
             }
         end

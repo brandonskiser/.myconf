@@ -18,5 +18,4 @@ local function lazy_setup()
     req('kiser.colorscheme')
 end
 
--- packer_setup()
 lazy_setup()

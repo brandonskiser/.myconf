@@ -1,22 +1,19 @@
 return {
     {
-        "ellisonleao/gruvbox.nvim",
-        enabled = false,
-        priority = 1000,
-        opts = {
-            bold = false,
-            contrast = "hard",
-        },
-    },
-
-    {
         "scottmckendry/cyberdream.nvim",
-        -- enabled = false,
+        enabled = true,
         lazy = false,
         priority = 1000,
         opts = {
             transparent = true,
         },
+    },
+
+    {
+        "echasnovski/mini.base16",
+        enabled = true,
+        version = false,
+        priority = 1000,
     },
 
     {
@@ -69,59 +66,4 @@ return {
             override = function(c) end,
         },
     },
-
-    -- TODO: implement my own base16 variant
-    {
-        "wincent/base16-nvim",
-        enabled = false,
-        lazy = false,    -- load at start
-        priority = 1000, -- load first
-        config = function()
-            -- vim.cmd([[colorscheme base16-gruvbox-dark-hard]])
-            -- vim.o.background = 'dark'
-            -- XXX: hi Normal ctermbg=NONE
-            -- Make comments more prominent -- they are important.
-            -- local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
-            -- vim.api.nvim_set_hl(0, 'Comment', bools)
-            -- Make it clearly visible which argument we're at.
-            -- local marked = vim.api.nvim_get_hl(0, { name = 'PMenu' })
-            -- vim.api.nvim_set_hl(0, 'LspSignatureActiveParameter',
-            --     { fg = marked.fg, bg = marked.bg, ctermfg = marked.ctermfg, ctermbg = marked.ctermbg, bold = true })
-            -- XXX
-            -- Would be nice to customize the highlighting of warnings and the like to make
-            -- them less glaring. But alas
-            -- https://github.com/nvim-lua/lsp_extensions.nvim/issues/21
-            -- call Base16hi("CocHintSign", g:base16_gui03, "", g:base16_cterm03, "", "", "")
-        end
-    },
-
-    {
-        "echasnovski/mini.base16",
-        enabled = false,
-        version = false,
-        priority = 1000,
-        opts = {
-            palette = {
-                -- Gruvbox dark hard
-                -- Taken from https://github.com/dawikur/base16-gruvbox-scheme
-                base00 = "#1d2021", -- ----
-                base01 = "#3c3836", -- ---
-                base02 = "#504945", -- --
-                base03 = "#665c54", -- -
-                base04 = "#bdae93", -- +
-                base05 = "#d5c4a1", -- ++
-                base06 = "#ebdbb2", -- +++
-                base07 = "#fbf1c7", -- ++++
-                base08 = "#fb4934", -- red
-                base09 = "#fe8019", -- orange
-                base0A = "#fabd2f", -- yellow
-                base0B = "#b8bb26", -- green
-                base0C = "#8ec07c", -- aqua/cyan
-                base0D = "#83a598", -- blue
-                base0E = "#d3869b", -- purple
-                base0F = "#d65d0e"  -- brown
-            }
-        }
-
-    }
 }
