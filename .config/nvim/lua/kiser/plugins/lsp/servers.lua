@@ -18,4 +18,5 @@ return {
     ts_ls = {},
     pyright = {},
     kotlin_language_server = {},
+    gopls = {},
 }

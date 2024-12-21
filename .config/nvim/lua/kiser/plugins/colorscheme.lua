@@ -17,6 +17,15 @@ return {
     },
 
     {
+        "RRethy/base16-nvim",
+        enabled = false,
+        config = function()
+            -- Including this purely for the color schemes.
+            -- Enabling it seems to cause issues with :LualineNotices for some reason.
+        end
+    },
+
+    {
         'loctvl842/monokai-pro.nvim',
         enabled = false,
         -- enabled = true,
