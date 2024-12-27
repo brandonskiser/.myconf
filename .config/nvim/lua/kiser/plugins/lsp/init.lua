@@ -6,7 +6,7 @@ return {
         'neovim/nvim-lspconfig',
         dependencies = {
             'williamboman/mason.nvim',
-            { "folke/neodev.nvim", opts = {} },
+            -- { "folke/neodev.nvim", opts = {} },
         },
         config = function(_, _)
             local util = require('kiser.plugins.lsp.util')
@@ -75,6 +75,17 @@ return {
         'mrcjkb/rustaceanvim',
         version = '^4', -- Recommended
         lazy = false,   -- This plugin is already lazy
+    },
+
+    {
+        "folke/lazydev.nvim",
+        ft = "lua",
+        opts = {
+            -- disable when a .luarc.json file is found
+            enabled = function(root_dir)
+                return not vim.uv.fs_stat(root_dir .. "/.luarc.json")
+            end,
+        },
     },
 
     {
