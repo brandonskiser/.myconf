@@ -32,18 +32,19 @@ config.window_padding = {
     top = 0,
     bottom = 0,
 }
-config.background = {
-    {
-        source = {
-            -- File = "/home/brandon/Pictures/8bitcat.jpg"
-            File = "/home/brandon/Pictures/sakura.jpg"
-        },
-        hsb = {
-            -- brightness = 0.09
-            brightness = 0.03,
-        }
-    }
-}
+
+-- config.background = {
+--     {
+--         source = {
+--             -- File = "/home/brandon/Pictures/8bitcat.jpg"
+--             File = "/home/brandon/Pictures/sakura.jpg"
+--         },
+--         hsb = {
+--             -- brightness = 0.09
+--             brightness = 0.03,
+--         }
+--     }
+-- }
 
 config.font = util.is_work_laptop() and wezterm.font_with_fallback({ 'Hack Nerd Font' })
     or wezterm.font_with_fallback({ 'Hack', 'Hack Nerd Font', 'FiraCode Nerd Font' })

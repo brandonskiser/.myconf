@@ -1,0 +1,12 @@
+{
+    "root": "~/Projects/rust/rustcraft/",
+    "windows": [
+        {
+            "name": "code"
+        },
+        {
+            "name": "tty"
+        }
+    ]
+}
+
