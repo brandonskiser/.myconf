@@ -10,11 +10,11 @@ LOG_LEVELS = {
 }
 
 LEVEL_NAMES = {
-    'ERROR',
-    'WARN',
-    'INFO',
-    'DEBUG',
-    'TRACE',
+    "ERROR",
+    "WARN",
+    "INFO",
+    "DEBUG",
+    "TRACE",
 }
 
 M.LOG_LEVELS = LOG_LEVELS
@@ -105,6 +105,7 @@ local function time_now()
     }
 end
 
+---Returns an ISO 8601 formatted string for the provided timestamp.
 ---@param time TimeNow
 ---@return string timestamp
 local function iso8601(time)
@@ -117,11 +118,11 @@ end
 function Logger:log(level, ...)
     if level > self.log_level then return end
     local level_name = LEVEL_NAMES[level]
-    local val = table.concat(dvalues(...), ' ')
+    local val = table.concat(dvalues(...), " ")
     local timestr = iso8601(time_now())
-    local msg = string.format('%s [%s] %s\n', timestr, level_name, val)
+    local msg = string.format("%s [%s] %s\n", timestr, level_name, val)
 
-    vim.uv.fs_open(self.file_path, 'a', tonumber('0644', 8), function(err, fd)
+    vim.uv.fs_open(self.file_path, "a", tonumber("0644", 8), function(err, fd)
         assert(fd, err)
         vim.uv.fs_write(fd, msg)
         vim.uv.fs_close(fd)
@@ -160,7 +161,7 @@ function Logger:new(opts)
     opts = opts or {}
     o.name = opts.name
     o.log_level = opts.log_level or LOG_LEVELS.info
-    o.file_path = opts.file_path or string.format("%s/%s.log", vim.fn.stdpath('cache'), opts.name)
+    o.file_path = opts.file_path or string.format("%s/%s.log", vim.fn.stdpath("cache"), opts.name)
     setmetatable(o, self)
     self.__index = self
     return o
