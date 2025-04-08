@@ -1,6 +1,6 @@
 return {
-    {
-        dir = "~/workplace/hackathon",
-        opts = {},
-    }
+    -- {
+    --     dir = "~/workplace/hackathon",
+    --     opts = {},
+    -- }
 }
