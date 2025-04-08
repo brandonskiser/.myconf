@@ -13,26 +13,69 @@ local state = {
     ---Buffer id of the floating window buffer.
     buf = -1,
 }
--- local floating_win_open = false
--- local use_full_absolute_path = true
 
 ---Returns a sorted array of strings of the form: `"{buffer name} | {buffer id}"`,
 --only including buffers with names (ie, buffers associated with a file name)
 --and `buflisted == true`.
+---@param strip_common_prefix boolean?
 ---@return string[]
-local function get_buf_names()
+local function get_buf_names(strip_common_prefix)
+    strip_common_prefix = strip_common_prefix or true
     -- Get list of buffer handles.
     local bufs = vim.api.nvim_list_bufs()
+    ---@type { fname: string, buf: number }[]
     local buf_names = {}
     for _, v in pairs(bufs) do
         local fname = vim.api.nvim_buf_get_name(v)
         if fname ~= "" and vim.bo[v].buflisted then
             -- Append the buffer name along with its id.
-            buf_names[#buf_names + 1] = fname .. " | " .. tostring(v)
+            buf_names[#buf_names + 1] = { fname = fname, buf = tostring(v) }
         end
     end
-    table.sort(buf_names)
-    return buf_names
+
+    table.sort(buf_names, function(t1, t2) return t1.fname < t2.fname end)
+
+    -- if strip_common_prefix then
+    --     ---Returns the common prefix of `s1` and `s2`
+    --     ---@param s1 string
+    --     ---@param s2 string
+    --     ---@return string
+    --     local function common_prefix(s1, s2)
+    --         vim.notify('comparing ' .. s1 .. ' with ' .. s2)
+    --         local len = math.min(#s1, #s2)
+    --         for i = 1, len do
+    --             if s1[i] ~= s2[i] then
+    --                 vim.notify(s1[i] .. ' is not equal to ' .. s2[i])
+    --                 return s1:sub(1, i)
+    --             end
+    --         end
+    --         return s1:sub(1, len)
+    --     end
+    --
+    --     -- vim.notify('????' .. common_prefix('/Users/hi', '/Users/hithere'))
+    --     vim.notify('????' .. common_prefix('/Users/bskiser/.bashrc', '/Users/bskiser/.zshrc'))
+    --     vim.notify('????' .. vim.inspect(buf_names))
+    --
+    --     if #buf_names > 1 then
+    --         local common_pre = common_prefix(buf_names[1].fname, buf_names[2].fname)
+    --         for i = 3, #buf_names do
+    --             common_pre = common_prefix(common_pre, buf_names[i].fname)
+    --             if #common_pre == 0 then
+    --                 return buf_names
+    --             end
+    --         end
+    --         vim.notify('Common pre is ' .. common_pre)
+    --         for i, _ in ipairs(buf_names) do
+    --             buf_names[i].fname = buf_names[i].fname:sub(#common_pre)
+    --         end
+    --     end
+    -- end
+
+    local ret = {}
+    for _, v in ipairs(buf_names) do
+        ret[#ret + 1] = v.fname .. ' | ' .. tostring(v.buf)
+    end
+    return ret
 end
 
 ---Gets the buffer id from the line under the current cursor position.
@@ -87,8 +130,7 @@ local function set_local_keymaps()
     end, { buffer = buf })
 end
 
-
-vim.api.nvim_create_user_command("BuflistOpenWin", function()
+local function open_buflist()
     if state.floating_win_open then return end
 
     -- Open a scratch buffer that is wiped when closed.
@@ -96,6 +138,7 @@ vim.api.nvim_create_user_command("BuflistOpenWin", function()
     state.buf = buf
     vim.bo[buf].bufhidden = "wipe"
 
+    local buf_names = get_buf_names()
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, get_buf_names())
     vim.bo[buf].modifiable = false
 
@@ -113,9 +156,20 @@ vim.api.nvim_create_user_command("BuflistOpenWin", function()
         col = col,
         border = "rounded"
     }
+    local cur_buf = vim.api.nvim_get_current_buf()
     state.prev_win = vim.api.nvim_get_current_win()
     state.floating_win = vim.api.nvim_open_win(buf, true, opts)
     state.floating_win_open = true
+
+    -- Set the cursor to focus on the current buf.
+    local cursor_row = 1
+    for i, v in ipairs(buf_names) do
+        if v:find("| " .. cur_buf) ~= nil then
+            cursor_row = i
+            break
+        end
+    end
+    vim.api.nvim_win_set_cursor(state.floating_win, { cursor_row, 0 })
 
     vim.api.nvim_create_autocmd({ "BufLeave" }, {
         buffer = buf,
@@ -127,6 +181,10 @@ vim.api.nvim_create_user_command("BuflistOpenWin", function()
     })
 
     set_local_keymaps()
+end
+
+vim.api.nvim_create_user_command("BuflistOpenWin", function()
+    open_buflist()
 end, {})
 
 vim.keymap.set("n", "<leader>lb", ":BuflistOpenWin<CR>", { desc = "open buffer list" })

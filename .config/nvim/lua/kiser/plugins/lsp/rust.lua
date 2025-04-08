@@ -17,9 +17,9 @@ vim.g.rustaceanvim = {
                 rustfmt = {
                     extraArgs = { '+nightly' }
                 },
-                -- cargo = {
-                --     features = { 'dev' }
-                -- }
+                cargo = {
+                    -- features = { 'phoenix' }
+                }
             }
         }
     }

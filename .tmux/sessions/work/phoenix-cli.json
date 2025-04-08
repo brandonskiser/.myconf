@@ -1,0 +1,12 @@
+{
+    "root": "~/workplace/QAgentsSDK/src/QAgentsSDK",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "code"
+        }
+    ]
+}
+

@@ -45,6 +45,7 @@ if [ -f "$HOME/.cargo/env" ]; then
 fi
 
 append_path ~/.bin
+append_path ~/.local/bin
 append_path /usr/local/go/bin
 append_path ~/go/bin
 append_path /usr/local/vscode
