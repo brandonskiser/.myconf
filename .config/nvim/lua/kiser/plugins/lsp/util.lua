@@ -60,12 +60,14 @@ M.default_opts = {
 }
 
 -- Wrap the passed in opts to also enable the default_opts above.
+---@param opts vim.lsp.ClientConfig
+---@return vim.lsp.ClientConfig
 function M.make_opts(opts)
     local wrapper_on_attach = function(c, b)
+        M.default_opts.on_attach(c, b)
         if opts.on_attach then
             opts.on_attach(c, b)
         end
-        M.default_opts.on_attach(c, b)
     end
     return vim.tbl_deep_extend("keep", {
         on_attach = wrapper_on_attach,
