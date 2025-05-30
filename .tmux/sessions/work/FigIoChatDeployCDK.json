@@ -1,0 +1,12 @@
+{
+    "root": "~/workplace/FigIoChatDeployCDK/",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "CDK code",
+            "root": "src/FigIoChatDeployCDK"
+        }
+    ]
+}

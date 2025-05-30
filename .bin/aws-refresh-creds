@@ -6,10 +6,16 @@ function log {
     echo "[INFO]" $1
 }
 
-AWS_ACCOUNT=730335495947
+# AWS_ACCOUNT=730335495947
+AWS_ACCOUNT=230592382359 # Gamma
 ROLE="admin"
 
+if [ "$AWS_ACCOUNT" -eq 230592382359 ]; then
+    log "REFRESHING GAMMA"
+else
+    log "REFRESHING PERSONAL"
+fi
+
 log "Refreshing credentials for account ${AWS_ACCOUNT} with role ${ROLE}"
-# ada credentials update --account="${AWS_ACCOUNT}" --provider=isengard --role="${ROLE}" --once
 ada credentials update --account="${AWS_ACCOUNT}" --provider=isengard --role="${ROLE}" --once
 
