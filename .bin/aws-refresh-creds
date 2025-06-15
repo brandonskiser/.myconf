@@ -1,21 +1,45 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-set -e
+set -eu
+
+SCRIPT_NAME=$(basename "$0")
+
+PERSONAL_AWS_ACCOUNT=730335495947
+PERSONAL_ROLE=admin
+GAMMA_AWS_ACCOUNT=230592382359
+GAMMA_ROLE=admin
 
 function log {
-    echo "[INFO]" $1
+    echo "$SCRIPT_NAME: $*"
 }
 
-# AWS_ACCOUNT=730335495947
-AWS_ACCOUNT=230592382359 # Gamma
-ROLE="admin"
+function help {
+    echo "USAGE: $SCRIPT_NAME [gamma]"
+    exit 1
+}
 
-if [ "$AWS_ACCOUNT" -eq 230592382359 ]; then
-    log "REFRESHING GAMMA"
-else
-    log "REFRESHING PERSONAL"
+
+# Defaults
+PROFILE=personal
+AWS_ACCOUNT="$PERSONAL_AWS_ACCOUNT"
+ROLE="$PERSONAL_ROLE"
+
+# Override if gamma
+if [ "${1:-}" = "gamma" ]; then
+    AWS_ACCOUNT="$GAMMA_AWS_ACCOUNT"
+    ROLE="$GAMMA_ROLE"
+    PROFILE=gamma
 fi
 
+# Log
+if [ "$AWS_ACCOUNT" -eq "$GAMMA_AWS_ACCOUNT" ]; then
+    log "Refreshing Gamma account"
+elif [ "$AWS_ACCOUNT" -eq "$PERSONAL_AWS_ACCOUNT" ]; then
+    log "Refreshing Personal account"
+else
+    help
+fi
 log "Refreshing credentials for account ${AWS_ACCOUNT} with role ${ROLE}"
-ada credentials update --account="${AWS_ACCOUNT}" --provider=isengard --role="${ROLE}" --once
+
+ada credentials update --account="${AWS_ACCOUNT}" --provider=isengard --role="${ROLE}" --profile "$PROFILE" --once
 

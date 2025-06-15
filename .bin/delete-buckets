@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+# A script for deleting all buckets that match a given prefix
+
+set -euo pipefail
+
+if ! command -v aws > /dev/null 2>&1; then
+    echo "aws cli is required"
+    exit 1
+fi
+
+log() {
+    echo "[INFO]" "$1"
+}
+
+run_aws() {
+    set -x
+    aws "$@"
+    set +x
+}
+
+main() {
+    PREFIX="$1"
+
+    log "Finding buckets matching prefix: $PREFIX"
+    BUCKETS=$(run_aws s3api list-buckets --query "Buckets[?starts_with(Name, '${PREFIX}')].Name" --output text)
+
+    echo "Matched buckets: $BUCKETS"
+    echo -n "Continue? [y/n]: "
+    read continue
+    if [ "$continue" != "y" ]; then
+        log "Cancelled"
+        exit 0
+    fi
+
+    # Loop through each matching bucket
+    for BUCKET in $BUCKETS; do
+      log "Processing bucket: $BUCKET"
+
+      # Empty the bucket (remove all objects and object versions)
+      log "Emptying bucket..."
+      run_aws s3 rm s3://$BUCKET --recursive
+
+      # # If the bucket has versioning enabled, you need to delete all versions and delete markers
+      # run_aws s3api list-object-versions --bucket "$BUCKET" \
+      #     --query '{Objects: Versions[].{Key:Key,VersionId:VersionId}} + {Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId}}' \
+      #     --output json > /tmp/delete_keys.json
+      #
+      # # Check if there are any versions to delete
+      # if [ -s /tmp/delete_keys.json ] && [ "$(cat /tmp/delete_keys.json)" != "{}" ]; then
+      #   log "Deleting all object versions..."
+      #   run_aws s3api delete-objects --bucket "$BUCKET" --delete file:///tmp/delete_keys.json
+      # fi
+
+      # Delete the empty bucket
+      log "Deleting bucket..."
+      run_aws s3api delete-bucket --bucket $BUCKET
+
+      log "Bucket $BUCKET deleted successfully."
+      echo ""
+    done
+
+    log "All matching buckets have been deleted."
+}
+
+main "$@"
