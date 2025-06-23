@@ -16,6 +16,7 @@ end
 ---@param markers string[] List of file names to search for.
 ---@param bufname string? Path to starting file, defaults to the current buffer.
 ---@return string?
+---@deprecated use vim.fn.root instead
 function M.find_root(markers, bufname)
     bufname = bufname or vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
     local dirname = vim.fn.fnamemodify(bufname, ':p:h')

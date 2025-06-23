@@ -19,3 +19,16 @@ local function lazy_setup()
 end
 
 lazy_setup()
+
+-- enable all lsp servers under ~/.config/nvim/lsp/
+local lsp_configs = {}
+
+for _, fname in pairs(vim.api.nvim_get_runtime_file('lsp/*.lua', true)) do
+    -- :t - get tail of the file name
+    -- :r - root of the file name (remove extension)
+    local server_name = vim.fn.fnamemodify(fname, ':t:r')
+    table.insert(lsp_configs, server_name)
+end
+
+vim.lsp.enable(lsp_configs)
+
