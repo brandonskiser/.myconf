@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+"""
+S3 Bucket Deletion Script with Glob Pattern Support
+
+This script deletes S3 buckets matching a given glob pattern.
+It handles versioned buckets and objects, requiring confirmation before deletion.
+
+Usage: delete-buckets-v2 'pattern*'
+Example: delete-buckets-v2 'fig-io-chat*'
+"""
+
+import sys
+import fnmatch
+import boto3
+from botocore.exceptions import ClientError, NoCredentialsError
+
+
+def list_matching_buckets(s3_client, pattern):
+    """List all buckets matching the given glob pattern."""
+    try:
+        response = s3_client.list_buckets()
+        buckets = response.get("Buckets", [])
+
+        matching_buckets = []
+        for bucket in buckets:
+            bucket_name = bucket["Name"]
+            if fnmatch.fnmatch(bucket_name, pattern):
+                matching_buckets.append(bucket_name)
+
+        return matching_buckets
+    except ClientError as e:
+        print(f"Error listing buckets: {e}")
+        sys.exit(1)
+
+
+def delete_all_objects_and_versions(s3_client, bucket_name):
+    """Delete all objects and versions from a bucket."""
+    try:
+        # Get bucket versioning status
+        versioning = s3_client.get_bucket_versioning(Bucket=bucket_name)
+        is_versioned = versioning.get("Status") == "Enabled"
+
+        # Delete all object versions and delete markers
+        paginator = s3_client.get_paginator("list_object_versions")
+
+        for page in paginator.paginate(Bucket=bucket_name):
+            # Delete object versions
+            versions = page.get("Versions", [])
+            if versions:
+                objects_to_delete = [
+                    {"Key": obj["Key"], "VersionId": obj["VersionId"]}
+                    for obj in versions
+                ]
+                s3_client.delete_objects(
+                    Bucket=bucket_name, Delete={"Objects": objects_to_delete}
+                )
+
+            # Delete delete markers
+            delete_markers = page.get("DeleteMarkers", [])
+            if delete_markers:
+                markers_to_delete = [
+                    {"Key": marker["Key"], "VersionId": marker["VersionId"]}
+                    for marker in delete_markers
+                ]
+                s3_client.delete_objects(
+                    Bucket=bucket_name, Delete={"Objects": markers_to_delete}
+                )
+
+        # If not versioned, also delete current objects (fallback)
+        if not is_versioned:
+            paginator = s3_client.get_paginator("list_objects_v2")
+            for page in paginator.paginate(Bucket=bucket_name):
+                objects = page.get("Contents", [])
+                if objects:
+                    objects_to_delete = [{"Key": obj["Key"]} for obj in objects]
+                    s3_client.delete_objects(
+                        Bucket=bucket_name, Delete={"Objects": objects_to_delete}
+                    )
+
+    except ClientError as e:
+        print(f"Error deleting objects from bucket {bucket_name}: {e}")
+        raise
+
+
+def delete_bucket(s3_client, bucket_name):
+    """Delete a single S3 bucket after emptying it."""
+    try:
+        print(f"Deleting bucket: {bucket_name}")
+
+        # First, delete all objects and versions
+        delete_all_objects_and_versions(s3_client, bucket_name)
+
+        # Then delete the bucket itself
+        s3_client.delete_bucket(Bucket=bucket_name)
+
+    except ClientError as e:
+        print(f"Error deleting bucket {bucket_name}: {e}")
+        raise
+
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: delete-buckets-v2 'pattern*'")
+        print("Example: delete-buckets-v2 'fig-io-chat*'")
+        sys.exit(1)
+
+    pattern = sys.argv[1]
+
+    try:
+        # Initialize S3 client
+        s3_client = boto3.client("s3")
+
+        # Find matching buckets
+        print(f"Searching for buckets matching pattern: {pattern}")
+        matching_buckets = list_matching_buckets(s3_client, pattern)
+
+        if not matching_buckets:
+            print("No buckets found matching the pattern.")
+            sys.exit(0)
+
+        # Display matched buckets
+        print(f"\nFound {len(matching_buckets)} bucket(s) matching the pattern:")
+        for bucket in matching_buckets:
+            print(f"  - {bucket}")
+
+        # Ask for confirmation
+        confirmation = (
+            input(
+                f"\nWould you like to proceed with deleting these {len(matching_buckets)} bucket(s)? [y/N]: "
+            )
+            .strip()
+            .lower()
+        )
+
+        if confirmation not in ["y", "yes"]:
+            print("Operation cancelled.")
+            sys.exit(0)
+
+        # Delete each bucket
+        print(f"\nProceeding with deletion of {len(matching_buckets)} bucket(s)...")
+        for bucket_name in matching_buckets:
+            delete_bucket(s3_client, bucket_name)
+
+        print("\nAll buckets successfully deleted!")
+
+    except NoCredentialsError:
+        print(
+            "Error: AWS credentials not found. Please configure your AWS credentials."
+        )
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by user.")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

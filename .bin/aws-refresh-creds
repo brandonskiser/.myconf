@@ -6,8 +6,15 @@ SCRIPT_NAME=$(basename "$0")
 
 PERSONAL_AWS_ACCOUNT=730335495947
 PERSONAL_ROLE=admin
-GAMMA_AWS_ACCOUNT=230592382359
-GAMMA_ROLE=admin
+
+DESKTOP_GAMMA_AWS_ACCOUNT=230592382359
+DESKTOP_GAMMA_ROLE=admin
+
+CHAT_GAMMA_AWS_ACCOUNT=265613951504
+CHAT_GAMMA_ROLE=admin
+
+CHAT_PROD_AWS_ACCOUNT=194704208190
+CHAT_PROD_ROLE=admin
 
 function log {
     echo "$SCRIPT_NAME: $*"
@@ -24,21 +31,36 @@ PROFILE=personal
 AWS_ACCOUNT="$PERSONAL_AWS_ACCOUNT"
 ROLE="$PERSONAL_ROLE"
 
-# Override if gamma
-if [ "${1:-}" = "gamma" ]; then
-    AWS_ACCOUNT="$GAMMA_AWS_ACCOUNT"
-    ROLE="$GAMMA_ROLE"
-    PROFILE=gamma
+# Set override
+if [ "${1:-}" = "desktop-gamma" ]; then
+    AWS_ACCOUNT="$DESKTOP_GAMMA_AWS_ACCOUNT"
+    ROLE="$DESKTOP_GAMMA_ROLE"
+    PROFILE=desktop-gamma
+fi
+if [ "${1:-}" = "chat-gamma" ]; then
+    AWS_ACCOUNT="$CHAT_GAMMA_AWS_ACCOUNT"
+    ROLE="$CHAT_GAMMA_ROLE"
+    PROFILE=chat-gamma
+fi
+if [ "${1:-}" = "chat-prod" ]; then
+    AWS_ACCOUNT="$CHAT_PROD_AWS_ACCOUNT"
+    ROLE="$CHAT_PROD_ROLE"
+    PROFILE=chat-prod
 fi
 
-# Log
-if [ "$AWS_ACCOUNT" -eq "$GAMMA_AWS_ACCOUNT" ]; then
-    log "Refreshing Gamma account"
+# Log which account is being used
+if [ "$AWS_ACCOUNT" -eq "$DESKTOP_GAMMA_AWS_ACCOUNT" ]; then
+    log "Refreshing Desktop Gamma account"
+elif [ "$AWS_ACCOUNT" -eq "$CHAT_GAMMA_AWS_ACCOUNT" ]; then
+    log "Refreshing Chat Gamma account"
+elif [ "$AWS_ACCOUNT" -eq "$CHAT_PROD_AWS_ACCOUNT" ]; then
+    log "Refreshing Chat Prod account"
 elif [ "$AWS_ACCOUNT" -eq "$PERSONAL_AWS_ACCOUNT" ]; then
     log "Refreshing Personal account"
 else
     help
 fi
+
 log "Refreshing credentials for account ${AWS_ACCOUNT} with role ${ROLE}"
 
 ada credentials update --account="${AWS_ACCOUNT}" --provider=isengard --role="${ROLE}" --profile "$PROFILE" --once
