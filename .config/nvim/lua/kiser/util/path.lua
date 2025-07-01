@@ -7,7 +7,8 @@ local PATH_SEPARATOR = require('kiser.util.os').is_windows() and '\\' or '/'
 ---@param ... string | string[]
 ---@return string
 function M.join(...)
-    local result = table.concat(vim.tbl_flatten { ... }, PATH_SEPARATOR):gsub(PATH_SEPARATOR .. '+', PATH_SEPARATOR)
+    local result = table.concat(vim.iter({ ... }):flatten(math.huge):totable(), PATH_SEPARATOR):gsub(
+    PATH_SEPARATOR .. '+', PATH_SEPARATOR)
     return result
 end
 
@@ -16,7 +17,7 @@ end
 ---@param markers string[] List of file names to search for.
 ---@param bufname string? Path to starting file, defaults to the current buffer.
 ---@return string?
----@deprecated use vim.fn.root instead
+---@deprecated use vim.fs.root instead
 function M.find_root(markers, bufname)
     bufname = bufname or vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
     local dirname = vim.fn.fnamemodify(bufname, ':p:h')

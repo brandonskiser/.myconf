@@ -1,16 +1,15 @@
 local M = {}
 
-local defaults = require('kiser.plugins.lsp.util').make_opts {
-    on_attach = function()
-        require('jdtls.setup').add_commands()
-    end
-}
+local defaults = require('kiser.plugins.lsp.util').make_opts { }
 
 local IS_WORK_LAPTOP = require('kiser.util.env').is_work_laptop()
 local HOME = os.getenv("HOME")
 
-local root_dir = IS_WORK_LAPTOP and require('kiser.util.path').find_root({ 'packageInfo' }, 'Config')
-    or require('kiser.util.path').find_root({ '.git', 'mvnw', 'gradlew', 'pom.xml' })
+-- local root_dir = IS_WORK_LAPTOP and require('kiser.util.path').find_root({ 'packageInfo' }, 'Config')
+--     or require('kiser.util.path').find_root({ '.git', 'mvnw', 'gradlew', 'pom.xml' })
+-- haven't tested this out yet so keeping this above code commented
+local root_dir = IS_WORK_LAPTOP and vim.fs.root(vim.fs.joinpath(vim.env.PWD, 'Config'), { 'packageInfo' })
+    or vim.fs.root(0, { '.git', 'mvnw', 'gradlew', 'pom.xml' })
 
 local jdtls_install_location = HOME .. '/.local/share/nvim/mason/packages/jdtls/'
 local jdtls_bin_path = jdtls_install_location .. 'bin/jdtls'
@@ -61,7 +60,6 @@ M.jdtls_config = {
         -- workspaceFolders = ws_folders_jdtls,
         bundles = {}
     },
-    on_attach = defaults.on_attach,
     capabilities = defaults.capabilities,
     flags = defaults.flags,
 }

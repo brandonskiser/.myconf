@@ -7,7 +7,7 @@ local lsp_flags = {
 
 local function lsp_highlight_document(client)
     if client.server_capabilities.document_highlight then
-        vim.api.nvim_exec(
+        vim.api.nvim_exec2(
             [[
                 augroup lsp_document_highlight
                     autocmd! * <buffer>
@@ -15,41 +15,44 @@ local function lsp_highlight_document(client)
                     autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
                 augroup END
             ]],
-            false
+            {}
         )
     end
 end
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local function default_lsp_keymaps(bufnr)
-    -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
+function M.default_lsp_keymaps(bufnr)
     -- Mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-    vim.keymap.set('n', '<leader>s', vim.lsp.buf.signature_help, bufopts)
-    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-    vim.keymap.set('n', '<leader>wl', function()
+    local function map(mode, l, r, opts)
+        opts = opts or {}
+        opts.silent = true
+        opts.noremap = true
+        opts.buffer = bufnr
+        vim.keymap.set(mode, l, r, opts)
+    end
+    map('n', 'gD', vim.lsp.buf.declaration)
+    map('n', 'gd', vim.lsp.buf.definition)
+    map('n', 'K', function() vim.lsp.buf.hover({ border = 'rounded' }) end)
+    map('n', 'gi', vim.lsp.buf.implementation)
+    map('n', '<leader>s', vim.lsp.buf.signature_help)
+    map('n', '<leader>wa', vim.lsp.buf.add_workspace_folder)
+    map('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder)
+    map('n', '<leader>wl', function()
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, bufopts)
-    vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-    vim.keymap.set('n', '<leader>F', function() vim.lsp.buf.format { async = true } end, bufopts)
+    end)
+    map('n', '<leader>D', vim.lsp.buf.type_definition)
+    map('n', '<leader>rn', vim.lsp.buf.rename)
+    map('n', '<leader>ca', vim.lsp.buf.code_action)
+    map('n', 'gr', vim.lsp.buf.references)
+    map('n', '<leader>F', function() vim.lsp.buf.format { async = true } end)
 
-    vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, bufopts)
+    map('i', '<C-s>', vim.lsp.buf.signature_help)
 end
 
 local function on_attach(client, bufnr)
-    default_lsp_keymaps(bufnr)
+    M.default_lsp_keymaps(bufnr)
     lsp_highlight_document(client)
 end
 
@@ -60,8 +63,6 @@ M.default_opts = {
 }
 
 -- Wrap the passed in opts to also enable the default_opts above.
----@param opts vim.lsp.ClientConfig
----@return vim.lsp.ClientConfig
 function M.make_opts(opts)
     local wrapper_on_attach = function(c, b)
         M.default_opts.on_attach(c, b)

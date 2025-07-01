@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+# Script for refreshing AWS isengard credentials using ada.
+# Credentials are stored in an AWS profile.
+#
+# toolbox install ada
+#
+# Usage: aws-refresh-creds [NAME] [--once]
+#   [NAME] is one of: desktop-gamma | chat-gamma | chat-prod
+#   default is personal, for my personal account
+
 set -eu
 
 SCRIPT_NAME=$(basename "$0")
@@ -31,18 +40,34 @@ PROFILE=personal
 AWS_ACCOUNT="$PERSONAL_AWS_ACCOUNT"
 ROLE="$PERSONAL_ROLE"
 
+ARG=''
+ONCE_FLAG=''
+
 # Set override
-if [ "${1:-}" = "desktop-gamma" ]; then
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --once)
+            ONCE_FLAG="--once"
+            shift
+            ;;
+        *)
+            ARG="$1"
+            shift
+            ;;
+    esac
+done
+
+if [ "${ARG:-}" = "desktop-gamma" ]; then
     AWS_ACCOUNT="$DESKTOP_GAMMA_AWS_ACCOUNT"
     ROLE="$DESKTOP_GAMMA_ROLE"
     PROFILE=desktop-gamma
 fi
-if [ "${1:-}" = "chat-gamma" ]; then
+if [ "${ARG:-}" = "chat-gamma" ]; then
     AWS_ACCOUNT="$CHAT_GAMMA_AWS_ACCOUNT"
     ROLE="$CHAT_GAMMA_ROLE"
     PROFILE=chat-gamma
 fi
-if [ "${1:-}" = "chat-prod" ]; then
+if [ "${ARG:-}" = "chat-prod" ]; then
     AWS_ACCOUNT="$CHAT_PROD_AWS_ACCOUNT"
     ROLE="$CHAT_PROD_ROLE"
     PROFILE=chat-prod
@@ -63,5 +88,5 @@ fi
 
 log "Refreshing credentials for account ${AWS_ACCOUNT} with role ${ROLE}"
 
-ada credentials update --account="${AWS_ACCOUNT}" --provider=isengard --role="${ROLE}" --profile "$PROFILE" --once
+ada credentials update --account="${AWS_ACCOUNT}" --provider=isengard --role="${ROLE}" --profile "$PROFILE" "$ONCE_FLAG"
 

@@ -1,6 +1,6 @@
 local path_utils = require('kiser.util.path')
 
-local IN_GIT_DIRECTORY = path_utils.find_root({ '.git' }) ~= nil
+local IN_GIT_DIRECTORY = vim.fs.root(0, { '.git' }) ~= nil
 
 return {
     {

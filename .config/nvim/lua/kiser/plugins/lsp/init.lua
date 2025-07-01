@@ -15,19 +15,19 @@ return {
             -- Global mappings for diagnostics,
             local opts = { noremap = true, silent = true }
             vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, opts)
-            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-            vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+            vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true}) end, opts)
+            vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true}) end, opts)
 
             -- Display diagnostics on change, instead of only on buffer write.
-            vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-                vim.lsp.diagnostic.on_publish_diagnostics,
-                { update_in_insert = true }
-            )
+            -- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+            --     vim.lsp.diagnostic.on_publish_diagnostics,
+            --     { update_in_insert = true }
+            -- )
 
-            vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-                vim.lsp.handlers.hover,
-                { border = 'rounded' }
-            )
+            -- vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+            --     vim.lsp.handlers.hover,
+            --     { border = 'rounded' }
+            -- )
 
             -- For servers without extra plugin requirements, we can just
             -- iterate through them and run setup on each.
