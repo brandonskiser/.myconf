@@ -1,0 +1,17 @@
+{
+    "root": "~/workplace/AWSVectorConsolasRuntimeServiceRustClient/",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "rust",
+            "root": "src/AWSVectorConsolasRuntimeServiceRustClient"
+        },
+        {
+            "name": "runtimeModel",
+            "root": "src/AWSVectorConsolasRuntimeServiceModel"
+        }
+    ]
+}
+

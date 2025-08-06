@@ -1,6 +1,11 @@
 return {
     {
-        'L3MON4D3/LuaSnip',
+        dir = "~/workplace/hackathon",
+        opts = {},
+    },
+
+    {
+        "L3MON4D3/LuaSnip",
         lazy = true, -- Loaded as a dependency of cmp
         dependencies = {
             "rafamadriz/friendly-snippets"
@@ -8,56 +13,56 @@ return {
     },
 
     {
-        'famiu/bufdelete.nvim',
+        "famiu/bufdelete.nvim",
     },
 
     {
-        'nvim-lualine/lualine.nvim',
+        "nvim-lualine/lualine.nvim",
         opts = {
             options = {
-                theme = 'auto'
+                theme = "auto"
                 -- theme = 'monokai-pro'
             }
         }
     },
 
     {
-        'windwp/nvim-autopairs',
+        "windwp/nvim-autopairs",
         event = "InsertEnter",
-        dependencies = { 'hrsh7th/nvim-cmp' },
+        dependencies = { "hrsh7th/nvim-cmp" },
         opts = function()
             -- If you want insert `(` after select function or method item
-            local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-            local cmp = require('cmp')
+            local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+            local cmp = require("cmp")
             cmp.event:on(
-                'confirm_done',
+                "confirm_done",
                 cmp_autopairs.on_confirm_done()
             )
             return {}
         end
     },
     {
-        'numToStr/Comment.nvim',
+        "numToStr/Comment.nvim",
         dependencies = {
-            'JoosepAlviste/nvim-ts-context-commentstring'
+            "JoosepAlviste/nvim-ts-context-commentstring"
         },
         opts = function()
-            local ts_context = require('ts_context_commentstring.integrations.comment_nvim')
+            local ts_context = require("ts_context_commentstring.integrations.comment_nvim")
             local opts = {
                 pre_hook = ts_context.create_pre_hook(),
                 -- LHS of toggle mappings in NORMAL mode
                 toggler = {
                     -- Line-comment toggle keymap
-                    line = '<leader>cc',
+                    line = "<leader>cc",
                     -- Block-comment toggle keymap
-                    block = '<leader>Cc',
+                    block = "<leader>Cc",
                 },
                 -- LHS of operator-pending mappings in NORMAL and VISUAL mode
                 opleader = {
                     -- Line-comment keymap
-                    line = '<leader>c',
+                    line = "<leader>c",
                     -- Block-comment keymap
-                    block = '<leader>C',
+                    block = "<leader>C",
                 },
                 mappings = {
                     basic = true,
@@ -69,7 +74,7 @@ return {
     },
 
     {
-        'folke/which-key.nvim',
+        "folke/which-key.nvim",
     },
 
     -- {
