@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+set -eu
+
+rm -f ~/.local/bin/q
+rm -f ~/.local/bin/qterm
+rm -f ~/.local/bin/qchat
+

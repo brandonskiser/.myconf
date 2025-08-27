@@ -9,14 +9,15 @@ local options = {
     cursorline = true,     -- highlight the current line
     ignorecase = true,     -- ignore case in searches
     smartcase = true,      -- ignore case in searches, unless the search includes uppercase characters
-    termguicolors = true,
+    scrolloff = 3,         -- keeps a couple of lines between the cursor and top/bottom of the buffer while scrolling
+    termguicolors = true,  -- enable truecolor
 
     -- display invisible characters
     -- eol   - U+23CE RETURN SYMBOL
     -- trail - U+2420 SYMBOL FOR SPACE
     -- nbsp  - U+23B5 BOTTOM SQUARE BRACKET
     list = true,
-    listchars = require('kiser.util.env').is_work_laptop() and "eol:␤,tab:␉·,trail:␠,nbsp:⎵"
+    listchars = require("kiser.util.env").is_work_laptop() and "eol:␤,tab:␉·,trail:␠,nbsp:⎵"
         or "eol:⏎,tab:␉·,trail:␠,nbsp:⎵",
     showtabline = 2, -- yeah
 }
