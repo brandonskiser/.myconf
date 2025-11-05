@@ -20,8 +20,9 @@ vim.g.rustaceanvim = {
         end,
         settings = {
             ["rust-analyzer"] = {
-                -- rust-analyzer settings: https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
-                checkOnSave = {
+                -- rust-analyzer settings: https://rust-analyzer.github.io/book/configuration.html
+                checkOnSave = true,
+                check = {
                     command = "clippy",
                     allTargets = true -- Setting to false fixes issue with no_std crates panic_handler conflicting definitions.
                 },

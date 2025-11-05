@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+Q_LOG_LEVEL=chat_cli::api_client=trace,chat_cli::telemetry=trace,chat_cli::cli::chat=trace \
+    q chat "$@"
+

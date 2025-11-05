@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+curl --location-trusted --negotiate -u : \
+    -b ~/.midway/cookie \
+    -c ~/.midway/cookie \
+    "$@"
