@@ -1,8 +1,8 @@
 return {
-    {
-        dir = "~/workplace/hackathon",
-        opts = {},
-    },
+    -- {
+    --     dir = "~/workplace/hackathon",
+    --     opts = {},
+    -- },
 
     {
         "L3MON4D3/LuaSnip",
