@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+curl -fsSL https://d1vw2q9icxnjwb.cloudfront.net/install.sh | bash

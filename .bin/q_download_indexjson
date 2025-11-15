@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+curl -fsSL https://desktop-release.q.us-east-1.amazonaws.com/index.json
+
