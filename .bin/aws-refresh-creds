@@ -25,6 +25,9 @@ CHAT_GAMMA_ROLE=admin
 CHAT_PROD_AWS_ACCOUNT=194704208190
 CHAT_PROD_ROLE=admin
 
+FIG_TOOLBOX_AWS_ACCOUNT=211125606403
+FIG_TOOLBOX_ROLE=admin
+
 function log {
     echo "$SCRIPT_NAME: $*"
 }
@@ -72,6 +75,11 @@ if [ "${ARG:-}" = "chat-prod" ]; then
     ROLE="$CHAT_PROD_ROLE"
     PROFILE=chat-prod
 fi
+if [ "${ARG:-}" = "toolbox" ]; then
+    AWS_ACCOUNT="$FIG_TOOLBOX_AWS_ACCOUNT"
+    ROLE="$FIG_TOOLBOX_ROLE"
+    PROFILE=toolbox
+fi
 
 # Log which account is being used
 if [ "$AWS_ACCOUNT" -eq "$DESKTOP_GAMMA_AWS_ACCOUNT" ]; then
@@ -80,6 +88,8 @@ elif [ "$AWS_ACCOUNT" -eq "$CHAT_GAMMA_AWS_ACCOUNT" ]; then
     log "Refreshing Chat Gamma account"
 elif [ "$AWS_ACCOUNT" -eq "$CHAT_PROD_AWS_ACCOUNT" ]; then
     log "Refreshing Chat Prod account"
+elif [ "$AWS_ACCOUNT" -eq "$FIG_TOOLBOX_AWS_ACCOUNT" ]; then
+    log "Refreshing Fig Toolbox Vendor account"
 elif [ "$AWS_ACCOUNT" -eq "$PERSONAL_AWS_ACCOUNT" ]; then
     log "Refreshing Personal account"
 else

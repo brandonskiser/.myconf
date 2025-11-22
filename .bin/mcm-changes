@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+set -eu
+
+start_commit="$1"
+
+git log --pretty=format:"%h %s" --abbrev-commit "$1"..HEAD | while read line || [ -n "$line" ]; do
+    # Get the original commit message for PR extraction
+    original_line="$line"
+
+    # Extract all PR numbers from the original line
+    pr_nums=$(echo "$original_line" | grep -o '#[0-9]\+' | tr -d '#')
+
+    # Keep the original line intact for output
+    output="$original_line"
+
+    # Add PR links if any were found
+    if [ ! -z "${pr_nums:-}" ]; then
+        for pr_num in $pr_nums; do
+            output="${output} - https://github.com/aws/amazon-q-developer-cli/pull/${pr_num}"
+        done
+    fi
+    echo "$output"
+done
+
