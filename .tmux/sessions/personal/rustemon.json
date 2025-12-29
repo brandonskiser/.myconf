@@ -1,0 +1,16 @@
+{
+    "root": "~/Projects/rust/rustcraft/",
+    "windows": [
+        {
+            "name": "engine"
+        },
+        {
+            "name": "tty"
+        },
+        {
+            "name": "rustemon",
+            "root": "games/rustemon"
+        }
+    ]
+}
+

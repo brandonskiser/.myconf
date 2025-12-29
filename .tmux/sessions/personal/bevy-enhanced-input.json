@@ -1,0 +1,16 @@
+{
+    "root": "~/Projects/bevy_enhanced_input",
+    "windows": [
+        {
+            "name": "code"
+        },
+        {
+            "name": "tty"
+        },
+        {
+            "name": "examples",
+            "root": "examples"
+        }
+    ]
+}
+
