@@ -27,6 +27,11 @@ function M.default_lsp_keymaps(bufnr)
     map('n', '<leader>F', function() vim.lsp.buf.format { async = true } end)
 
     map('i', '<C-s>', vim.lsp.buf.signature_help)
+
+    -- diagnostics
+    map('n', '<leader>de', vim.diagnostic.open_float)
+    map('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true}) end)
+    map('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true}) end)
 end
 
 return M
