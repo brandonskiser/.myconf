@@ -12,6 +12,7 @@ req("kiser.keymaps")
 req("kiser.commands")
 req("kiser.filetypes")
 req("kiser.buflist")
+req("kiser.diagnostics")
 
 require("kiser.treesit_navigator").setup()
 vim.api.nvim_create_user_command('TSNavigator', function()
