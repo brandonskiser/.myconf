@@ -25,7 +25,7 @@ local note_id_func = function(title)
     -- to make it file name friendly.
     local date_cmd = 'date'
     if util.os.is_mac() then
-        date_cmd = 'gdate'     -- Use Gnu Utils on Mac.
+        date_cmd = 'gdate' -- Use Gnu Utils on Mac.
     end
 
     local ts = vim.fn.system(date_cmd .. ' -u --iso-8601=seconds'):gsub(':', '')
@@ -98,8 +98,8 @@ local opts = {
 
 vim.pack.add({
     {
-        src = "https://github.com/obsidian-nvim/obsidian.nvim",
-        version = vim.version.range("*"), -- use latest release, remove to use latest commit
+        src = "https://github.com/epwalsh/obsidian.nvim",
+        version = vim.version.range "*",     -- use latest release, remove to use latest commit
     },
 })
 
@@ -113,12 +113,13 @@ vim.api.nvim_create_autocmd('BufReadPre', {
         require('obsidian').setup(opts)
 
         local keymaps = {
-            { '<leader>os',  ':Obsidian search<CR>',        desc = 'obsidian search' },
-            { '<leader>ot',  ':Obsidian tags<CR>',          desc = 'obsidian tags' },
-            { '<leader>ob',  ':Obsidian backlinks<CR><CR>', desc = 'obsidian backlinks' },
-            { '<leader>ofl', ':Obsidian follow_link<CR>',   desc = 'obsidian follow link' },
-            { 'gd',          ':Obsidian follow_link<CR>',   desc = 'obsidian follow link' },
-            { '<leader>oo',  ':Obsidian open<CR>',          desc = 'obsidian open' }
+            { '<leader>os',  ':ObsidianSearch<CR>',        desc = 'obsidian search' },
+            { '<leader>oS',  ':ObsidianSearch ',           desc = 'obsidian search with initial search term' },
+            { '<leader>ot',  ':ObsidianTags<CR>',          desc = 'obsidian tags' },
+            { '<leader>ob',  ':ObsidianBacklinks<CR><CR>', desc = 'obsidian backlinks' },
+            { '<leader>ofl', ':ObsidianFollowLink<CR>',    desc = 'obsidian follow link' },
+            { 'gd',          ':ObsidianFollowLink<CR>',    desc = 'obsidian follow link' },
+            { '<leader>oo',  ':ObsidianOpen<CR>',          desc = 'obsidian open' }
         }
         for _, keymap in ipairs(keymaps) do
             vim.keymap.set('n', keymap[1], keymap[2], { desc = keymap.desc })
@@ -126,34 +127,21 @@ vim.api.nvim_create_autocmd('BufReadPre', {
 
         -- Create a new Zettel.
         vim.keymap.set('n', '<leader>onz', function()
-            local obs = require('obsidian.note')
+            local client = require('obsidian').get_client()
             local title = vim.fn.input('Enter name: ')
             if title == '' then
                 print('No name provided, not creating note.')
                 return
             end
-            local id = note_id_func(title)
-            local path = vim.fs.joinpath(ZK_PATH, id) .. '.md'
-            local note = obs.new(id, { title }, { 'zettel' }, path)
-            note:save()
-            note:open()
-            -- vim.notify(vim.inspect(note))
-
-            -- local client = require('obsidian').get_client()
-            -- local title = vim.fn.input('Enter name: ')
-            -- if title == '' then
-            --     print('No name provided, not creating note.')
-            --     return
-            -- end
-            -- local id = client:new_note_id(title)
-            -- local note = client:create_note({
-            --     id = id,
-            --     title = title,
-            --     aliases = { title },
-            --     dir = ZK_PATH,
-            --     tags = { 'zettel' }
-            -- })
-            -- client:open_note(note)
+            local id = client:new_note_id(title)
+            local note = client:create_note({
+                id = id,
+                title = title,
+                aliases = { title },
+                dir = ZK_PATH,
+                tags = { 'zettel' }
+            })
+            client:open_note(note)
         end, { desc = 'new zettel' })
 
         -- Create a new projects note.

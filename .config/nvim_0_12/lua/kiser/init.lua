@@ -102,7 +102,11 @@ require("mini.pick").setup({
 })
 
 vim.keymap.set("n", "<leader>ff", function()
-    require("mini.pick").builtin.files()
+    require("mini.pick").builtin.files(nil, {
+        source = {
+            cwd = require("oil").get_current_dir()
+        }
+    })
 end, { noremap = true, desc = "find files" })
 
 vim.keymap.set("n", "<leader>fh", function()
@@ -110,7 +114,11 @@ vim.keymap.set("n", "<leader>fh", function()
 end, { noremap = true, desc = "find help tags" })
 
 vim.keymap.set("n", "<leader>fg", function()
-    require("mini.pick").builtin.grep_live()
+    require("mini.pick").builtin.grep_live(nil, {
+        source = {
+            cwd = require("oil").get_current_dir()
+        }
+    })
 end, { noremap = true, desc = "live grep" })
 
 vim.keymap.set("n", "<leader>fb", function()
@@ -363,7 +371,7 @@ vim.api.nvim_create_autocmd('FileType', {
     end
 })
 
-req('kiser.plugins.obsidian')
+-- req('kiser.plugins.obsidian')
 
 -- Set colorscheme after all plugins are done installing
 req("kiser.colorscheme")
