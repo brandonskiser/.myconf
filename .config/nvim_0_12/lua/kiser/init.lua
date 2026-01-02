@@ -5,12 +5,13 @@ local function req(module)
     end
 end
 
+req("kiser.util")
+
 req("kiser.defaults")
 req("kiser.keymaps")
 req("kiser.commands")
 req("kiser.filetypes")
 req("kiser.buflist")
-req("kiser.util")
 
 require("kiser.treesit_navigator").setup()
 vim.api.nvim_create_user_command('TSNavigator', function()
@@ -204,27 +205,8 @@ vim.pack.add({
 require("aerial").setup()
 vim.api.nvim_set_keymap("n", "<leader>at", "<cmd>AerialToggle!<CR>", { desc = "toggle aerial" })
 vim.keymap.set("n", "<leader>fa", function()
-    local ts = require("kiser.util.treesitter")
-    local lang = ts.get_buf_lang()
-    local query = vim.treesitter.query.get(lang, "aerial")
-
-    -- local filetype = vim.api.nvim_get_option_value("filetype", { buf = 0 })
-    -- local query = vim.treesitter.query.parse(filetype, [[
-    --     ; query
-    --     (function_definition) @function_guy
-    -- ]])
-    -- local tree = vim.treesitter.get_parser():parse()[1]
-    -- vim.notify("Tree: ", vim.inspect(tree))
-    -- for id, node, md in query:iter_captures(tree:root(), 0) do
-    --     -- Print the node name and source text.
-    --     vim.print({ node:type(), vim.treesitter.get_node_text(node, vim.api.nvim_get_current_buf()) })
-    -- end
-    -- require("mini.pick").start({
-    --     source = {
-    --         items = {}
-    --     }
-    -- })
-end, { noremap = true, desc = "all buffers fuzzy find" })
+    require("kiser.mini-aerial").pick()
+end, { noremap = true, desc = "find current buffer symbols" })
 
 vim.pack.add({
     { src = gh("mrcjkb/rustaceanvim"), version = vim.version.range("^6") }
@@ -380,6 +362,8 @@ vim.api.nvim_create_autocmd('FileType', {
         require('lazydev').setup()
     end
 })
+
+req('kiser.plugins.obsidian')
 
 -- Set colorscheme after all plugins are done installing
 req("kiser.colorscheme")

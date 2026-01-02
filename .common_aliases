@@ -12,5 +12,7 @@ alias cp='cp -i'
 command -v > /dev/null 2>&1 nvim && alias vim='nvim'
 command -v > /dev/null 2>&1 lazygit && alias lg='lazygit'
 
+command -v > /dev/null 2>&1 nvim_0_12 && alias nv='NVIM_APPNAME=nvim_0_12 nvim_0_12'
+
 alias fcd='cd $(bash -c fuzzy-dirs)'
 

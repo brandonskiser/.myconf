@@ -1,4 +1,13 @@
+function log(arg)
+    vim.notify(vim.inspect(arg))
+end
 
-vim.notify(vim.inspect(vim.fn.stdpath('data')))
+local ts = require("kiser.util.treesitter")
+local lang = ts.get_buf_lang()
+local query = vim.treesitter.query.get(lang, "aerial")
+-- log(query)
+local parser = vim.treesitter.get_parser()
+local tree = parser:parse()[1]
+-- tree:root()
+log(tree:root():child_count())
 
-vim.notify(vim.inspect(vim.pack.get()))
