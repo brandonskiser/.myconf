@@ -34,6 +34,8 @@ end
 --- Context: Deleting a buffer will close any windows open with that buffer, so
 --- we need to update any windows to use a different buffer before deleting it.
 ---
+--- If the buffer is modified, prompts user to (S)ave, (I)gnore, or (C)ancel.
+---
 --- @param buf integer Buffer id to delete
 function M.buf_delete(buf)
     if buf == 0 then
@@ -47,6 +49,22 @@ function M.buf_delete(buf)
     buf_info = buf_info[1]
     if buf_info == nil then return end
 
+    if buf_info.changed == 1 then
+        local bufname = vim.api.nvim_buf_get_name(buf)
+        if bufname == "" then bufname = "[No Name]" end
+        local choice = vim.fn.confirm(
+            string.format("No write since last change for buffer %d (%s).", buf, vim.fn.fnamemodify(bufname, ":t")),
+            "&Save\n&Ignore\n&Cancel"
+        )
+        if choice == 1 then -- Save
+            vim.api.nvim_buf_call(buf, function() vim.cmd("write") end)
+        elseif choice == 2 then -- Ignore
+            -- continue to delete
+        else -- Cancel or closed prompt
+            return
+        end
+    end
+
     local windows = buf_info.windows
     windows = Lua_ext.filter(windows, function(win) return vim.api.nvim_win_get_buf(win) == buf end)
 
@@ -54,13 +72,13 @@ function M.buf_delete(buf)
     -- falling back to a scratch buffer if none exist.
     local file_bufs = Lua_ext.filter(M.list_file_bufs(),
         function(b) return b ~= buf end)
-    local next_buf = file_bufs[1] or vim.api.nvim_create_buf(false, true)
+    local next_buf = file_bufs[1] or vim.api.nvim_create_buf(true, false)
 
     for _, win in ipairs(windows) do
         vim.api.nvim_win_set_buf(win, next_buf)
     end
 
-    vim.api.nvim_buf_delete(buf, {})
+    vim.api.nvim_buf_delete(buf, { force = true })
 end
 
 return M
