@@ -10,7 +10,7 @@ function M.is_file_buf(buf)
     -- A buffer is generally a file buffer if:
     -- 1. Its 'buftype' is empty (default for normal files).
     -- 2. It has a valid file path (not an empty string or special name like '[No Name]').
-    local buftype = vim.api.nvim_buf_get_option(buf, "buftype")
+    local buftype = vim.api.nvim_get_option_value("buftype", { buf = buf })
     local bufname = vim.api.nvim_buf_get_name(buf)
     return buftype == "" and bufname ~= "" and not vim.endswith(bufname, "[No Name]")
 end
@@ -34,7 +34,7 @@ end
 --- Context: Deleting a buffer will close any windows open with that buffer, so
 --- we need to update any windows to use a different buffer before deleting it.
 ---
---- If the buffer is modified, prompts user to (S)ave, (I)gnore, or (C)ancel.
+--- If the buffer is modified, prompts to (S)ave, (I)gnore, or (C)ancel.
 ---
 --- @param buf integer Buffer id to delete
 function M.buf_delete(buf)

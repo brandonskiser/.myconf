@@ -208,6 +208,33 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = install_parser_and_enable_features
 })
 
+-- add wesl
+vim.filetype.add({
+    extension = {
+        wesl = 'wesl'
+    }
+})
+vim.api.nvim_create_autocmd("User", {
+    pattern = "TSUpdate",
+    callback = function()
+        require("nvim-treesitter.parsers").wesl = {
+            install_info = {
+                revision = '3fa2b96bf5c217dae9bf663e2051fcdad0762c19',
+                url = 'https://github.com/wgsl-tooling-wg/tree-sitter-wesl',
+                queries = 'queries',
+            },
+            filetype = 'wesl',
+            tier = 1,
+        }
+        vim.treesitter.language.register('wesl', { 'wesl' })
+    end
+})
+
+vim.pack.add({
+    { src = gh("nvim-treesitter/nvim-treesitter-context") }
+})
+require("treesitter-context").setup({ mode = 'cursor', max_lines = 4 })
+
 vim.pack.add({
     { src = gh("stevearc/aerial.nvim") }
 })
@@ -220,6 +247,36 @@ end, { noremap = true, desc = "find current buffer symbols" })
 vim.pack.add({
     { src = gh("mrcjkb/rustaceanvim"), version = vim.version.range("^6") }
 })
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(ev)
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client and client.name == "rust_analyzer" then
+            vim.keymap.set("n", "K", ":RustLsp hover actions<CR>",
+                { noremap = true, silent = true, buffer = ev.buf }
+            )
+        end
+    end
+})
+vim.g.rustaceanvim = {
+    server = {
+        settings = {
+            ["rust-analyzer"] = {
+                -- rust-analyzer settings: https://rust-analyzer.github.io/book/configuration.html
+                checkOnSave = true,
+                check = {
+                    command = "clippy",
+                    allTargets = true -- Setting to false fixes issue with no_std crates panic_handler conflicting definitions.
+                },
+                rustfmt = {
+                    extraArgs = { "+nightly" }
+                },
+                cargo = {
+                    -- features = { 'phoenix' }
+                }
+            }
+        }
+    }
+}
 
 vim.pack.add({
     { src = gh("neovim/nvim-lspconfig") }
