@@ -52,7 +52,6 @@ keymap("n", "<leader>wr", ":wincmd r<CR>", opts)      -- rotate window to the ri
 keymap("n", "<leader>we", ":wincmd R<CR>", opts)      -- rotate window to the left/up
 keymap("n", "<leader>wo", ":wincmd o<CR>", opts)      -- make current window the only window
 keymap("n", "<leader>wT", ":wincmd T<CR>", opts)      -- move current window to a new tab page
-keymap("n", "<C-w>", ":Bdelete<CR>", opts)            
 vim.keymap.set('n', '<C-w>', function() require('kiser.util.nvim').buf_delete(0) end, {
     noremap = true,
     nowait = true,
@@ -75,6 +74,7 @@ keymap("n", "gx", ":!xdg-open <C-r><C-a><CR>", opts)
 
 -- Quickfix list
 keymap("n", "<leader>qc", ":cclose<CR>", opts) -- close
+keymap("n", "<leader>qo", ":copen<CR>", opts) -- close
 
 -- Terminal
 keymap("n", "<leader>t", ":terminal<CR>", opts)

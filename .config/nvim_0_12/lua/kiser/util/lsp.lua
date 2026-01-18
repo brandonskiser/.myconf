@@ -1,6 +1,6 @@
 local M = {}
 
-function M.default_lsp_keymaps(bufnr)
+function M.default_lsp_keymaps(bufnr, client)
     -- Mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local function map(mode, l, r, opts)
@@ -12,7 +12,11 @@ function M.default_lsp_keymaps(bufnr)
     end
     map('n', 'gD', vim.lsp.buf.declaration)
     map('n', 'gd', vim.lsp.buf.definition)
-    map('n', 'K', function() vim.lsp.buf.hover({ border = 'rounded' }) end)
+    if client and client.name == "rust_analyzer" then
+        map('n', 'K', ':RustLsp hover actions<CR>')
+    else
+        map('n', 'K', function() vim.lsp.buf.hover({ border = 'rounded' }) end)
+    end
     map('n', 'gi', vim.lsp.buf.implementation)
     map('n', '<leader>s', vim.lsp.buf.signature_help)
     map('n', '<leader>wa', vim.lsp.buf.add_workspace_folder)

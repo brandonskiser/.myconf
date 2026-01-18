@@ -28,6 +28,12 @@ CHAT_PROD_ROLE=admin
 FIG_TOOLBOX_AWS_ACCOUNT=211125606403
 FIG_TOOLBOX_ROLE=admin
 
+METRICS_AWS_ACCOUNT=421629052180
+METRICS_ROLE=ReadOnly
+
+RTS_AWS_ACCOUNT=678005972646
+RTS_ROLE=ReadOnly
+
 function log {
     echo "$SCRIPT_NAME: $*"
 }
@@ -80,6 +86,16 @@ if [ "${ARG:-}" = "toolbox" ]; then
     ROLE="$FIG_TOOLBOX_ROLE"
     PROFILE=toolbox
 fi
+if [ "${ARG:-}" = "metrics" ]; then
+    AWS_ACCOUNT="$METRICS_AWS_ACCOUNT"
+    ROLE="$METRICS_ROLE"
+    PROFILE=metrics
+fi
+if [ "${ARG:-}" = "rts" ]; then
+    AWS_ACCOUNT="$RTS_AWS_ACCOUNT"
+    ROLE="$RTS_ROLE"
+    PROFILE=rts
+fi
 
 # Log which account is being used
 if [ "$AWS_ACCOUNT" -eq "$DESKTOP_GAMMA_AWS_ACCOUNT" ]; then
@@ -92,6 +108,10 @@ elif [ "$AWS_ACCOUNT" -eq "$FIG_TOOLBOX_AWS_ACCOUNT" ]; then
     log "Refreshing Fig Toolbox Vendor account"
 elif [ "$AWS_ACCOUNT" -eq "$PERSONAL_AWS_ACCOUNT" ]; then
     log "Refreshing Personal account"
+elif [ "$AWS_ACCOUNT" -eq "$METRICS_AWS_ACCOUNT" ]; then
+    log "Refreshing Metrics account"
+elif [ "$AWS_ACCOUNT" -eq "$RTS_AWS_ACCOUNT" ]; then
+    log "Refreshing RTS account"
 else
     help
 fi

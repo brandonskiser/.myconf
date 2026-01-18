@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+import argparse
+import random
+import string
+
+DEFAULT_SIZE = 500_000
+MAX_SIZE = 1_000_000
+CHUNK_SIZE = 100
+CHARS = string.ascii_letters + string.digits + string.punctuation
+
+
+def generate_random_file(filename: str, total_size: int):
+    """Generate a file with random characters, newline every 99 chars."""
+    num_chunks, remaining = divmod(total_size, CHUNK_SIZE)
+
+    with open(filename, "w") as f:
+        for _ in range(num_chunks):
+            f.write("".join(random.choices(CHARS, k=CHUNK_SIZE - 1)))
+            f.write("\n")
+        if remaining:
+            f.write("".join(random.choices(CHARS, k=remaining)))
+
+    print(f"Created '{filename}' ({total_size} bytes)")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Generate a file with random characters")
+    parser.add_argument("filename", help="Output filename")
+    parser.add_argument("size", nargs="?", type=int, default=DEFAULT_SIZE, help=f"File size in bytes (default: {DEFAULT_SIZE})")
+    parser.add_argument("-f", "--force", action="store_true", help=f"Allow sizes over {MAX_SIZE} bytes")
+    args = parser.parse_args()
+
+    if args.size > MAX_SIZE and not args.force:
+        parser.error(f"size {args.size} exceeds {MAX_SIZE}. Use -f/--force to override.")
+
+    generate_random_file(args.filename, args.size)

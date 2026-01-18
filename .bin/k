@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
 KIRO_LOG_LEVEL=chat_cli::api_client=trace,chat_cli::cli::chat=trace \
-    kiro-cli chat --trust-all-tools
+    kiro-cli chat "$@"
 

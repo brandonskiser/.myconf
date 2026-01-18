@@ -247,16 +247,6 @@ end, { noremap = true, desc = "find current buffer symbols" })
 vim.pack.add({
     { src = gh("mrcjkb/rustaceanvim"), version = vim.version.range("^6") }
 })
-vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function(ev)
-        local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        if client and client.name == "rust_analyzer" then
-            vim.keymap.set("n", "K", ":RustLsp hover actions<CR>",
-                { noremap = true, silent = true, buffer = ev.buf }
-            )
-        end
-    end
-})
 vim.g.rustaceanvim = {
     server = {
         settings = {
@@ -304,19 +294,20 @@ local function setup_lsp()
     vim.api.nvim_create_autocmd("LspAttach", {
         --- @param ev vim.api.keyset.create_autocmd.callback_args
         callback = function(ev)
-            require("kiser.util.lsp").default_lsp_keymaps(ev.buf)
+            local client = vim.lsp.get_client_by_id(ev.data.client_id)
+            require("kiser.util.lsp").default_lsp_keymaps(ev.buf, client)
         end
     })
 end
 setup_lsp()
 
--- vim.pack.del({ gh("saghen/blink.cmp") })
--- vim.pack.add({
---     -- { src = gh("saghen/blink.cmp"), version = vim.version.range("^1") }
---     { src = gh("saghen/blink.cmp"), version = "v1.8.0" }
--- })
--- require("blink.cmp").setup()
+vim.api.nvim_create_user_command('LspInfo', ':checkhealth vim.lsp', { desc = 'Alias to `:checkhealth vim.lsp`' })
 
+vim.api.nvim_create_user_command('LspLog', function()
+  vim.cmd(string.format('tabnew %s', vim.lsp.log.get_filename()))
+end, {
+  desc = 'Opens the Nvim LSP client log.',
+})
 
 vim.pack.add({
     { src = gh("hrsh7th/cmp-buffer") },
