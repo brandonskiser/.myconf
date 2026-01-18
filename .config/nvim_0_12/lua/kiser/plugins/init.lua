@@ -1,9 +1,5 @@
-local function req(module)
-    local ok, _ = pcall(require, "kiser.plugins." .. module)
-    if not ok then
-        print("Plugin module `" .. module .. "` unable to be imported.")
-    end
-end
+local profile = require("kiser.plugins.profile")
+local req = profile.req
 
 --- Global helper to construct GitHub URLs for vim.pack.add
 --- @param x string repository in "owner/repo" format
@@ -27,3 +23,5 @@ req("nvim-lspconfig")
 req("cmp")
 req("codecompanion")
 req("lazydev")
+
+vim.api.nvim_create_user_command("PluginProfile", profile.show, { desc = "Show plugin load times" })
