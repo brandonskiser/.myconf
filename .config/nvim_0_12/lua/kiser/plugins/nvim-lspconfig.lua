@@ -5,7 +5,7 @@ vim.pack.add({
 local home_dir = os.getenv("HOME")
 if not home_dir then return end
 
-local local_lsp_dir = require("kiser.util.path").join(vim.fn.stdpath("config"), "lsp")
+local local_lsp_dir = vim.fs.joinpath(vim.fn.stdpath("config"), "lsp")
 local lsp_configs = {}
 for _, fpath in pairs(vim.api.nvim_get_runtime_file("lsp/*.lua", true)) do
     if fpath:match(local_lsp_dir) then
@@ -23,6 +23,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 vim.api.nvim_create_user_command('LspInfo', ':checkhealth vim.lsp', { desc = 'Alias to `:checkhealth vim.lsp`' })
+
 vim.api.nvim_create_user_command('LspLog', function()
     vim.cmd(string.format('tabnew %s', vim.lsp.log.get_filename()))
 end, { desc = 'Opens the Nvim LSP client log.' })
+
+vim.api.nvim_create_user_command('LspStop', function()
+    local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
+    for _, client in ipairs(clients) do
+        client:stop()
+    end
+end, { desc = 'Stop LSP clients attached to the current buf' })

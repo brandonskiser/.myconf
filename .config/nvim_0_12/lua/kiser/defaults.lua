@@ -12,6 +12,7 @@ local options = {
     scrolloff = 3,         -- keeps a couple of lines between the cursor and top/bottom of the buffer while scrolling
     termguicolors = true,  -- enable truecolor
     splitright = true,     -- create new windows to the right instead of left with :vsplit
+    exrc = true,           -- enable executing project-specific .nvim.lua files
 
     -- display invisible characters
     -- eol   - U+23CE RETURN SYMBOL

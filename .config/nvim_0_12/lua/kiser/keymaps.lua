@@ -16,6 +16,10 @@ vim.g.maplocalleader = " "
 
 keymap("n", "<C-s>", ":w<CR>", opts)
 
+-- Move left and right in insert mode
+keymap('i', "<C-h>", "<Left>", opts)
+keymap('i', "<C-l>", "<Right>", opts)
+
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
 keymap("n", "<C-j>", "<C-w>j", opts)
