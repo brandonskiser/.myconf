@@ -23,5 +23,6 @@ req("nvim-lspconfig")
 req("cmp")
 req("codecompanion")
 req("lazydev")
+req("markview")
 
 vim.api.nvim_create_user_command("PluginProfile", profile.show, { desc = "Show plugin load times" })

@@ -58,6 +58,10 @@
       "rev": "47f91c416daef12db467145e16bed5bbfe00add8",
       "src": "https://github.com/nvim-lualine/lualine.nvim"
     },
+    "markview.nvim": {
+      "rev": "9e852c299351fc2110e763edc7fc899358ee112e",
+      "src": "https://github.com/OXY2DEV/markview.nvim"
+    },
     "mini.base16": {
       "rev": "91c852a07a4907895cba714fab337aedb6bd9d87",
       "src": "https://github.com/nvim-mini/mini.base16"
