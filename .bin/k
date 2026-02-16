@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
-KIRO_LOG_LEVEL=chat_cli::api_client=trace,chat_cli::cli::chat=trace \
-    kiro-cli chat "$@"
+KIRO_CHAT_LOG_FILE=chat.txt \
+KIRO_LOG_NO_COLOR=1 \
+KIRO_LOG_LEVEL=chat_cli=trace \
+    kiro-cli "$@"
 

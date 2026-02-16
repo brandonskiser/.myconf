@@ -1,0 +1,16 @@
+{
+    "root": "~/workplace/KiroCliDeployCDK/",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "CDK code",
+            "root": "src/KiroCliDeployCDK"
+        },
+        {
+            "name": "Lambdas",
+            "root": "src/KiroCliDeployLambda"
+        }
+    ]
+}

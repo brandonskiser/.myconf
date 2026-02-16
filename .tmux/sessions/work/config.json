@@ -10,6 +10,10 @@
             "root": ".config/nvim"
         },
         {
+            "name": "nvim",
+            "root": ".config/nvim_0_12"
+        },
+        {
             "name": "bin",
             "root": ".bin"
         },
@@ -26,8 +30,8 @@
             "root": ".config/wezterm"
         },
         {
-            "name": "ninja-dev-sync",
-            "root": ".config"
+            "name": ".kiro",
+            "root": ".kiro"
         }
     ]
 }
