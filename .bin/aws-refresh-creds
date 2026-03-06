@@ -16,6 +16,10 @@ SCRIPT_NAME=$(basename "$0")
 PERSONAL_AWS_ACCOUNT=730335495947
 PERSONAL_ROLE=admin
 
+DESKTOP_PROD_AWS_ACCOUNT=158872659206
+# DESKTOP_PROD_ROLE=admin
+DESKTOP_PROD_ROLE=ReadOnly
+
 DESKTOP_GAMMA_AWS_ACCOUNT=230592382359
 # DESKTOP_GAMMA_ROLE=admin
 DESKTOP_GAMMA_ROLE=ReadOnly
@@ -67,6 +71,11 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
+if [ "${ARG:-}" = "desktop-prod" ]; then
+    AWS_ACCOUNT="$DESKTOP_PROD_AWS_ACCOUNT"
+    ROLE="$DESKTOP_PROD_ROLE"
+    PROFILE=desktop-prod
+fi
 if [ "${ARG:-}" = "desktop-gamma" ]; then
     AWS_ACCOUNT="$DESKTOP_GAMMA_AWS_ACCOUNT"
     ROLE="$DESKTOP_GAMMA_ROLE"
@@ -99,7 +108,9 @@ if [ "${ARG:-}" = "rts" ]; then
 fi
 
 # Log which account is being used
-if [ "$AWS_ACCOUNT" -eq "$DESKTOP_GAMMA_AWS_ACCOUNT" ]; then
+if [ "$AWS_ACCOUNT" -eq "$DESKTOP_PROD_AWS_ACCOUNT" ]; then
+    log "Refreshing Desktop Prod account"
+elif [ "$AWS_ACCOUNT" -eq "$DESKTOP_GAMMA_AWS_ACCOUNT" ]; then
     log "Refreshing Desktop Gamma account"
 elif [ "$AWS_ACCOUNT" -eq "$CHAT_GAMMA_AWS_ACCOUNT" ]; then
     log "Refreshing Chat Gamma account"
