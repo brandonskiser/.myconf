@@ -10,6 +10,7 @@
     cane = commit --amend --no-edit
     dc = diff --cached
     br = branch
+    sh = stash
 [includeIf "gitdir:/Volumes/workplace/"]
     path = ~/.gitconfig-work
 [includeIf "gitdir:~/workplace/"]

@@ -13,7 +13,13 @@ require("mini.pick").setup({
         scroll_down = "<C-d>",
         scroll_up = "<C-u>",
         toggle_info = "<C-i>",
-        toggle_preview = "<C-p>"
+        toggle_preview = "<C-p>",
+        sys_paste = {
+            char = "<C-v>",
+            func = function()
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-r>+", true, true, true), "n", true)
+            end,
+        }
     }
 })
 

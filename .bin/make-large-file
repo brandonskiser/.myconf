@@ -6,7 +6,7 @@ import string
 DEFAULT_SIZE = 500_000
 MAX_SIZE = 1_000_000
 CHUNK_SIZE = 100
-CHARS = string.ascii_letters + string.digits + string.punctuation
+CHARS = string.ascii_letters + string.digits
 
 
 def generate_random_file(filename: str, total_size: int):
