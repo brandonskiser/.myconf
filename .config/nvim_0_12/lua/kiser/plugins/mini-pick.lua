@@ -42,19 +42,7 @@ vim.keymap.set("n", "<leader>fg", function()
 end, { noremap = true, desc = "live grep" })
 
 vim.keymap.set("n", "<leader>fb", function()
-    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-    local lines_with_numbers = {}
-    for lnum, line in ipairs(lines) do
-        lines_with_numbers[#lines_with_numbers + 1] = lnum .. " | " .. line
-    end
-    local selected_line = require("mini.pick").start({
-        source = { name = "Buffer lines", items = lines_with_numbers }
-    })
-    if selected_line == nil then return end
-    local idx = selected_line:find(" |")
-    if idx == nil then return end
-    local line_num = tonumber(selected_line:sub(1, idx - 1))
-    vim.api.nvim_win_set_cursor(0, { line_num, 0 })
+    require("mini.extra").pickers.buf_lines({ scope = "current" })
 end, { noremap = true, desc = "current buffer fuzzy find" })
 
 vim.keymap.set("n", "<leader>fp", function()

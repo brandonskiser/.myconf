@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+# for gamma: https://download.gamma.cli.kiro.dev/stable/latest/Kiro%20CLI.dmg
+#
+curl -fsSL https://prod.download.cli.kiro.dev/stable/index.json
+

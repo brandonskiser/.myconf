@@ -1,0 +1,16 @@
+{
+    "root": "~/workplace/ToolkitTelemetryLambda/",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "CDK code",
+            "root": "src/ToolkitTelemetryInfrastructure"
+        },
+        {
+            "name": "Lambda",
+            "root": "src/ToolkitTelemetryLambda"
+        }
+    ]
+}

@@ -8,5 +8,5 @@ export ANTHROPIC_MODEL='arn:aws:bedrock:us-west-2:730335495947:inference-profile
 export AWS_REGION=us-west-2
 export AWS_PROFILE=personal
 
-claude
+~/.local/bin/claude
 

@@ -1,0 +1,16 @@
+{
+    "root": "~/workplace/QDeveloperMaestroPythonSidecar",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "Service code",
+            "root": "src/QDeveloperMaestro"
+        },
+        {
+            "name": "Sidecar",
+            "root": "src/QDeveloperMaestroPythonSidecar"
+        }
+    ]
+}
