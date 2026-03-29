@@ -2,6 +2,8 @@
 
 rm -f chat.txt
 KIRO_CHAT_LOG_FILE=chat.txt \
+KIRO_TUI_LOG_FILE=tui_tui_log.txt \
+KIRO_TUI_LOG_LEVEL=debug \
 KIRO_LOG_NO_COLOR=1 \
 KIRO_LOG_LEVEL=chat_cli=trace \
     ~/workplace/kiro-cli-chat-dev/build/kiro-cli-chat "$@"

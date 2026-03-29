@@ -1,0 +1,49 @@
+#!/usr/bin/env sh
+
+# gcb - Wrapper for `git clone --bare`
+#
+# USAGE: gcb <clone_url> [local_name]
+#
+# A script for cloning bare repositories to set up as a worktree.
+# https://gabri.me/blog/git-worktrees-done-right
+
+set -e
+
+SCRIPT_NAME=$(basename "$0")
+
+usage() {
+    echo "USAGE: $SCRIPT_NAME <clone_url> [local_name]" >&2
+    exit 1
+}
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+    usage
+fi
+
+CLONE_URL="$1"
+
+# Use provided local_name, or extract repo name from URL
+# ${2:-default} means: use $2 if set, otherwise fall back to default
+# e.g. "https://github.com/user/cool-app.git" -> "cool-app"
+REPO_NAME="${2:-$(basename "$CLONE_URL" .git)}"
+
+if [ -e "$REPO_NAME" ]; then
+    echo "error: '$REPO_NAME' already exists" >&2
+    exit 1
+fi
+
+mkdir "$REPO_NAME"
+cd "$REPO_NAME"
+
+git clone --bare "$CLONE_URL" .bare
+
+# This is the magic - a .git FILE that points to .bare
+echo "gitdir: ./.bare" >.git
+
+# Bare clones need this to fetch all branches
+git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+# Make the setup portable (can move the folder)
+git config worktree.useRelativePaths true
+
+git fetch --all
