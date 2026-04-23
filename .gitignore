@@ -2,3 +2,5 @@
 
 # Testing kiro-cli
 chat.txt
+.cli-rust-log.txt
+.cli-tui-log.txt

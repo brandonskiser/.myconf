@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+if ! grep -qiE 'rhel|amazon' /etc/os-release 2>/dev/null; then
+    echo "Error: this script only supports RHEL/Amazon Linux" >&2
+    exit 1
+fi
+sudo yum groups install -y Development\ tools
+sudo yum install -y cmake3
+sudo yum install -y python3-{devel,pip}
+sudo pip-3 install neovim --upgrade
+(
+cd "$(mktemp -d)"
+git clone https://github.com/neovim/neovim.git
+cd neovim
+git checkout release-0.12
+make CMAKE_BUILD_TYPE=Release
+sudo make install
+)
+

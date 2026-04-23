@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+
+# tma - tmux wrapper for agent socket
+#
+# Small helper for attaching to tmux sessions created by coding agents.
+#
+# Usage: tma <tmux-command> [args...]
+#   tma ls                    # list sessions
+#   tma attach -t my-session  # attach to session
+#   tma capture-pane -p -J    # capture output
+#
+# Equivalent to: tmux -S $SOCKET <command> [args...]
+
+SOCKET="${TMPDIR:-/tmp}/agent-tmux-sockets/agent.sock"
+
+if [ ! -S "$SOCKET" ]; then
+  echo "No agent socket at $SOCKET" >&2
+  exit 1
+fi
+
+# Prevent nested tmux on attach commands; attach read-only to avoid resizing agent panes
+case "$1" in
+  attach|a)
+    if [ -n "$TMUX" ]; then
+      echo "Already inside tmux. Detach first or use: tma capture-pane -p -J -t <session>:0.0 -S -200" >&2
+      exit 1
+    fi
+    shift
+    READONLY="-r" NEW=""
+    for arg in "$@"; do case "$arg" in -w) READONLY="" ;; *) NEW="$NEW \"$arg\"" ;; esac; done
+    eval set -- $NEW
+    exec tmux -S "$SOCKET" attach $READONLY "$@"
+    ;;
+esac
+
+exec tmux -S "$SOCKET" "$@"

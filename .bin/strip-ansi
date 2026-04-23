@@ -1,0 +1,3 @@
+#!/bin/sh
+ESC=$(printf '\033')
+echo "${1:-$(cat)}" | sed "s/${ESC}\[[0-9;]*[a-zA-Z]//g"
