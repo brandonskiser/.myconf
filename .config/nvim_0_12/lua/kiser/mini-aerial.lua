@@ -161,7 +161,8 @@ function M.pick()
             preview = function(buf_id, item)
                 local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
                 vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, lines)
-                vim.bo[buf_id].filetype = vim.bo[bufnr].filetype
+                local lang = vim.treesitter.language.get_lang(vim.bo[bufnr].filetype)
+                if lang then pcall(vim.treesitter.start, buf_id, lang) end
                 local win = vim.fn.bufwinid(buf_id)
                 if win ~= -1 then
                     vim.wo[win].number = true

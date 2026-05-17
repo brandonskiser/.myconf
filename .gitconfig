@@ -5,18 +5,19 @@
 	defaultBranch = main
 [alias]
 	st = status
-    c = commit
-    co = checkout
-    cane = commit --amend --no-edit
-    dc = diff --cached
-    br = branch
-    sh = stash
+	c = commit
+	co = checkout
+	cane = commit --amend --no-edit
+	dc = diff --cached
+	br = branch
+	sh = stash
 [includeIf "gitdir:/Volumes/workplace/"]
-    path = ~/.gitconfig-work
+	path = ~/.gitconfig-work
 [includeIf "gitdir:~/workplace/"]
-    path = ~/.gitconfig-work
+	path = ~/.gitconfig-work
 [includeIf "gitdir:/workplace/"]
-    path = ~/.gitconfig-work
+	path = ~/.gitconfig-work
 [core]
-	excludesfile = /home/brandon/.gitignore
 	editor = nvim
+	commentChar = ^
+	

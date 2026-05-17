@@ -29,3 +29,10 @@ vim.api.nvim_create_autocmd('FileType', {
         vim.keymap.set('n', '<leader>m', '<cmd>Mdview<CR>', { buffer = ev.buf })
     end,
 })
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'gitconfig',
+    callback = function(ev)
+        vim.api.nvim_set_option_value('expandtab', false, { buf = ev.buf })
+    end,
+})
