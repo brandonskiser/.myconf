@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Cargo wrapper: shares CARGO_TARGET_DIR across bare-clone worktrees when the
+# worktree's Cargo.lock matches sibling main/Cargo.lock. Pass-through otherwise.
+# Mirrors share_cargo_target in /Volumes/workplace/kiro/util.sh, but works for
+# any caller (agents, IDEs, scripts) without relying on direnv.
+
+set -e
+REAL_CARGO="$HOME/.cargo/bin/cargo"
+
+# Respect explicit override (e.g. set by direnv).
+if [ -n "${CARGO_TARGET_DIR:-}" ]; then
+  exec "$REAL_CARGO" "$@"
+fi
+
+# Walk up to the nearest Cargo.lock.
+dir="$PWD"
+while [ "$dir" != "/" ] && [ ! -f "$dir/Cargo.lock" ]; do
+  dir="$(dirname "$dir")"
+done
+[ -f "$dir/Cargo.lock" ] || exec "$REAL_CARGO" "$@"
+
+# Bare-clone-with-worktrees signature: parent has a .bare/ dir.
+parent="$(dirname "$dir")"
+[ -d "$parent/.bare" ] || exec "$REAL_CARGO" "$@"
+
+main_lock="$parent/main/Cargo.lock"
+if [ -f "$main_lock" ] && cmp -s "$dir/Cargo.lock" "$main_lock"; then
+  export CARGO_TARGET_DIR="$parent/.cargo-target"
+fi
+
+exec "$REAL_CARGO" "$@"
