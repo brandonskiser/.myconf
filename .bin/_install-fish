@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+# Build and install the latest tagged fish-shell release from source via cargo,
+# then register the resulting binary in /etc/shells.
+
+set -eu
+
+if ! command -v cargo >/dev/null 2>&1; then
+    echo "Error: cargo not found. Install Rust (rustup) first." >&2
+    exit 1
+fi
+if ! command -v git >/dev/null 2>&1; then
+    echo "Error: git not found." >&2
+    exit 1
+fi
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+cd "$tmp"
+git clone https://github.com/fish-shell/fish-shell
+cd fish-shell
+
+tag=$(git for-each-ref refs/tags/ | awk '$2 == "tag" { print $3 }' | tail -1)
+echo "==> Building fish $tag"
+git checkout "$tag"
+
+cargo install --path .
+
+fish_bin="${CARGO_HOME:-$HOME/.cargo}/bin/fish"
+if [ ! -x "$fish_bin" ]; then
+    echo "Error: fish was not installed at $fish_bin" >&2
+    exit 1
+fi
+
+if grep -qxF "$fish_bin" /etc/shells 2>/dev/null; then
+    echo "==> $fish_bin already in /etc/shells"
+else
+    echo "==> Adding $fish_bin to /etc/shells (sudo)"
+    echo "$fish_bin" | sudo tee -a /etc/shells >/dev/null
+fi
+
+echo "Done. To make it your default: chsh -s $fish_bin"

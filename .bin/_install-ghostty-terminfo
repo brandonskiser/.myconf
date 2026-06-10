@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+# Install ghostty's terminfo (xterm-ghostty) on Amazon dev desktops so that
+# ssh sessions render correctly.
+
+set -u
+
+HOSTS="devdesk devdeskaarch devdeskal2"
+
+if ! infocmp -x xterm-ghostty >/dev/null 2>&1; then
+    echo "Error: xterm-ghostty terminfo not found locally. Is ghostty installed?" >&2
+    exit 1
+fi
+
+failures=0
+for host in $HOSTS; do
+    echo "==> $host"
+    if infocmp -x xterm-ghostty | ssh "$host" tic -x - 2>&1; then
+        echo "    ok"
+    else
+        echo "    FAILED" >&2
+        failures=$((failures + 1))
+    fi
+done
+
+if [ "$failures" -gt 0 ]; then
+    echo "$failures host(s) failed" >&2
+    exit 1
+fi
