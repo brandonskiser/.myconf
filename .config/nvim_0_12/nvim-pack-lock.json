@@ -78,6 +78,10 @@
       "rev": "0c56dc3ef9b15e9659ce09331fdc82449349701b",
       "src": "https://github.com/nvim-mini/mini.pick"
     },
+    "mini.test": {
+      "rev": "dbe62f6091de0c57de01f8af8c9f22971b32a886",
+      "src": "https://github.com/nvim-mini/mini.test"
+    },
     "nvim-cmp": {
       "rev": "d97d85e01339f01b842e6ec1502f639b080cb0fc",
       "src": "https://github.com/hrsh7th/nvim-cmp"

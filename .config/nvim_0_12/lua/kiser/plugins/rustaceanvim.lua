@@ -13,7 +13,9 @@ vim.g.rustaceanvim = {
                 rustfmt = {
                     extraArgs = { "+nightly" }
                 },
-                cargo = {}
+                cargo = {
+                    allTargets = true
+                }
             }
         }
     }

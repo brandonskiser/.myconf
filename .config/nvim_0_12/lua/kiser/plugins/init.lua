@@ -25,5 +25,6 @@ req("cmp")
 req("codecompanion")
 req("lazydev")
 req("markview")
+req("obsidian")
 
 vim.api.nvim_create_user_command("PluginProfile", profile.show, { desc = "Show plugin load times" })
