@@ -1,21 +1,27 @@
-local a = require("plenary.async")
-
-local function read_first_dir_entry()
-  os.execute("sleep 2")
-  vim.notify("Opening .")
-  local fs, err = vim.loop.fs_opendir(".")
-  if not fs then return vim.notify("Could not opendir: " .. err, vim.log.levels.ERROR) end
-  vim.notify("Opened .")
-
-  local readdir_err, entries = a.uv.fs_readdir(fs)
-  vim.notify("After async.uv.fs_readdir")
-  if readdir_err then vim.notify("Could not readdir: " .. readdir_err, vim.log.levels.ERROR) end
-  if not entries then return end
-  print(vim.inspect(entries[1]))
+function log(arg)
+    vim.notify(vim.inspect(arg))
 end
 
-vim.notify("Before a.run")
-a.run(read_first_dir_entry, function() vim.notify("Done") end)
-vim.notify("After a.run")
-os.execute("sleep 2")
+local treesitter_stuff = function()
+    local ts = require("kiser.util.treesitter")
+    local lang = ts.get_buf_lang()
+    local query = vim.treesitter.query.get(lang, "aerial")
+    -- log(query)
+    local parser = vim.treesitter.get_parser()
+    local tree = parser:parse()[1]
+    -- tree:root()
+    log(tree:root():child_count())
+end
 
+local diagnostics_stuff = function()
+    local diagnostics = vim.diagnostic.get()
+    -- log(diagnostics)
+    table.sort(diagnostics, function(a, b) return a.severity > b.severity end)
+    -- diagnostics = vim.tbl_map(function(v) return v.severity end, diagnostics)
+    local ds = vim.diagnostic.toqflist(diagnostics)
+    vim.fn.setqflist(ds)
+    vim.cmd('copen')
+    log(diagnostics)
+end
+
+diagnostics_stuff()

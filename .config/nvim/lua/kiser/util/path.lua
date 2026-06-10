@@ -6,6 +6,7 @@ local PATH_SEPARATOR = require('kiser.util.os').is_windows() and '\\' or '/'
 --the current OS.
 ---@param ... string | string[]
 ---@return string
+---@deprecated use vim.fs.joinpath instead
 function M.join(...)
     local result = table.concat(vim.iter({ ... }):flatten(math.huge):totable(), PATH_SEPARATOR):gsub(
     PATH_SEPARATOR .. '+', PATH_SEPARATOR)
@@ -26,7 +27,7 @@ function M.find_root(markers, bufname)
     end
     while getparent(dirname) ~= dirname do
         for _, marker in ipairs(markers) do
-            if vim.loop.fs_stat(M.join(dirname, marker)) then
+            if vim.loop.fs_stat(vim.fs.joinpath(dirname, marker)) then
                 return dirname
             end
         end

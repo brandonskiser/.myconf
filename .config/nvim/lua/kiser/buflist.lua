@@ -73,7 +73,7 @@ local function get_buf_names(strip_common_prefix)
 
     local ret = {}
     for _, v in ipairs(buf_names) do
-        ret[#ret + 1] = v.fname .. ' | ' .. tostring(v.buf)
+        ret[#ret + 1] = v.fname .. " | " .. tostring(v.buf)
     end
     return ret
 end
@@ -115,10 +115,15 @@ local function set_local_keymaps()
         if idx == nil then return end
         local buf_under_cursor = get_buf_under_cursor(floating_win, buf)
 
-        -- Using bufdelete to delete the buffer since the normal api doesn't
-        -- really work for some reason. Need to use wipeout instead of delete
-        -- to "really delete the buffer"
-        require("bufdelete").bufwipeout(buf_under_cursor, false)
+        if not buf_under_cursor then
+            return
+        end
+
+        -- Deleting a buffer will close any windows open with that buffer.
+        -- Thus, update any open windows with the buffer to delete to use a different file buffer.
+        -- Falls back to a scratch buffer if no other file buffers exist.
+
+        require('kiser.util.nvim').buf_delete(buf_under_cursor)
 
         vim.api.nvim_buf_set_lines(buf, 0, -1, false, get_buf_names())
         vim.bo[buf].modifiable = false

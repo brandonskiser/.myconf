@@ -16,6 +16,10 @@ vim.g.maplocalleader = " "
 
 keymap("n", "<C-s>", ":w<CR>", opts)
 
+-- Move left and right in insert mode
+keymap('i', "<C-h>", "<Left>", opts)
+keymap('i', "<C-l>", "<Right>", opts)
+
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
 keymap("n", "<C-j>", "<C-w>j", opts)
@@ -52,14 +56,9 @@ keymap("n", "<leader>wr", ":wincmd r<CR>", opts)      -- rotate window to the ri
 keymap("n", "<leader>we", ":wincmd R<CR>", opts)      -- rotate window to the left/up
 keymap("n", "<leader>wo", ":wincmd o<CR>", opts)      -- make current window the only window
 keymap("n", "<leader>wT", ":wincmd T<CR>", opts)      -- move current window to a new tab page
-keymap("n", "<C-w>", ":Bdelete<CR>", opts)            -- use bufdelete to delete the current buffer without messing up the window
-vim.api.nvim_set_keymap("n", "<C-w>", ":Bdelete<CR>", { noremap = true, nowait = true })
-vim.api.nvim_create_autocmd("BufRead", {
-    pattern = "*",
-    callback = function()
-        -- nowait isn't available in the global keymap setting for some reason...
-        vim.api.nvim_buf_set_keymap(0, "n", "<C-w>", ":Bdelete<CR>", { noremap = true, nowait = true })
-    end
+vim.keymap.set('n', '<C-w>', function() require('kiser.util.nvim').buf_delete(0) end, {
+    noremap = true,
+    nowait = true,
 })
 
 -- Copying to and pasting from the system clipboard.
@@ -79,6 +78,7 @@ keymap("n", "gx", ":!xdg-open <C-r><C-a><CR>", opts)
 
 -- Quickfix list
 keymap("n", "<leader>qc", ":cclose<CR>", opts) -- close
+keymap("n", "<leader>qo", ":copen<CR>", opts) -- close
 
 -- Terminal
 keymap("n", "<leader>t", ":terminal<CR>", opts)

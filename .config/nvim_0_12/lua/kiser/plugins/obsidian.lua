@@ -1,1 +1,0 @@
-require('kiser.obsidian').setup({})

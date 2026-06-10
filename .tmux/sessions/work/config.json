@@ -10,10 +10,6 @@
             "root": ".config/nvim"
         },
         {
-            "name": "nvim",
-            "root": ".config/nvim_0_12"
-        },
-        {
             "name": "bin",
             "root": ".bin"
         },
