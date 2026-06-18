@@ -1,0 +1,29 @@
+{
+    "root": "~/workplace/kiro/",
+    "windows": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "kiro-cli",
+            "root": "kiro-cli/main"
+        },
+        {
+            "name": "chatcli",
+            "root": "kiro-cli/main/crates/chat-cli"
+        },
+        {
+            "name": "chatcli2",
+            "root": "kiro-cli/main/crates/chat-cli-v2"
+        },
+        {
+            "name": "tui",
+            "root": "kiro-cli/main/packages/tui"
+        },
+        {
+            "name": "kas",
+            "root": "kiro-agent/main"
+        }
+    ]
+}
+

@@ -5,17 +5,29 @@ local function qflist_open()
     return vim.iter(vim.fn.getwininfo()):any(function(w) return w.quickfix == 1 end)
 end
 
-local function sort_by_severity(diagnostics)
-    table.sort(diagnostics, function(a, b)
-        return (a.severity or 5) < (b.severity or 5)
+-- vim.diagnostic.toqflist() re-sorts items by bufnr/lnum/col, discarding any
+-- ordering of the input. Sort the converted qf items instead, using the `type`
+-- field ('E' < 'W' < 'I' < 'N') so that errors surface at the top.
+local qf_type_rank = { E = 1, W = 2, I = 3, N = 4 }
+
+--- @param diagnostics vim.Diagnostic[]
+--- @return vim.quickfix.entry[]
+local function to_sorted_qflist(diagnostics)
+    local items = vim.diagnostic.toqflist(diagnostics)
+    table.sort(items, function(a, b)
+        local ra, rb = qf_type_rank[a.type] or 5, qf_type_rank[b.type] or 5
+        if ra ~= rb then return ra < rb end
+        if a.bufnr ~= b.bufnr then return a.bufnr < b.bufnr end
+        if a.lnum ~= b.lnum then return a.lnum < b.lnum end
+        return a.col < b.col
     end)
-    return diagnostics
+    return items
 end
 
 local function refresh_qflist()
     if not diagnostics_mode then return end
     local diagnostics = diagnostics_mode == 'all' and vim.diagnostic.get() or vim.diagnostic.get(0)
-    vim.fn.setqflist(vim.diagnostic.toqflist(sort_by_severity(diagnostics)))
+    vim.fn.setqflist(to_sorted_qflist(diagnostics))
 end
 
 local function toggle_diagnostics(mode)
@@ -28,7 +40,7 @@ local function toggle_diagnostics(mode)
         vim.notify('No diagnostics')
         return
     end
-    vim.fn.setqflist(vim.diagnostic.toqflist(sort_by_severity(diagnostics)))
+    vim.fn.setqflist(to_sorted_qflist(diagnostics))
     diagnostics_mode = mode
     vim.cmd('copen')
 end

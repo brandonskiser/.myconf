@@ -23,18 +23,20 @@ local function collect_buf_highlights(bufnr)
     local query = vim.treesitter.query.get(parser:lang(), "highlights")
     if query then
         -- Iterate over all matches in the syntax tree for the given buffer
-        for _, captures in query:iter_matches(parser:trees()[1]:root(), bufnr, 0, -1, { all = false }) do
-            for id, node in pairs(captures) do
-                -- Get the position of this syntax node
-                local start_row, start_col, _, end_col = node:range()
-                highlights[start_row] = highlights[start_row] or {}
-                -- Strip subtypes from capture name (e.g. "keyword.return" -> "keyword")
-                local hl_name = query.captures[id]:match("^[^.]+")
-                table.insert(highlights[start_row], {
-                    start_col = start_col,
-                    end_col = end_col,
-                    hl_group = "@" .. hl_name, -- prefix with @ for treesitter highlight groups
-                })
+        for _, captures in query:iter_matches(parser:trees()[1]:root(), bufnr, 0, -1) do
+            for id, nodes in pairs(captures) do
+                for _, node in ipairs(nodes) do
+                    -- Get the position of this syntax node
+                    local start_row, start_col, _, end_col = node:range()
+                    highlights[start_row] = highlights[start_row] or {}
+                    -- Strip subtypes from capture name (e.g. "keyword.return" -> "keyword")
+                    local hl_name = query.captures[id]:match("^[^.]+")
+                    table.insert(highlights[start_row], {
+                        start_col = start_col,
+                        end_col = end_col,
+                        hl_group = "@" .. hl_name,
+                    })
+                end
             end
         end
     end

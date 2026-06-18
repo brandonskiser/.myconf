@@ -6,13 +6,16 @@ vim.api.nvim_create_autocmd("PackChanged", { callback = function(ev)
 end })
 
 vim.pack.add({
-    { src = gh("nvim-treesitter/nvim-treesitter") }
+    { src = gh("nvim-treesitter/nvim-treesitter"), version = "main" }
 })
 
 local function install_parser_and_enable_features(event)
-    local ts = require("nvim-treesitter")
-    local lang = event.match
-    local ok, task = pcall(ts.install, { lang }, { summary = true })
+    local lang = vim.treesitter.language.get_lang(event.match) or event.match
+    if vim.treesitter.language.add(lang) then
+        pcall(vim.treesitter.start, event.buf, lang)
+        return
+    end
+    local ok, task = pcall(require("nvim-treesitter").install, { lang })
     if not ok then return end
     task:wait(10000)
     pcall(vim.treesitter.start, event.buf, lang)
