@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+kiro-cli chat --agent kiro-cli-kas --trust-all-tools --v3 "$@"

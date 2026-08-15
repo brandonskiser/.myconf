@@ -8,6 +8,11 @@ return {
         if fname:match(vim.fn.stdpath("config")) then
             return cb(vim.fn.stdpath("config"))
         end
+        -- Fallback for just checking luarc config.
+        local root = vim.fs.root(bufnr, { ".luarc.json", ".luarc.jsonc", ".git" })
+        if root then
+            cb(root)
+        end
     end,
 
     on_attach = function(client, bufnr)

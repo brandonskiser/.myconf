@@ -1,22 +1,22 @@
 vim.filetype.add({
     extension = {
         wgsl = 'wgsl'
-    }
+    },
 })
 
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'html',
     callback = function(opts)
-        vim.api.nvim_buf_set_option(opts.buf, 'tabstop', 2)
-        vim.api.nvim_buf_set_option(opts.buf, 'shiftwidth', 2)
+        vim.api.nvim_set_option_value('tabstop', 2, { buf = opts.buf })
+        vim.api.nvim_set_option_value('shiftwidth', 2, { buf = opts.buf })
     end
 })
 
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'typescript', 'typescriptreact' },
     callback = function(opts)
-        vim.api.nvim_buf_set_option(opts.buf, 'tabstop', 2)
-        vim.api.nvim_buf_set_option(opts.buf, 'shiftwidth', 2)
+        vim.api.nvim_set_option_value('tabstop', 2, { buf = opts.buf })
+        vim.api.nvim_set_option_value('shiftwidth', 2, { buf = opts.buf })
     end
 })
 
@@ -34,5 +34,15 @@ vim.api.nvim_create_autocmd('FileType', {
     pattern = 'gitconfig',
     callback = function(ev)
         vim.api.nvim_set_option_value('expandtab', false, { buf = ev.buf })
+    end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufEnter' }, {
+    callback = function(ev)
+        -- Override markview setting the conceallevel to 3
+        -- how to check who set conceallevel: `:verbose setlocal conceallevel?`
+        if vim.bo[ev.buf].filetype == 'json' then
+            vim.opt_local.conceallevel = 0
+        end
     end,
 })
