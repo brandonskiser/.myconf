@@ -7,6 +7,7 @@ end
 
 req("kiser.util")
 
+req("kiser.terminal")
 req("kiser.defaults")
 req("kiser.keymaps")
 req("kiser.commands")

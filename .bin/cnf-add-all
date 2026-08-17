@@ -7,6 +7,8 @@ cnf add "$HOME/.config/nvim/"
 cnf add "$HOME/.config/kitty/"
 cnf add "$HOME/.config/alacritty/"
 cnf add "$HOME/.config/wezterm/"
+cnf add "$HOME/.config/herdr/config.toml"
+cnf add "$HOME/.config/herdr/config.windows.toml"
 
 cnf add "$HOME/.config/fish/conf.d/common.fish"
 

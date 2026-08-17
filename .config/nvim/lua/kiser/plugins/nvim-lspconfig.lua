@@ -2,18 +2,17 @@ vim.pack.add({
     { src = gh("neovim/nvim-lspconfig") }
 })
 
-local home_dir = os.getenv("HOME")
-if not home_dir then return end
-
-local local_lsp_dir = vim.fs.joinpath(vim.fn.stdpath("config"), "lsp")
-local lsp_configs = {}
-for _, fpath in pairs(vim.api.nvim_get_runtime_file("lsp/*.lua", true)) do
-    if fpath:match(local_lsp_dir) then
-        local server_name = vim.fn.fnamemodify(fpath, ":t:r")
-        table.insert(lsp_configs, server_name)
-    end
-end
-vim.lsp.enable(lsp_configs)
+vim.lsp.enable({
+    "clangd",
+    "gopls",
+    "gdscript",
+    "html",
+    "lua_ls",
+    "luau_lsp",
+    "pyright",
+    "typescript",
+    "wgsl_analyzer",
+})
 
 -- local function luau_definitions(root_dir)
 --     local candidates = {

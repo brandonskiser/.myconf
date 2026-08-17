@@ -47,8 +47,12 @@ config.window_padding = {
 --     }
 -- }
 
+if util.is_home_desktop() then
+    config.default_prog = { 'pwsh.exe', '-NoLogo' }
+end
+
 config.font = util.is_work_laptop() and wezterm.font_with_fallback({ 'Hack Nerd Font' })
-    or wezterm.font_with_fallback({ 'Hack', 'Hack Nerd Font', 'FiraCode Nerd Font' })
+    or wezterm.font_with_fallback({ 'Hack Nerd Font', 'FiraCode Nerd Font' })
 
 -- Disables ligatures
 config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }

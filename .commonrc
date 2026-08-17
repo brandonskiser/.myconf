@@ -52,6 +52,14 @@ append_path /usr/local/vscode
 append_path ~/.local/share/nvim/mason/bin
 prepend_path ~/.pyenv/shims
 
+# Keep Herdr's config in the portable dotfiles location. Herdr uses APPDATA
+# by default on Windows, so point it at the same file as macOS/Linux.
+if [ "$(uname -s 2>/dev/null)" = "Darwin" ] || [ "$(uname -s 2>/dev/null)" = "Linux" ]; then
+    export HERDR_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/herdr/config.toml"
+elif command_exists cygpath; then
+    export HERDR_CONFIG_PATH="$(cygpath -w "$HOME/.config/herdr/config.windows.toml")"
+fi
+
 checked_alias vim nvim
 
 # Dotfiles. Uses the "cnf" script under ~/.bin/

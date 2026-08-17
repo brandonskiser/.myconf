@@ -1,0 +1,2 @@
+# Windows-specific overrides for the portable Herdr configuration.
+default_shell = "C:\\Program Files\\Git\\bin\\bash.exe"
