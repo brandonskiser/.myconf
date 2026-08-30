@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+if [ $# -lt 1 ]; then
+    echo "usage: kv2 AGENT [args...]" >&2
+    exit 1
+fi
+
+AGENT="$1"
+shift
+
+kiro-cli chat --agent "$AGENT" --trust-all-tools --agent-engine v2 "$@"

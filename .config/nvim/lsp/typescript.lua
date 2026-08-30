@@ -14,11 +14,13 @@ return {
         'typescriptreact',
         'typescript.tsx',
     },
+    -- Prefer the nearest TypeScript/Node project over an enclosing Git root.
+    -- This repo keeps the package in a subdirectory of the Git worktree.
     root_markers = {
-        ".git",
+        "tsconfig.json",
         "jsconfig.json",
         "package.json",
-        "tsconfig.json",
+        ".git",
     },
 
     init_options = { hostInfo = "neovim" },

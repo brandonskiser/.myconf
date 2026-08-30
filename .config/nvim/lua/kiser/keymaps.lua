@@ -16,6 +16,12 @@ vim.g.maplocalleader = " "
 
 keymap("n", "<C-s>", ":w<CR>", opts)
 
+-- CSI-u / Kitty keyboard protocol and xterm modifyOtherKeys distinguish Ctrl-[
+-- from the physical Escape key. Keep the traditional Vim behavior consistent
+-- in tmux, Herdr, and direct sessions.
+vim.keymap.set({ "n", "i", "v", "x", "s", "o", "c" }, "<C-[>", "<Esc>", opts)
+vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", opts)
+
 -- Move left and right in insert mode
 keymap('i', "<C-h>", "<Left>", opts)
 keymap('i', "<C-l>", "<Right>", opts)

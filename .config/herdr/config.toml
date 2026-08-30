@@ -1,3 +1,4 @@
+onboarding = false
 [ui]
 agent_panel_sort = "priority"
 
@@ -14,8 +15,8 @@ split_vertical = ["prefix+\\"]
 split_horizontal = ["prefix+-"]
 focus_pane_left = ["alt+h"]
 focus_pane_right = ["alt+l"]
-focus_pane_up = ["alt+k"]
-focus_pane_down = ["alt+j"]
+focus_pane_up = ["shift+alt+k"]
+focus_pane_down = ["shift+alt+j"]
 
 
 # navigate_pane_left

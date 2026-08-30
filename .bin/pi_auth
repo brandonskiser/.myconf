@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+ada credentials update --account 730335495947 --role admin --profile pi-bedrock --once=false
