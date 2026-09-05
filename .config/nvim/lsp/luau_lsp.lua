@@ -51,12 +51,24 @@ return {
     },
     cmd = function(dispatchers, config)
         local command = { "luau-lsp", "lsp" }
+
+        -- --settings gives the server ignoreGlobs before it starts indexing;
+        -- delivered over LSP they arrive after init, when the workspace crawl
+        -- and file watching have already begun. The server does not load
+        -- definitionFiles from settings (CLI or LSP), so definitions must
+        -- still be passed as explicit --definitions flags.
+        if config.root_dir then
+            local path = vim.fs.joinpath(config.root_dir, ".vscode", "settings.json")
+            if vim.uv.fs_stat(path) then
+                table.insert(command, "--settings=" .. path)
+            end
+        end
+
         local project = project_settings(config.root_dir)
-        ---@type string[]
         local definitions = project
                 and vim.tbl_get(project, "luau-lsp", "types", "definitionFiles")
 
-        for _, definition in ipairs(definitions) do
+        for _, definition in ipairs(definitions or {}) do
             if not vim.startswith(definition, "/") then
                 definition = vim.fs.joinpath(config.root_dir or vim.uv.cwd(), definition)
             end

@@ -3,7 +3,8 @@
 
 return {
     cmd = {
-        vim.fn.has("win32") == 1 and "typescript-language-server.cmd" or "typescript-language-server",
+        "tsc",
+        "--lsp",
         "--stdio",
     },
     filetypes = {

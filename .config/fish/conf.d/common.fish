@@ -1,3 +1,10 @@
+# brew setup - adds brew to PATH
+if test -x /opt/homebrew/bin/brew
+    eval (/opt/homebrew/bin/brew shellenv)
+else if test -x /home/linuxbrew/.linuxbrew/bin/brew
+    eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+end
+
 # Shared config sourced via conf.d, tracked in dotfiles.
 # Uses bass to import POSIX shell env/aliases into fish.
 bass source ~/.commonrc
@@ -15,13 +22,6 @@ function y
         builtin cd -- "$cwd"
     end
     rm -f -- "$tmp"
-end
-
-# brew setup - adds brew to PATH
-if test -x /opt/homebrew/bin/brew
-    eval (/opt/homebrew/bin/brew shellenv)
-else if test -x /home/linuxbrew/.linuxbrew/bin/brew
-    eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 end
 
 # Loaded after brew so it's on PATH if brew-installed
