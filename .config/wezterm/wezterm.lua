@@ -54,6 +54,9 @@ end
 config.font = util.is_work_laptop() and wezterm.font_with_fallback({ 'Hack Nerd Font' })
     or wezterm.font_with_fallback({ 'Hack Nerd Font', 'FiraCode Nerd Font' })
 
+-- Disable the pop-up warning window for missing glyphs/fonts
+config.warn_about_missing_glyphs = false
+
 -- Disables ligatures
 config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
