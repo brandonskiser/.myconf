@@ -5,12 +5,19 @@ agent_panel_sort = "priority"
 [keys]
 prefix = "ctrl+space"
 detach = "prefix+d"
+reload_config = "prefix+shift+r"
+
+new_workspace = "prefix+shift+n"
+rename_workspace = "prefix+shift+w"
+workspace_picker = "prefix+s"
 navigate_workspace_up = "k"
 navigate_workspace_down = "j"
+
 previous_tab = ["prefix+p", "ctrl+alt+["]
 next_tab = ["prefix+n", "ctrl+alt+]"]
 new_tab = ["prefix+c", "ctrl+alt+c"]
 rename_tab = ["prefix+,"]
+
 split_vertical = ["prefix+\\"]
 split_horizontal = ["prefix+-"]
 focus_pane_left = ["alt+h"]
